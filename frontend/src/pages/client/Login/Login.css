@@ -1,0 +1,123 @@
+/* couleur principale RAM */
+:root{
+  --ram-red: #c20831 !important;
+}
+
+/* background pages */
+.page-background{
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* card commune - UPDATED to 500px to match Signup */
+.form-card{
+  width: 100% !important;
+  max-width: 500px !important;
+  border-radius: 10px;
+  box-shadow: 0px 5px 20px rgba(0,0,0,0.1);
+  background-color: white;
+}
+
+/* bouton RAM */
+.ram-button{
+  background-color: #c20831 !important;
+  color: white !important;
+  border: none !important;
+  font-weight: bold;
+}
+
+.ram-button:hover{
+  background-color: #a00629 !important;
+}
+
+/* messages erreur */
+.error-text{
+  color: red;
+  font-size: 14px;
+}
+
+.form-summary-error {
+  background-color: #fde2e5;
+  color: #842029;
+  border: 1px solid #f5c2c7;
+  border-radius: 4px;
+  padding: 10px 12px;
+  margin-bottom: 1rem;
+}
+
+.form-summary-error ul {
+  padding-left: 18px;
+  margin-bottom: 0;
+}
+
+.form-summary-success {
+  background-color: #d1e7dd;
+  color: #0f5132;
+  border: 1px solid #badbcc;
+  border-radius: 4px;
+  padding: 10px 12px;
+  margin-bottom: 1rem;
+}
+
+.form-summary-title {
+  font-weight: 600;
+}
+
+/* UPDATED: Links now match in style */
+.forgot-password,
+.login-link {
+  color: rgb(79, 78, 78) !important;
+  text-decoration: underline !important;
+  font-size: 14px;
+}
+
+.forgot-password:hover,
+.login-link:hover {
+  color: #c20831 !important;   /* rouge RAM quand la souris passe */
+}
+
+/* ==================== RTL ADJUSTMENTS ==================== */
+
+[dir="rtl"] .page-background {
+  text-align: right;
+}
+
+[dir="rtl"] .form-card {
+  text-align: right;
+}
+
+[dir="rtl"] .form-control,
+[dir="rtl"] .form-select {
+  text-align: right;
+  direction: rtl;
+}
+
+[dir="rtl"] .form-label {
+  text-align: right;
+}
+
+[dir="rtl"] .error-text {
+  text-align: right;
+}
+
+[dir="rtl"] .form-summary-error,
+[dir="rtl"] .form-summary-success {
+  text-align: right;
+  direction: rtl;
+}
+
+[dir="rtl"] .form-summary-error ul,
+[dir="rtl"] .form-summary-success ul {
+  padding-right: 18px;
+  padding-left: 0;
+  text-align: right;
+}
+
+[dir="rtl"] .forgot-password,
+[dir="rtl"] .login-link {
+  text-align: right;
+}

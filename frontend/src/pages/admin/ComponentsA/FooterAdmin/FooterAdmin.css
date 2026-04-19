@@ -1,0 +1,16 @@
+.footer-admin {
+  background-color: #d9d6d6;
+  color: rgb(79, 78, 78);
+  height: 140px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  font-family: Arial, sans-serif;
+  border-top: 1px solid #ccc;
+  padding: 10px;
+}
+
+.footer-admin-text {
+  font-size: 14px;
+  margin-bottom: 10px;
+}

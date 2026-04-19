@@ -1,0 +1,64 @@
+.admin-dashboard {
+  min-height: 100vh;
+  padding: 40px 70px; /* haut/bas = 40px | gauche/droite = 100px */
+  background: #f5f6fa;
+  font-family: Arial, sans-serif;
+}
+
+.dashboard-header {
+  margin-bottom: 40px;
+}
+
+.dashboard-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: black;
+  margin: 0 0 15px 0;
+}
+
+.dashboard-subtitle {
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+}
+
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+.dashboard-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 25px 20px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  border-left: 5px solid #c8102e;
+  transition: all 0.3s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+}
+
+.card-title {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.card-value {
+  font-size: 40px;
+  font-weight: 700;
+  color: #c8102e;
+  margin: 0 0 15px 0;
+}
+
+.card-description {
+  font-size: 14px;
+  color: #777;
+  display: block;
+  line-height: 1.5;
+}

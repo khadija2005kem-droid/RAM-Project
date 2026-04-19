@@ -1,0 +1,157 @@
+.mes-factures-container {
+  padding-bottom: 50px;
+}
+
+.facture-card {
+  padding: 15px;
+  border-radius: 10px;
+  color: white;
+}
+
+/* Couleurs par status */
+.facture-card.payee {
+    background: #d4edda !important;
+    color: #155724 !important;
+}
+.facture-card.non-payee {
+    background: #f8d7da !important;
+    color: #721c24 !important; 
+}
+.facture-card.en-attente {
+    background: #fff3cd !important;
+    color: #856404 !important;
+}
+
+
+/* Ajustement responsive */
+@media (max-width: 768px) {
+  .facture-card { margin-bottom: 15px; }
+}
+
+/* Boutons "Voir" gris */
+.btn-voir {
+  background-color: rgb(79, 78, 78) !important ; /* gris Bootstrap */
+  border: rgb(79, 78, 78) !important ;
+}
+
+/* Bouton bascule Table/Carte rouge */
+.btn-toggle-carte {
+  background-color: #c20831 !important; /* rouge Bootstrap */
+  border: #c20831 !important ;
+}
+
+.btn-voir:hover {
+  background-color: #c20831 !important;
+  border: 1px solid #c20831 !important;
+}
+.btn-toggle-carte:hover {
+  background-color:rgb(79, 78, 78) !important ; 
+  border: none;
+}
+
+.btn-voir:active {
+  background-color: #c20831 !important;
+  border: 1px solid #c20831 !important;
+}
+.btn-toggle-carte:active {
+  background-color:rgb(79, 78, 78) !important;
+  border: rgb(79, 78, 78) !important;
+} 
+
+
+/* Dropdown items (filtrage) */
+.dropdown-item {
+  color: #333 !important;
+}
+
+/* Hover */
+.dropdown-item:hover {
+  background-color: #e0e0e0 !important; /* gris clair */
+  color: #000 !important;
+}
+
+/* Quand tu cliques (active) */
+.dropdown-item:active {
+  background-color: rgb(79, 78, 78) !important; /* gris foncé */
+  color: white !important;
+}
+
+/* Quand l'élément est sélectionné (focus Bootstrap) */
+.dropdown-item:focus {
+  background-color: rgb(79, 78, 78) !important;
+  color: white !important;
+}
+
+/* Supprimer l'effet bleu Bootstrap */
+.dropdown-item.active,
+.dropdown-item:active {
+  background-color: rgb(79, 78, 78) !important;
+  border: none !important;
+}
+.active-item {
+  background-color: rgb(79, 78, 78) !important;
+  color: white !important;
+}
+
+.empty-state-message {
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px dashed #d7dee7;
+  background: #f8fafc;
+  color: #5f6b7a;
+  font-size: 1rem;
+}
+
+/* ==================== RTL ADJUSTMENTS ==================== */
+
+[dir="rtl"] .mes-factures-container {
+  text-align: right;
+}
+
+[dir="rtl"] .facture-card {
+  text-align: right;
+  direction: rtl;
+}
+
+[dir="rtl"] .btn-voir,
+[dir="rtl"] .btn-toggle-carte {
+  text-align: center;
+}
+
+[dir="rtl"] .dropdown-item {
+  text-align: right;
+  padding-right: 1.5rem;
+  padding-left: 0.5rem;
+}
+
+[dir="rtl"] .dropdown-menu {
+  text-align: right;
+  right: 0;
+  left: auto;
+}
+
+[dir="rtl"] .table {
+  text-align: right;
+}
+
+[dir="rtl"] .table thead th,
+[dir="rtl"] .table tbody td {
+  text-align: right;
+  border-right: 1px solid #dee2e6;
+  border-left: none;
+}
+
+[dir="rtl"] .table tbody tr {
+  text-align: right;
+}
+
+[dir="rtl"] .empty-state-message {
+  text-align: center;
+  direction: rtl;
+}
+

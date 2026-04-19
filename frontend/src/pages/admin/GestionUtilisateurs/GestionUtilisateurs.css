@@ -1,0 +1,50 @@
+.factures-table {
+  width: 80%;
+  margin: 20px auto;
+  border-collapse: collapse;
+  background: white;
+}
+
+/* HEADER */
+.factures-table thead {
+  background-color: #e6e6e6;
+}
+
+/* CELLULES */
+.factures-table th,
+.factures-table td {
+  padding: 14px;
+  text-align: left;
+  border: 1px solid #ccc;   /* 🔥 lignes entre colonnes + lignes */
+}
+
+/* LIGNES ALTERNÉES */
+.factures-table tbody tr:nth-child(even) {
+  background-color: #f5f5f5;
+}
+
+/* HOVER */
+.factures-table tbody tr:hover {
+  background-color: #eaeaea;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+.search-input {
+  width: 600px;          /* 🔥 plus grande */
+  max-width: 90%;
+  padding: 15px 20px;   /* 🔥 plus haute */
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+}
+
+.search-input:focus {
+  border-color:  #c20831 !important;
+  box-shadow: 0 0 6px rgba(139, 0, 0, 0.2);
+}

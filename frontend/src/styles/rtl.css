@@ -1,0 +1,463 @@
+/* RTL (Right-to-Left) Styles for Arabic Language */
+/* Applied when document.dir = 'rtl' */
+
+/* ==================== GLOBAL RTL ADJUSTMENTS ==================== */
+
+[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] body {
+  direction: rtl;
+}
+
+/* ==================== NAVBAR ==================== */
+
+[dir="rtl"] .navbar-ram {
+  text-align: right;
+}
+
+[dir="rtl"] .navbar-logo {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+[dir="rtl"] .nav-link-ram {
+  margin-right: 0;
+  margin-left: 1rem;
+  text-align: right;
+}
+
+[dir="rtl"] .d-flex.align-items-center.flex-column.flex-lg-row {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .language-switcher-wrapper {
+  margin-left: 0 !important;
+  margin-right: 0.5rem;
+}
+
+/* ==================== LANGUAGE SWITCHER ==================== */
+
+[dir="rtl"] .page-language-switcher {
+  position: absolute;
+  top: 20px;
+  right: auto;
+  left: 20px;
+  z-index: 1000;
+}
+
+[dir="rtl"] .dropdown-toggle::after {
+  margin-left: 0.255em;
+  margin-right: 0;
+}
+
+/* ==================== FOOTER ==================== */
+
+[dir="rtl"] .footer {
+  text-align: right;
+  padding: 30px 60px;
+}
+
+[dir="rtl"] .footer-top {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+[dir="rtl"] .footer-links {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .footer-search input {
+  text-align: right;
+  direction: rtl;
+}
+
+[dir="rtl"] .footer-middle {
+  text-align: right;
+}
+
+[dir="rtl"] .payments {
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+[dir="rtl"] .footer-bottom {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+[dir="rtl"] .footer-left {
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  text-align: right;
+}
+
+[dir="rtl"] .footer-right {
+  text-align: right;
+}
+
+[dir="rtl"] .socials {
+  justify-content: flex-end;
+}
+
+/* ==================== FORMS & INPUTS ==================== */
+
+[dir="rtl"] .form-card {
+  text-align: right;
+}
+
+[dir="rtl"] .page-background {
+  text-align: right;
+}
+
+[dir="rtl"] .form-control,
+[dir="rtl"] .form-select {
+  text-align: right;
+  direction: rtl;
+}
+
+[dir="rtl"] .form-label {
+  text-align: right;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+[dir="rtl"] .error-text {
+  text-align: right;
+}
+
+[dir="rtl"] .form-summary-error,
+[dir="rtl"] .form-summary-success {
+  text-align: right;
+}
+
+[dir="rtl"] .form-summary-error ul,
+[dir="rtl"] .form-summary-success ul {
+  padding-right: 18px;
+  padding-left: 0;
+  text-align: right;
+}
+
+[dir="rtl"] .forgot-password,
+[dir="rtl"] .login-link {
+  text-align: right;
+}
+
+/* ==================== BUTTONS ==================== */
+
+[dir="rtl"] .ram-button {
+  text-align: center;
+}
+
+[dir="rtl"] .logout-btn {
+  text-align: center;
+}
+
+/* ==================== CONTAINERS & CARDS ==================== */
+
+[dir="rtl"] .home-container {
+  text-align: right;
+}
+
+[dir="rtl"] .mes-factures-bar {
+  text-align: center;
+  margin: 0 auto 40px auto;
+}
+
+[dir="rtl"] .stats-row {
+  gap: 20px;
+}
+
+[dir="rtl"] .profile-container {
+  text-align: right;
+}
+
+[dir="rtl"] .profile-title {
+  text-align: center;
+}
+
+[dir="rtl"] .profile-card {
+  text-align: right;
+}
+
+[dir="rtl"] .custom-card {
+  text-align: right;
+}
+
+/* ==================== INVOICE COMPONENTS ==================== */
+
+[dir="rtl"] .invoice-page {
+  text-align: right;
+}
+
+[dir="rtl"] .invoice-paper {
+  text-align: right;
+  direction: rtl;
+}
+
+[dir="rtl"] .invoice-paper .row {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .invoice-paper .col-md-6 {
+  text-align: right;
+}
+
+[dir="rtl"] .invoice-paper .text-end {
+  text-align: left !important;
+}
+
+[dir="rtl"] .invoice-paper .text-start {
+  text-align: right !important;
+}
+
+[dir="rtl"] .total-section {
+  text-align: left;
+}
+
+[dir="rtl"] .d-flex.align-items-center {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .ram-logo {
+  margin-left: 0;
+  margin-right: 0.75rem;
+}
+
+/* ==================== PAYMENT PAGE ==================== */
+
+[dir="rtl"] .paiement-container {
+  text-align: right;
+}
+
+[dir="rtl"] .paiement-card {
+  text-align: right;
+}
+
+/* ==================== CONTACT FORM ==================== */
+
+[dir="rtl"] .contact-container {
+  text-align: right;
+}
+
+[dir="rtl"] .alert {
+  text-align: right;
+  direction: rtl;
+}
+
+/* ==================== STATUS BADGES ==================== */
+
+[dir="rtl"] .badge {
+  text-align: center;
+  display: inline-block;
+}
+
+[dir="rtl"] .status-section {
+  text-align: right;
+}
+
+/* ==================== TABLE & LIST LAYOUTS ==================== */
+
+[dir="rtl"] .invoice-table {
+  text-align: right;
+}
+
+[dir="rtl"] .invoice-table .col-md-8,
+[dir="rtl"] .invoice-table .col-md-4 {
+  text-align: right;
+}
+
+[dir="rtl"] .recent-title {
+  text-align: right;
+}
+
+[dir="rtl"] .recent-card {
+  text-align: right;
+}
+
+[dir="rtl"] .empty-state-message {
+  text-align: center;
+}
+
+/* ==================== DROPDOWN & SELECT ==================== */
+
+[dir="rtl"] .dropdown-toggle {
+  text-align: right;
+}
+
+[dir="rtl"] .dropdown-menu {
+  text-align: right;
+  right: 0;
+  left: auto;
+}
+
+[dir="rtl"] .dropdown-item {
+  text-align: right;
+  padding-right: 1.5rem;
+  padding-left: 0.5rem;
+}
+
+/* ==================== FLEXBOX ADJUSTMENTS ==================== */
+
+[dir="rtl"] .container,
+[dir="rtl"] .container-fluid {
+  text-align: right;
+}
+
+[dir="rtl"] .row {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+[dir="rtl"] .gap-2 {
+  gap: 0.5rem;
+}
+
+[dir="rtl"] .d-flex {
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+/* Preserve flex-direction for specific components that shouldn't reverse */
+[dir="rtl"] .d-flex.flex-column,
+[dir="rtl"] .d-flex.flex-column-reverse {
+  flex-direction: column;
+}
+
+[dir="rtl"] .d-flex.justify-content-center {
+  justify-content: center;
+}
+
+[dir="rtl"] .d-flex.justify-content-start {
+  justify-content: flex-end;
+}
+
+[dir="rtl"] .d-flex.justify-content-end {
+  justify-content: flex-start;
+}
+
+[dir="rtl"] .me-auto {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+[dir="rtl"] .ms-auto,
+[dir="rtl"] .ms-lg-2 {
+  margin-right: auto;
+  margin-left: 0;
+}
+
+[dir="rtl"] .me-2,
+[dir="rtl"] .me-3 {
+  margin-left: 0.5rem;
+  margin-right: 0;
+}
+
+[dir="rtl"] .ms-2 {
+  margin-right: 0.5rem;
+  margin-left: 0;
+}
+
+[dir="rtl"] .ps-0,
+[dir="rtl"] .pe-0,
+[dir="rtl"] .px-0 {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+/* ==================== SPECIAL FIXES ==================== */
+
+/* Ensure input placeholders are right-aligned in RTL */
+[dir="rtl"] input::placeholder,
+[dir="rtl"] textarea::placeholder {
+  text-align: right;
+}
+
+/* Fix Bootstrap default alignment */
+[dir="rtl"] .text-end {
+  text-align: left !important;
+}
+
+[dir="rtl"] .text-start {
+  text-align: right !important;
+}
+
+[dir="rtl"] .text-left {
+  text-align: right !important;
+}
+
+[dir="rtl"] .text-right {
+  text-align: left !important;
+}
+
+/* Fix modal dialogs for RTL */
+[dir="rtl"] .modal-content {
+  text-align: right;
+  direction: rtl;
+}
+
+/* Fix modal close button position */
+[dir="rtl"] .btn-close {
+  position: absolute;
+  right: auto;
+  left: 1rem;
+}
+
+/* ==================== RESPONSIVE RTL ==================== */
+
+@media (max-width: 768px) {
+  [dir="rtl"] .nav-link-ram {
+    margin-left: 0;
+    margin-right: 0;
+    text-align: right;
+  }
+
+  [dir="rtl"] .language-switcher-wrapper {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    justify-content: flex-end;
+  }
+
+  [dir="rtl"] .profile-container {
+    text-align: right;
+  }
+
+  [dir="rtl"] .form-card {
+    text-align: right;
+  }
+
+  [dir="rtl"] .footer-bottom {
+    flex-direction: column-reverse;
+    text-align: right;
+  }
+
+  [dir="rtl"] .footer-left,
+  [dir="rtl"] .footer-right {
+    text-align: right;
+  }
+}
+
+/* ==================== LTR RESET ==================== */
+
+/* Ensure LTR languages work normally */
+[dir="ltr"] {
+  direction: ltr;
+  text-align: left;
+}
+
+[dir="ltr"] .page-language-switcher {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  left: auto;
+  z-index: 1000;
+}
+
+[dir="ltr"] .dropdown-menu {
+  text-align: left;
+  left: 0;
+  right: auto;
+}

@@ -1,0 +1,61 @@
+/* Navbar fond rouge RAM */
+.navbar-ram {
+  background-color: #d9d6d6; /* rouge RAM */
+  padding: 0.5rem 1rem;
+}
+
+/* Logo RAM */
+.navbar-logo {
+  font-weight: bold;
+  color: rgb(79, 78, 78) !important;
+  font-size: 1.5rem;
+}
+
+/* Liens menu : noir par défaut, rouge au hover */
+.nav-link-ram {
+  color: #c20831 !important;
+  font-weight: 500;
+  margin-right: 1rem;
+  transition: color 0.3s;
+}
+
+.nav-link-ram:hover {
+  color: #c20831 !important;
+  text-decoration: underline;
+}
+
+/* Bouton logout rouge RAM */
+.logout-btn {
+  background-color: #c20831 !important;
+  color: white ;
+  font-weight: bold ;
+  border: 1px solid #c20831 !important;
+}
+
+.logout-btn:hover {
+  background-color:rgb(79, 78, 78)  !important;
+  border: 1px solid rgb(79, 78, 78) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .nav-link-ram {
+    margin-right: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  .d-flex {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .logout-btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.ram-logo {
+  height: 60px;
+  
+}

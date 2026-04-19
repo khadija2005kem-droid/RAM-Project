@@ -1,0 +1,306 @@
+/* Invoice Page Layout */
+.invoice-page {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 2rem 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.invoice-container {
+  flex: 1;
+  padding-bottom: 2rem; /* Ensure space for footer */
+}
+
+/* Invoice Paper Design */
+.invoice-paper {
+  background-color: white;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* RAM Logo Placeholder */
+.ram-logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.logo-placeholder {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* Invoice Separator */
+.invoice-separator {
+  border: 2px solid #d32f2f;
+  opacity: 0.3;
+}
+
+/* Invoice Table */
+.invoice-table {
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.table-header {
+  background-color: #f8f9fa;
+  font-weight: bold;
+  color: #d32f2f;
+}
+
+/* Total Section */
+.total-section {
+  border: 2px solid #d32f2f;
+  background-color: #fff5f5;
+}
+
+/* Download Button */
+.download-btn {
+  background-color: #d32f2f;
+  border-color: #d32f2f;
+  padding: 0.75rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.download-btn:hover {
+  background-color: #b71c1c;
+  border-color: #b71c1c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.3);
+}
+
+/* Payment Button */
+.payment-btn {
+  background-color: #28a745;
+  border-color: #28a745;
+  padding: 0.75rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.payment-btn:hover {
+  background-color: #218838;
+  border-color: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+/* Status Section */
+.status-section {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.status-section h5 {
+  color: #d32f2f;
+  font-weight: 600;
+}
+
+.status-section .badge {
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .invoice-page {
+    padding: 1rem 0;
+  }
+
+  .invoice-paper .card-body {
+    padding: 1.5rem !important;
+  }
+
+  .ram-logo {
+    width: 50px;
+    height: 50px;
+  }
+
+  .logo-placeholder {
+    font-size: 16px;
+  }
+
+  .download-btn,
+  .payment-btn {
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  .total-section {
+    text-align: center;
+  }
+
+  .total-section .d-flex {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .d-flex.gap-2 {
+    flex-direction: column !important;
+  }
+
+  .d-flex.gap-2 button {
+    width: 100%;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .invoice-page {
+    background-color: white !important;
+  }
+
+  .invoice-paper {
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+  }
+
+  .download-btn,
+  .payment-btn,
+  .status-section {
+    display: none !important;
+  }
+}
+
+
+
+/* Invoice table background fix */
+.invoice-table {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Make rows look consistent */
+.invoice-table .row {
+  margin: 0;
+  background-color: #f8f9fa;
+}
+
+/* Ensure header and rows fully fill background */
+.table-header,
+.invoice-table .row {
+  background-color: #f8f9fa;
+}
+
+/* Optional: improve spacing */
+.invoice-table .col-md-8,
+.invoice-table .col-md-4 {
+  padding: 8px 12px;
+}
+
+/* Clean separator line */
+.invoice-table hr {
+  margin: 0;
+  border-color: #e0e0e0;
+}
+
+
+
+
+
+.invoice-table .table-header {
+  background-color: #e9ecef;
+  font-weight: 600;
+  border-bottom: 1px solid #dee2e6;
+}
+
+/* zebra like Bootstrap table-striped */
+.invoice-table .table-body .table-row:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+.invoice-table .table-body .table-row:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.invoice-table .table-row,
+.invoice-table .table-header {
+  color: #000000;
+}
+
+/* ==================== RTL ADJUSTMENTS ==================== */
+
+[dir="rtl"] .invoice-page {
+  text-align: right;
+}
+
+[dir="rtl"] .invoice-paper {
+  text-align: right;
+  direction: rtl;
+}
+
+[dir="rtl"] .invoice-paper .row {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .invoice-paper .col-md-6 {
+  text-align: right;
+}
+
+[dir="rtl"] .invoice-paper .text-end {
+  text-align: left !important;
+}
+
+[dir="rtl"] .invoice-paper .text-start {
+  text-align: right !important;
+}
+
+[dir="rtl"] .ram-logo {
+  margin-left: 0;
+  margin-right: 0.75rem;
+}
+
+[dir="rtl"] .d-flex.align-items-center {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .total-section {
+  text-align: left;
+}
+
+[dir="rtl"] .status-section {
+  text-align: right;
+  direction: rtl;
+}
+
+[dir="rtl"] .status-section h5 {
+  text-align: right;
+}
+
+[dir="rtl"] .status-section .badge {
+  text-align: center;
+  display: inline-block;
+}
+
+[dir="rtl"] .invoice-table {
+  text-align: right;
+  direction: rtl;
+}
+
+[dir="rtl"] .invoice-table .col-md-8,
+[dir="rtl"] .invoice-table .col-md-4 {
+  text-align: right;
+}
+
+[dir="rtl"] .table {
+  text-align: right;
+}

@@ -1,0 +1,66 @@
+/* couleur principale RAM */
+:root{
+  --ram-red: #c20831 !important;
+}
+
+/* background pages */
+.page-background{
+  min-height: 100vh;
+  background-color: #f5f5f5 !important;
+}
+
+.landing-background {
+  min-height: 100vh;
+  background-color: #f5f5f5 !important;
+}
+
+/* card commune */
+.form-card{
+  width: 100%;
+  max-width: 500px;
+  border-radius: 10px;
+  box-shadow: 0px 5px 20px rgba(0,0,0,0.1) !important;
+}
+
+/* bouton RAM */
+.ram-button{
+  background-color: #c20831 !important;
+  color: white !important;
+  border: none !important;
+  font-weight: bold;
+}
+
+.ram-button:hover{
+  background-color: #a00629 !important;
+}
+
+/* messages erreur */
+.error-text{
+  color: red;
+  font-size: 14px;
+}
+
+/* Landing specific button styles */
+.landing-button {
+  background-color: #c20831 !important;
+  color: white !important;
+  border: none !important;
+  font-weight: bold;
+}
+
+.landing-button:hover {
+  background-color: #a00629 !important;
+}
+
+.landing-button-light {
+  background-color: white !important;
+  color: #333 !important;
+  border: 2px solid #c20831 !important;
+  font-weight: bold;
+}
+
+.landing-button-light:hover {
+  background-color: #c20831 !important;
+  color: white !important;
+  border-color: #c20831 !important;
+}

@@ -1,0 +1,102 @@
+.contact-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding-bottom: 50px;
+}
+
+.btn-send {
+  background-color: #c20831 !important; /* rouge */
+  color: white;
+  border: #c20831 !important;
+  font-weight: bold;
+  padding: 10px 20px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-send:hover {
+  background-color: #c20831 !important;/* rouge foncé au survol */
+}
+
+.btn-send:active {
+  background-color: #c20831!important; /* encore plus foncé au clic */
+}
+
+.contact-container h2 {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.form-summary-error {
+  background-color: #fde2e5;
+  color: #842029;
+  border: 1px solid #f5c2c7;
+  border-radius: 4px;
+  padding: 10px 12px;
+  margin-bottom: 1rem;
+}
+
+.form-summary-error ul {
+  padding-left: 18px;
+  margin-bottom: 0;
+}
+
+.form-summary-success {
+  background-color: #d1e7dd;
+  color: #0f5132;
+  border: 1px solid #badbcc;
+  border-radius: 4px;
+  padding: 10px 12px;
+  margin-bottom: 1rem;
+}
+
+.form-summary-title {
+  font-weight: 600;
+}
+
+.alert {
+  margin-bottom: 20px;
+}
+
+.is-invalid {
+  border-color: #c20831 !important;
+}
+
+/* ==================== RTL ADJUSTMENTS ==================== */
+
+[dir="rtl"] .contact-container {
+  text-align: right;
+}
+
+[dir="rtl"] .contact-container h2 {
+  text-align: center;
+}
+
+[dir="rtl"] .form-control,
+[dir="rtl"] .form-select,
+[dir="rtl"] textarea.form-control {
+  text-align: right;
+  direction: rtl;
+}
+
+[dir="rtl"] .form-label {
+  text-align: right;
+}
+
+[dir="rtl"] .form-summary-error,
+[dir="rtl"] .form-summary-success {
+  text-align: right;
+  direction: rtl;
+}
+
+[dir="rtl"] .form-summary-error ul,
+[dir="rtl"] .form-summary-success ul {
+  padding-right: 18px;
+  padding-left: 0;
+  text-align: right;
+}
+
+[dir="rtl"] .alert {
+  text-align: right;
+  direction: rtl;
+}

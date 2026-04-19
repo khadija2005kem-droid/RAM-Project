@@ -1,0 +1,125 @@
+.home-container {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.welcome-text {
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.mes-factures-bar { 
+  background-color: #f8f9fa;
+  padding: 20px;
+  margin: 0 auto 40px auto; /* top:0, left/right:auto, bottom:40px */
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1.2rem;
+  text-align: center;
+  width: 40%; /* now it has reduced width */
+}
+
+
+
+.stats-row {
+  gap: 20px; /* espace entre les cartes */
+  margin-top: 20px;
+}
+
+.stat-card {
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.accepte {
+  background: #d4edda !important;
+  color: #155724 !important;
+}
+
+.refuse {
+  background: #f8d7da !important;
+  color: #721c24 !important;
+}
+
+.attente {
+  background: #fff3cd !important;
+  color: #856404 !important;
+}
+
+.recent-title {
+  font-weight: bold;
+  text-align: left;
+  margin-top: 20px;
+}
+
+.recent-card {
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.recent-card h6 {
+  font-weight: bold;
+}
+
+.recent-card p {
+  margin: 0;
+}
+
+.empty-state-message {
+  width: 100%;
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px dashed #d7dee7;
+  background: #f8fafc;
+  color: #5f6b7a;
+  font-size: 1rem;
+  margin-bottom: 40px;
+}
+
+/* ==================== RTL ADJUSTMENTS ==================== */
+
+[dir="rtl"] .home-container {
+  text-align: right;
+}
+
+[dir="rtl"] .welcome-text {
+  text-align: right;
+}
+
+[dir="rtl"] .mes-factures-bar {
+  text-align: center;
+}
+
+[dir="rtl"] .stats-row {
+  gap: 20px;
+}
+
+[dir="rtl"] .stat-card {
+  text-align: right;
+}
+
+[dir="rtl"] .recent-title {
+  text-align: right;
+}
+
+[dir="rtl"] .recent-card {
+  text-align: right;
+  direction: rtl;
+}
+
+[dir="rtl"] .recent-card h6,
+[dir="rtl"] .recent-card p {
+  text-align: right;
+}
+
+[dir="rtl"] .empty-state-message {
+  text-align: center;
+  direction: rtl;
+}

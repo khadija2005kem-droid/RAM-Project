@@ -1,0 +1,152 @@
+/* couleur principale RAM */
+:root{
+  --ram-red: #c20831 !important;
+}
+
+/* background pages */
+.page-background{
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+/* card commune */
+/* .form-card{
+  width: 400px;
+  border-radius: 10px;
+  box-shadow: 0px 5px 20px rgba(0,0,0,0.1);
+} */
+
+/* Fix the width and make it responsive */
+.signup-card {
+  width: 100%;
+  max-width: 500px; /* Increased from 400px for a better look */
+  border-radius: 10px;
+  box-shadow: 0px 5px 20px rgba(0,0,0,0.1);
+  margin: 2rem auto; /* Adds space so it doesn't hit the footer */
+}
+
+/* Ensure the background allows scrolling if the form is tall */
+.signup-container {
+  min-height: calc(100vh - 100px); /* Adjusts for footer space */
+  display: flex;
+  padding: 40px 15px; /* Adds breathing room on mobile and top/bottom */
+}
+
+/* bouton RAM */
+.ram-button{
+  background-color: #c20831 !important;
+  color: white !important;
+  border: none !important;
+  font-weight: bold;
+}
+
+.ram-button:hover{
+  background-color: #a00629 !important;
+}
+
+/* messages erreur */
+.error-text{
+  color: red;
+  font-size: 14px;
+}
+
+.form-summary-error {
+  background-color: #fde2e5 !important;
+  color: #842029 !important;
+  border: 1px solid #f5c2c7 !important;
+  border-radius: 4px;
+  padding: 10px 12px;
+  margin-bottom: 1rem;
+}
+
+.form-summary-error ul {
+  padding-left: 18px;
+  margin-bottom: 0;
+}
+
+.form-summary-success {
+  background-color: #d1e7dd;
+  color: #0f5132;
+  border: 1px solid #badbcc;
+  border-radius: 4px;
+  padding: 10px 12px;
+  margin-bottom: 1rem;
+}
+
+.form-summary-title {
+  font-weight: 600;
+}
+
+.signup-button{
+  background-color: #c20831 !important;
+  color: white !important;
+  border: none !important;
+  font-weight: bold;
+}
+
+.signup-button:hover{
+  background-color: #a00629 !important;
+}
+
+.login-link {
+  color: rgb(79, 78, 78) ;
+  text-decoration:  underline; 
+  font-size: 14px;
+}
+
+.login-link:hover {
+  color: #c20831 !important;
+}
+
+/* ==================== RTL ADJUSTMENTS ==================== */
+
+[dir="rtl"] .page-background {
+  text-align: right;
+}
+
+[dir="rtl"] .signup-container {
+  text-align: right;
+}
+
+[dir="rtl"] .signup-card {
+  text-align: right;
+}
+
+[dir="rtl"] .form-control,
+[dir="rtl"] .form-select {
+  text-align: right;
+  direction: rtl;
+}
+
+[dir="rtl"] .form-label {
+  text-align: right;
+}
+
+[dir="rtl"] .error-text {
+  text-align: right;
+}
+
+[dir="rtl"] .form-summary-error,
+[dir="rtl"] .form-summary-success {
+  text-align: right;
+  direction: rtl;
+}
+
+[dir="rtl"] .form-summary-error ul,
+[dir="rtl"] .form-summary-success ul {
+  padding-right: 18px;
+  padding-left: 0;
+  text-align: right;
+}
+
+[dir="rtl"] .login-link {
+  text-align: right;
+}
+
+.form-summary-error {
+  font-size: 14px;
+}
+
+.is-invalid {
+  border-color: #c20831 !important;
+}

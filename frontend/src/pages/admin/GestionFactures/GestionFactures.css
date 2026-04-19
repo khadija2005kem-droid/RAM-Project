@@ -1,0 +1,93 @@
+.factures-container {
+  padding: 30px;
+  background-color: #f4f6f9;
+  min-height: 100vh;
+}
+
+h1 {
+  color: black;
+  margin-bottom: 20px;
+}
+
+.factures-table {
+  width: 100%;
+  border-collapse: collapse;
+ 
+}
+
+
+
+.factures-table th,
+.factures-table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+.factures-table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;  /* gris */
+}
+
+.factures-table tbody tr:nth-child(odd) {
+  background-color: #ffffff;  /* blanc */
+}
+.factures-table th {
+  background-color:  #d9d6d6  !important ;
+  font-weight: bold;
+}
+
+.btn-simple {
+  padding: 8px 12px;
+  border: rgb(79, 78, 78) !important;
+  background:rgb(79, 78, 78) !important;
+  cursor: pointer;
+   color: white !important;
+}
+
+.btn-simple:hover {
+  background-color: #c20831 !important ;
+  border:#c20831 !important ;
+}
+
+.filter-wrapper {
+  margin-bottom: 20px;
+}
+
+.status-filter {
+  width: 290px;
+  padding: 14px 18px;
+  font-size: 18px;
+  color: white;
+  background-color: #5f6770;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 18px;
+}
+
+.status-filter option {
+  background-color: white;
+  color: #444;
+  font-size: 18px;
+}
+.success-message {
+  background-color: #e6f9ed;
+  border: 1px solid #28a745;
+  color: #1e7e34;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  text-align: left;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
