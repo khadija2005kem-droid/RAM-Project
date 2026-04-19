@@ -65,7 +65,7 @@ class AdminFactureController extends Controller
     {
         $facture = Facture::findOrFail($id);
 
-        if ($facture->status !== Facture::STATUS_PENDING) {
+        if (!$facture->hasStatus(Facture::STATUS_PENDING)) {
             return response()->json([
                 'status' => false,
                 'message' => 'Only pending invoices can be marked as paid.',
@@ -74,7 +74,11 @@ class AdminFactureController extends Controller
 
         $facture->markAsPaid();
 
-        return response()->json(['status' => true, 'message' => 'Facture marked as paid', 'data' => $facture], 200);
+        return response()->json([
+            'status' => true,
+            'message' => 'Facture marked as paid',
+            'data' => $facture->fresh(),
+        ], 200);
     }
 
     public function validatePayment($id)
@@ -86,7 +90,7 @@ class AdminFactureController extends Controller
     {
         $facture = Facture::findOrFail($id);
 
-        if ($facture->status !== Facture::STATUS_PENDING) {
+        if (!$facture->hasStatus(Facture::STATUS_PENDING)) {
             return response()->json([
                 'status' => false,
                 'message' => 'Only pending invoices can be rejected.',
@@ -95,14 +99,18 @@ class AdminFactureController extends Controller
 
         $facture->markAsUnpaid();
 
-        return response()->json(['status' => true, 'message' => 'Facture marked as unpaid', 'data' => $facture], 200);
+        return response()->json([
+            'status' => true,
+            'message' => 'Facture marked as unpaid',
+            'data' => $facture->fresh(),
+        ], 200);
     }
 
     public function pending($id)
     {
         $facture = Facture::findOrFail($id);
 
-        if ($facture->status !== Facture::STATUS_UNPAID) {
+        if (!$facture->hasStatus(Facture::STATUS_UNPAID)) {
             return response()->json([
                 'status' => false,
                 'message' => 'Only unpaid invoices can be marked as pending.',
@@ -111,6 +119,10 @@ class AdminFactureController extends Controller
 
         $facture->markAsPending();
 
-        return response()->json(['status' => true, 'message' => 'Facture marked as pending', 'data' => $facture], 200);
+        return response()->json([
+            'status' => true,
+            'message' => 'Facture marked as pending',
+            'data' => $facture->fresh(),
+        ], 200);
     }
 }

@@ -2,15 +2,25 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class Facture extends Model
 {
-    public const STATUS_UNPAID = 'unpaid';
-    public const STATUS_PENDING = 'pending';
-    public const STATUS_PAID = 'paid';
+    public const STATUS_UNPAID = 'non payee';
+    public const STATUS_PENDING = 'en attente';
+    public const STATUS_PAID = 'payee';
+
+    public const LEGACY_STATUS_MAP = [
+        'unpaid' => self::STATUS_UNPAID,
+        'non_payee' => self::STATUS_UNPAID,
+        'non payée' => self::STATUS_UNPAID,
+        'rejected' => self::STATUS_UNPAID,
+        'pending' => self::STATUS_PENDING,
+        'en_attente' => self::STATUS_PENDING,
+        'paid' => self::STATUS_PAID,
+        'payée' => self::STATUS_PAID,
+        'accepted' => self::STATUS_PAID,
+    ];
 
     public const ALLOWED_STATUSES = [
         self::STATUS_UNPAID,
@@ -23,34 +33,38 @@ class Facture extends Model
         'reference',
         'date',
         'prix',
-        'status'
+        'status',
     ];
 
-    /**
-     * Generate a unique invoice reference in format FACT-YYYY-XXX
-     * YYYY = current year
-     * XXX = incremental number (per year)
-     */
     public static function generateReference()
     {
         $year = now()->year;
-        
-        // Count invoices created this year
         $count = Facture::whereYear('created_at', $year)->count();
-        
-        // Increment count for next reference
         $increment = $count + 1;
-        
-        // Format: FACT-YYYY-XXX (pad number to 3 digits)
         $reference = sprintf('FACT-%d-%03d', $year, $increment);
-        
-        // Ensure uniqueness (very unlikely but safe)
+
         while (Facture::where('reference', $reference)->exists()) {
             $increment++;
             $reference = sprintf('FACT-%d-%03d', $year, $increment);
         }
-        
+
         return $reference;
+    }
+
+    public static function normalizeStatus(?string $status): string
+    {
+        $value = trim(mb_strtolower((string) $status));
+
+        if ($value === '') {
+            return self::STATUS_UNPAID;
+        }
+
+        return self::LEGACY_STATUS_MAP[$value] ?? $value;
+    }
+
+    public function hasStatus(string $status): bool
+    {
+        return self::normalizeStatus($this->status) === self::normalizeStatus($status);
     }
 
     public function user()
@@ -73,9 +87,6 @@ class Facture extends Model
         return $this->update(['status' => self::STATUS_UNPAID]);
     }
 
-    /**
-     * Boot method to auto-generate reference on create
-     */
     protected static function boot()
     {
         parent::boot();
@@ -84,6 +95,10 @@ class Facture extends Model
             if (empty($model->reference)) {
                 $model->reference = self::generateReference();
             }
+        });
+
+        static::saving(function ($model) {
+            $model->status = self::normalizeStatus($model->status);
         });
     }
 }

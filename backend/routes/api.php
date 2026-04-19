@@ -48,6 +48,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('admin')->prefix('admin')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index']);
         Route::get('/users', [AdminController::class, 'users']);
+        Route::get('/users/{id}', [AdminController::class, 'userById'])->whereNumber('id');
         Route::get('/messages', [AdminController::class, 'messages']);
         Route::get('/factures', [AdminFactureController::class, 'index']);
         Route::post('/factures', [AdminFactureController::class, 'store']);

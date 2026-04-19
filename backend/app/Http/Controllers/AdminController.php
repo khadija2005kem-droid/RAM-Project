@@ -8,10 +8,36 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    public function users()
+    public function users(Request $request)
     {
-        $users = User::all();
+        $users = User::query();
+
+        if ($request->query('role') === 'client') {
+            $users->where('role', 'client');
+        }
+
+        $users = $users->get();
+
         return response()->json(['status' => true, 'data' => $users], 200);
+    }
+
+    public function userById($id)
+    {
+        $user = User::where('id', $id)
+            ->where('role', 'client')
+            ->first();
+
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Client introuvable',
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => true,
+            'data' => $user,
+        ], 200);
     }
 
     public function factures()

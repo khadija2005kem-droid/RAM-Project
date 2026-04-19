@@ -143,7 +143,7 @@ class FactureController extends Controller
             ], 404);
         }
 
-        if ($facture->status !== Facture::STATUS_UNPAID) {
+        if (!$facture->hasStatus(Facture::STATUS_UNPAID)) {
             return response()->json([
                 'status' => false,
                 'message' => 'Only unpaid invoices can be moved to pending.'

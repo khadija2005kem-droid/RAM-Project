@@ -63,7 +63,7 @@ class PaiementController extends Controller
                 }
 
                 // Primary validation: Check if facture is already marked as paid
-                if ($facture->status === Facture::STATUS_PAID) {
+                if ($facture->hasStatus(Facture::STATUS_PAID)) {
                     return response()->json([
                         'status' => false,
                         'message' => 'Cette facture est déjà payée'
@@ -71,7 +71,7 @@ class PaiementController extends Controller
                 }
 
                 // Validation: Check if facture is pending approval
-                if ($facture->status === Facture::STATUS_PENDING) {
+                if ($facture->hasStatus(Facture::STATUS_PENDING)) {
                     return response()->json([
                         'status' => false,
                         'message' => 'Cette facture est en attente de validation'
@@ -122,7 +122,8 @@ class PaiementController extends Controller
                     'data' => [
                         'transaction_id' => $transactionId,
                         'montant' => $paiement->montant,
-                        'status' => $paiement->status
+                        'status' => $paiement->status,
+                        'facture' => $facture->fresh(),
                     ]
                 ], 201);
             });

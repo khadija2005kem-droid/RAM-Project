@@ -24,9 +24,9 @@ class DashboardController extends Controller
             $factures = Facture::where('user_id', $user->id)->get();
 
             $stats = [
-                'payees' => $factures->where('status', Facture::STATUS_PAID)->count(),
-                'non_payees' => $factures->where('status', Facture::STATUS_UNPAID)->count(),
-                'en_attente' => $factures->where('status', Facture::STATUS_PENDING)->count(),
+                'payees' => $factures->filter(fn ($facture) => $facture->hasStatus(Facture::STATUS_PAID))->count(),
+                'non_payees' => $factures->filter(fn ($facture) => $facture->hasStatus(Facture::STATUS_UNPAID))->count(),
+                'en_attente' => $factures->filter(fn ($facture) => $facture->hasStatus(Facture::STATUS_PENDING))->count(),
             ];
 
             return response()->json([
