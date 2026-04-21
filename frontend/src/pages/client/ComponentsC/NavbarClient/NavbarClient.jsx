@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { api } from "../../../../services/api";
 import { clearAuthSession } from "../../../../utils/auth";
 import logo from "../../../../assets/logoRAM.jpg";
+import LanguageSwitcher from "../../LanguageSwitcher/LanguageSwitcher";
 import "./NavbarClient.css";
 
 function Navbar() {
@@ -17,6 +18,7 @@ function Navbar() {
       await api.logout();
     } catch (error) {
       console.error("Logout error:", error);
+      sessionStorage.setItem("logout_warning", "1");
     } finally {
       clearAuthSession();
       navigate("/login", { replace: true });
@@ -27,7 +29,7 @@ function Navbar() {
     <BSNavbar expand="lg" className="navbar-ram">
       <Container>
         <BSNavbar.Brand as={Link} to="/home">
-          <img src={logo} alt="RAM Logo" className="ram-logo" />
+          <img src={logo} alt={t("navbar.brand")} className="ram-logo" />
         </BSNavbar.Brand>
 
         <BSNavbar.Brand as={Link} to="/home" className="navbar-logo">
@@ -39,30 +41,33 @@ function Navbar() {
         <BSNavbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link as={Link} to="/home" className="nav-link-ram">
-              Accueil
+              {t("navbar.home")}
             </Nav.Link>
 
             <Nav.Link as={Link} to="/mes-factures" className="nav-link-ram">
-              Mes Factures
+              {t("navbar.myInvoices")}
             </Nav.Link>
 
             <Nav.Link as={Link} to="/paiement" className="nav-link-ram">
-              Paiement
+              {t("navbar.payment")}
             </Nav.Link>
 
             <Nav.Link as={Link} to="/contact" className="nav-link-ram">
-              Contact
+              {t("navbar.contact")}
             </Nav.Link>
 
             <Nav.Link as={Link} to="/profile" className="nav-link-ram">
-              Profil
+              {t("navbar.profile")}
             </Nav.Link>
           </Nav>
 
-          <div className="d-flex">
+          <div className="d-flex client-navbar-actions">
             <Button className="logout-btn" onClick={handleLogout}>
               {t("navbar.logout")}
             </Button>
+            <div className="client-navbar-language-switcher">
+              <LanguageSwitcher />
+            </div>
           </div>
         </BSNavbar.Collapse>
       </Container>

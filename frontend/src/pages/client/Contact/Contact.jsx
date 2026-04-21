@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Container, Row, Col, Form, Button, Spinner, Card } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { api } from "../../../services/api";
+import { clearAuthSession } from "../../../utils/auth";
+import { getErrorMessage, isUnauthorizedError } from "../../../utils/errorHandling";
 import "./Contact.css";
 
 function Contact() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     nom: "",
@@ -17,6 +21,7 @@ function Contact() {
 
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
+  const [prefillError, setPrefillError] = useState("");
   const [loading, setLoading] = useState(false);
   
   // Validation errors
@@ -38,6 +43,7 @@ function Contact() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
+        setPrefillError("");
         const response = await api.getProfile();
         const userData = response.data || response;
         setFormData(prev => ({
@@ -48,10 +54,24 @@ function Contact() {
         }));
       } catch (err) {
         console.error("Failed to fetch user data for contact form:", err);
+
+        if (isUnauthorizedError(err)) {
+          clearAuthSession();
+          navigate("/login", { replace: true });
+          return;
+        }
+
+        setPrefillError(
+          getErrorMessage(err, {
+            networkMessage: t("contact.prefillError"),
+            serverMessage: t("contact.prefillError"),
+            fallbackMessage: t("contact.prefillError"),
+          })
+        );
       }
     };
     fetchUserData();
-  }, []);
+  }, [navigate, t]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -110,6 +130,11 @@ function Contact() {
 
     } catch (err) {
       console.error("Contact error:", err);
+      if (isUnauthorizedError(err)) {
+        clearAuthSession();
+        navigate("/login", { replace: true });
+        return;
+      }
 
       // ✅ Laravel validation
       if (err.status === 422 && Object.keys(err.errors || {}).length > 0) {
@@ -144,6 +169,12 @@ function Contact() {
         </Card.Header>
 
         <Card.Body>
+          {prefillError && (
+            <div className="form-summary-error">
+              {prefillError}
+            </div>
+          )}
+
           {error && (
             <div className="form-summary-error">
               <div className="form-summary-title">{t("contact.pleaseFix")}</div>

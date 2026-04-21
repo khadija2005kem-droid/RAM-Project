@@ -1,18 +1,24 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import "./GestionMessages.css";
+import { useNavigate } from "react-router-dom";
 import { api } from "../../../services/api";
+import { clearAuthSession } from "../../../utils/auth";
+import { getErrorMessage, isUnauthorizedError } from "../../../utils/errorHandling";
+import "./GestionMessages.css";
 
 function GestionMessages() {
+  const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
   const [selectedMessageId, setSelectedMessageId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [replyError, setReplyError] = useState("");
+  const [loadError, setLoadError] = useState("");
   const [sendingReply, setSendingReply] = useState(false);
   const [replyDrafts, setReplyDrafts] = useState({});
 
   const fetchMessages = useCallback(async () => {
     try {
+      setLoadError("");
       const result = await api.adminMessagesAll();
 
       const mappedMessages = (result?.data || []).map((msg) => ({
@@ -36,8 +42,22 @@ function GestionMessages() {
       });
     } catch (error) {
       console.log("Admin messages fetch error:", error);
+
+      if (isUnauthorizedError(error)) {
+        clearAuthSession();
+        navigate("/login", { replace: true });
+        return;
+      }
+
+      setLoadError(
+        getErrorMessage(error, {
+          networkMessage: "Impossible de charger les messages.",
+          serverMessage: "Impossible de charger les messages.",
+          fallbackMessage: "Impossible de charger les messages.",
+        })
+      );
     }
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     fetchMessages();
@@ -103,7 +123,7 @@ function GestionMessages() {
     try {
       const result = await api.adminReplyToMessage(selectedMessage.id, replyValue);
 
-      setSuccessMessage(result?.message || "Message sent successfully via email");
+      setSuccessMessage(result?.message || "Message envoye avec succes.");
 
       setMessages((prevMessages) =>
         prevMessages.map((msg) =>
@@ -117,7 +137,20 @@ function GestionMessages() {
       }));
     } catch (error) {
       console.log("Admin reply error:", error);
-      setReplyError(error?.message || "Une erreur est survenue lors de l'envoi.");
+
+      if (isUnauthorizedError(error)) {
+        clearAuthSession();
+        navigate("/login", { replace: true });
+        return;
+      }
+
+      setReplyError(
+        getErrorMessage(error, {
+          networkMessage: "Impossible d'envoyer la reponse pour le moment.",
+          serverMessage: "Impossible d'envoyer la reponse pour le moment.",
+          fallbackMessage: "Une erreur est survenue lors de l'envoi.",
+        })
+      );
     } finally {
       setSendingReply(false);
     }
@@ -139,6 +172,8 @@ function GestionMessages() {
         <div className="messages-layout">
           <div className="messages-list">
             <h2 className="section-title">Boite de reception</h2>
+
+            {loadError && <div className="reply-error">{loadError}</div>}
 
             <div className="search-box">
               <input
@@ -172,7 +207,7 @@ function GestionMessages() {
                 </div>
               ))
             ) : (
-              <div className="empty-state">Aucun message trouve.</div>
+              <div className="empty-state">{loadError || "Aucun message trouve."}</div>
             )}
           </div>
 
@@ -234,7 +269,7 @@ function GestionMessages() {
                 </div>
               </>
             ) : (
-              <div className="empty-state">Aucun message selectionne.</div>
+              <div className="empty-state">{loadError || "Aucun message selectionne."}</div>
             )}
           </div>
         </div>

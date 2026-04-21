@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Dropdown } from "react-bootstrap";
 import i18n from "../../../i18n";
 import "./LanguageSwitcher.css";
 
 function LanguageSwitcher() {
-  const [currentLang, setCurrentLang] = useState(i18n.language || 'fr');
+  const { t } = useTranslation();
+  const [currentLang, setCurrentLang] = useState(i18n.language || "fr");
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
@@ -24,22 +26,22 @@ function LanguageSwitcher() {
 
       <Dropdown.Menu align="end">
         <Dropdown.Item
-          onClick={() => changeLanguage('fr')}
-          className={currentLang === 'fr' ? 'active' : ''}
+          onClick={() => changeLanguage("fr")}
+          className={currentLang === "fr" ? "active" : ""}
         >
-          Français
+          {t("language.fr")}
         </Dropdown.Item>
         <Dropdown.Item
-          onClick={() => changeLanguage('en')}
-          className={currentLang === 'en' ? 'active' : ''}
+          onClick={() => changeLanguage("en")}
+          className={currentLang === "en" ? "active" : ""}
         >
-          English
+          {t("language.en")}
         </Dropdown.Item>
         <Dropdown.Item
-          onClick={() => changeLanguage('ar')}
-          className={currentLang === 'ar' ? 'active' : ''}
+          onClick={() => changeLanguage("ar")}
+          className={currentLang === "ar" ? "active" : ""}
         >
-          العربية
+          {t("language.ar")}
         </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>

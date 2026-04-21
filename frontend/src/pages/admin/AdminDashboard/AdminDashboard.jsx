@@ -1,31 +1,24 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { api } from "../../../services/api";
+import { clearAuthSession } from "../../../utils/auth";
+import { getErrorMessage, isUnauthorizedError } from "../../../utils/errorHandling";
 import "./AdminDashboard.css";
-import { getAuthToken } from "../../../utils/auth";
 
 function AdminDashboard() {
+  const navigate = useNavigate();
   const [statsData, setStatsData] = useState({
     unread_messages: 0,
     pending_factures: 0,
     clients: 0,
   });
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const token = getAuthToken();
-        const response = await fetch("http://localhost:8000/api/admin/dashboard", {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error(data?.message || "Failed to load dashboard stats");
-        }
+        setErrorMessage("");
+        const data = await api.adminDashboard();
 
         setStatsData({
           unread_messages: data?.unread_messages || 0,
@@ -34,18 +27,32 @@ function AdminDashboard() {
         });
       } catch (error) {
         console.log("Admin dashboard fetch error:", error);
+
+        if (isUnauthorizedError(error)) {
+          clearAuthSession();
+          navigate("/login", { replace: true });
+          return;
+        }
+
+        setErrorMessage(
+          getErrorMessage(error, {
+            networkMessage: "Impossible de charger les statistiques du tableau de bord.",
+            serverMessage: "Impossible de charger les statistiques du tableau de bord.",
+            fallbackMessage: "Impossible de charger les statistiques du tableau de bord.",
+          })
+        );
       }
     };
 
     fetchStats();
-  }, []);
+  }, [navigate]);
 
   const stats = [
     {
       id: 1,
-      title: "Total des messages non répondu",
+      title: "Total des messages non repondu",
       value: statsData.unread_messages,
-      description: "Nombre total de messages reçus",
+      description: "Nombre total de messages recus",
     },
     {
       id: 2,
@@ -69,6 +76,8 @@ function AdminDashboard() {
           Suivez rapidement les informations principales de votre plateforme.
         </p>
       </div>
+
+      {errorMessage && <div className="error">{errorMessage}</div>}
 
       <div className="dashboard-cards">
         {stats.map((item) => (

@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Container, Card, Form, Button, Alert, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../../services/api";
+import { getErrorMessage, isUnauthorizedError } from "../../../utils/errorHandling";
 import "./Profile.css";
 
 function Profile() {
@@ -40,15 +41,21 @@ function Profile() {
       }));
     } catch (err) {
       console.error("Failed to fetch profile data:", err);
-      if (err.isUnauthorized) {
+      if (isUnauthorizedError(err)) {
         navigate("/login");
       } else {
-        setErrorMessage("Impossible de charger vos informations.");
+        setErrorMessage(
+          getErrorMessage(err, {
+            networkMessage: t("profile.loadError"),
+            serverMessage: t("profile.loadError"),
+            fallbackMessage: t("profile.loadError"),
+          })
+        );
       }
     } finally {
       setLoading(false);
     }
-  }, [navigate]);
+  }, [navigate, t]);
 
   useEffect(() => {
     fetchUserData();
@@ -117,7 +124,7 @@ function Profile() {
 
     try {
       await api.updateProfile(payload);
-      setSuccessMessage("Profil mis à jour avec succès.");
+      setSuccessMessage(t("profile.updateSuccess"));
 
       setFormData((prev) => ({
         ...prev,
@@ -144,12 +151,15 @@ function Profile() {
             : validationErrors[key];
         });
         setFieldErrors(formatted);
+      } else if (isUnauthorizedError(err)) {
+        navigate("/login", { replace: true });
       } else {
         setErrorMessage(
-          err?.response?.data?.message ||
-          err?.body?.message ||
-          err?.message ||
-          t("profile.updateError")
+          getErrorMessage(err, {
+            networkMessage: t("profile.updateError"),
+            serverMessage: t("profile.updateError"),
+            fallbackMessage: t("profile.updateError"),
+          })
         );
       }
     } finally {
@@ -263,7 +273,7 @@ function Profile() {
               </Form.Control.Feedback>
             </Form.Group>
 
-            <Button variant="danger" type="submit" disabled={submitting}>
+            <Button className="btn-send" type="submit" disabled={submitting}>
               {submitting ? t("profile.saving") : t("profile.saveChanges")}
             </Button>
           </Form>

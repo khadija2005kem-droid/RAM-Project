@@ -38,6 +38,15 @@
   border: 1px solid rgb(79, 78, 78) !important;
 }
 
+.client-navbar-actions {
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.client-navbar-language-switcher .language-switcher-dropdown {
+  margin-bottom: 0;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .nav-link-ram {
@@ -45,14 +54,21 @@
     margin-bottom: 0.5rem;
   }
 
-  .d-flex {
-    flex-direction: column;
+  .client-navbar-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
     width: 100%;
   }
 
   .logout-btn {
     width: 100%;
     margin-bottom: 0.5rem;
+  }
+
+  .client-navbar-language-switcher,
+  .client-navbar-language-switcher .language-switcher-dropdown,
+  .client-navbar-language-switcher .language-toggle-btn {
+    width: 100%;
   }
 }
 

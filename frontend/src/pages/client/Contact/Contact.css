@@ -25,6 +25,7 @@
   text-align: center;
   font-weight: bold;
   margin-bottom: 30px;
+  
 }
 
 .form-summary-error {
@@ -60,6 +61,12 @@
 
 .is-invalid {
   border-color: #c20831 !important;
+}
+
+.custom-card-header {
+  background-color: #c20831 !important;
+  color: white !important;
+  font-weight: bold;
 }
 
 /* ==================== RTL ADJUSTMENTS ==================== */

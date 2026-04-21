@@ -5,6 +5,7 @@ import { Container, Row, Col, Button, Card, Spinner } from "react-bootstrap";
 import { jsPDF } from "jspdf";
 
 import { api } from "../../../services/api";
+import { getErrorMessage, isUnauthorizedError } from "../../../utils/errorHandling";
 import { normalizeInvoiceStatus } from "../../../utils/invoiceStatus";
 import Navbar from "../ComponentsC/NavbarClient/NavbarClient";
 import logo from "../../../assets/logoRAM.jpg";
@@ -48,12 +49,15 @@ const Facturepdf = () => {
   const [invoice, setInvoice] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [loadError, setLoadError] = useState("");
+  const [downloadError, setDownloadError] = useState("");
 
   useEffect(() => {
     let isActive = true;
 
     const fetchInvoice = async () => {
       try {
+        setLoadError("");
         const response = await fetchInvoiceOnce(id);
 
         if (!isActive) {
@@ -62,8 +66,20 @@ const Facturepdf = () => {
 
         setInvoice(response);
       } catch (error) {
-        if (isActive) {
+        if (isActive && isUnauthorizedError(error)) {
+          navigate("/login", { replace: true });
+          return;
+        }
+
+        if (isActive && error?.status !== 404) {
           console.error("Error fetching invoice:", error);
+          setLoadError(
+            getErrorMessage(error, {
+              networkMessage: t("facturepdf.loadError"),
+              serverMessage: t("facturepdf.loadError"),
+              fallbackMessage: t("facturepdf.loadError"),
+            })
+          );
         }
       } finally {
         if (isActive) {
@@ -78,12 +94,13 @@ const Facturepdf = () => {
     return () => {
       isActive = false;
     };
-  }, [id]);
+  }, [id, navigate, t]);
 
   const downloadPDF = async () => {
     if (!invoice || isDownloading) return;
 
     setIsDownloading(true);
+    setDownloadError("");
 
     try {
       const pdf = new jsPDF({
@@ -140,9 +157,9 @@ const Facturepdf = () => {
       pdf.setFont("helvetica", "normal");
       pdf.setFontSize(11.5);
       pdf.setTextColor(33, 33, 33);
-      pdf.text(invoice?.user?.name || "Nom du client", margin, cursorY);
+      pdf.text(invoice?.user?.name || t("facturepdf.clientNameFallback"), margin, cursorY);
       cursorY += 6;
-      pdf.text(invoice?.user?.email || "Email du client", margin, cursorY);
+      pdf.text(invoice?.user?.email || t("facturepdf.clientEmailFallback"), margin, cursorY);
 
       cursorY += 10;
       pdf.setFillColor(248, 249, 250);
@@ -215,6 +232,7 @@ const Facturepdf = () => {
       pdf.save(buildPdfFileName(invoice.reference));
     } catch (error) {
       console.error("PDF download error:", error);
+      setDownloadError(t("facturepdf.downloadError"));
     } finally {
       setIsDownloading(false);
     }
@@ -273,8 +291,8 @@ const Facturepdf = () => {
         <Navbar />
         <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
           <div className="text-center">
-            <h4>{t("facturepdf.invoiceNotFound")}</h4>
-            <p>{t("facturepdf.invoiceNotFoundMessage")}</p>
+            <h4>{loadError ? t("home.loadingError") : t("facturepdf.invoiceNotFound")}</h4>
+            <p>{loadError || t("facturepdf.invoiceNotFoundMessage")}</p>
           </div>
         </Container>
       </>
@@ -305,7 +323,7 @@ const Facturepdf = () => {
                     <Col md={6}>
                       <div className="d-flex align-items-center">
                         <div className="ram-logo me-3">
-                          <img src={logo} alt="RAM Logo" style={{ width: "60px", height: "auto" }} />
+                          <img src={logo} alt={t("navbar.brand")} style={{ width: "60px", height: "auto" }} />
                         </div>
                         <div>
                           <h2 className="ram-red-text mb-0">{t("facturepdf.companyName")}</h2>
@@ -329,8 +347,8 @@ const Facturepdf = () => {
                   <Row className="mb-4">
                     <Col md={6}>
                       <h6 className="ram-red-text mb-2">{t("facturepdf.clientInfo")}</h6>
-                      <p className="mb-0">{invoice?.user?.name || "Nom du client"}</p>
-                      <p className="mb-0">{invoice?.user?.email || "Email du client"}</p>
+                      <p className="mb-0">{invoice?.user?.name || t("facturepdf.clientNameFallback")}</p>
+                      <p className="mb-0">{invoice?.user?.email || t("facturepdf.clientEmailFallback")}</p>
                     </Col>
                   </Row>
 
@@ -408,6 +426,8 @@ const Facturepdf = () => {
                   </Button>
                 )}
               </div>
+
+              {downloadError && <div className="text-danger mt-3">{downloadError}</div>}
             </Col>
           </Row>
         </Container>
@@ -417,7 +437,7 @@ const Facturepdf = () => {
             <header className="print-header">
               <div className="print-brand">
                 <div className="print-logo">
-                  <img src={logo} alt="RAM Logo" />
+                  <img src={logo} alt={t("navbar.brand")} />
                 </div>
                 <div className="print-brand-copy">
                   <div className="print-brand-name">RAM</div>
@@ -441,8 +461,8 @@ const Facturepdf = () => {
             <section className="print-section">
               <div className="print-section-title">{t("facturepdf.clientInfo")}</div>
               <div className="print-client-box">
-                <p>{invoice?.user?.name || "Nom du client"}</p>
-                <p>{invoice?.user?.email || "Email du client"}</p>
+                <p>{invoice?.user?.name || t("facturepdf.clientNameFallback")}</p>
+                <p>{invoice?.user?.email || t("facturepdf.clientEmailFallback")}</p>
               </div>
             </section>
 

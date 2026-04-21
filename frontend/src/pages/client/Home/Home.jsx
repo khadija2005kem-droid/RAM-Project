@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import { api } from "../../../services/api";
 import { clearAuthSession } from "../../../utils/auth";
+import { getErrorMessage } from "../../../utils/errorHandling";
 import { getTranslatedInvoiceStatus, normalizeInvoiceStatus } from "../../../utils/invoiceStatus";
 import "./Home.css";
 
@@ -33,10 +34,12 @@ function Home() {
   const [recentActivities, setRecentActivities] = useState([]);
   const [newInvoices, setNewInvoices] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setErrorMessage("");
         const [dashboardResult, allFacturesResult, activitiesResult, unseenFacturesResult] = await Promise.allSettled([
           api.dashboard(),
           api.facturesAll(),
@@ -60,6 +63,11 @@ function Home() {
           return;
         }
 
+        const nonAuthErrors = [dashboardResult, allFacturesResult, activitiesResult, unseenFacturesResult]
+          .filter((result) => result.status === "rejected")
+          .map((result) => result.reason)
+          .filter(Boolean);
+
         const dashboardPayload = dashboardData?.data || {};
         const allFactures = Array.isArray(allFacturesData?.data) ? allFacturesData.data : [];
         const recentActivitiesData = Array.isArray(activitiesData?.data) ? activitiesData.data : [];
@@ -69,13 +77,23 @@ function Home() {
           setUser(dashboardPayload.user);
         }
 
+        if (nonAuthErrors.length > 0) {
+          setErrorMessage(
+            getErrorMessage(nonAuthErrors[0], {
+              networkMessage: t("home.partialLoadError"),
+              serverMessage: t("home.partialLoadError"),
+              fallbackMessage: t("home.partialLoadError"),
+            })
+          );
+        }
+
         setStats(buildStatsFromFactures(allFactures));
 
         const formattedRecentActivities = recentActivitiesData
           .filter((activity) => activity?.invoice)
           .map((activity) => ({
             id: activity.id,
-            title: `Facture ${activity.invoice.reference}`,
+            title: t("home.invoiceLabel", { reference: activity.invoice.reference }),
             status: formatStatus(activity.invoice.status),
             amount: `${activity.invoice.prix} DH`,
           }));
@@ -84,7 +102,7 @@ function Home() {
 
         const formattedNewInvoices = unseenInvoicesData.map((facture) => ({
           id: facture.id,
-          title: `Facture ${facture.reference}`,
+          title: t("home.invoiceLabel", { reference: facture.reference }),
           status: formatStatus(facture.status),
           amount: `${facture.prix} DH`,
         }));
@@ -113,7 +131,7 @@ function Home() {
   if (!user) {
     return (
       <Container className="home-container">
-        <p>{t("home.loadingError")}</p>
+        <p>{errorMessage || t("home.loadingError")}</p>
       </Container>
     );
   }
@@ -124,11 +142,13 @@ function Home() {
 
   return (
     <Container className="home-container">
+      {errorMessage && <div className="empty-state-message mb-4">{errorMessage}</div>}
+
       <h2 className="welcome-text">{t("home.welcome", { firstName: user.prenom, lastName: user.nom })}</h2>
 
       <div className="mes-factures-bar">
         <h4>
-          Total: {total} - {t("home.myInvoices")}
+          {t("home.totalLabel", { total })} - {t("home.myInvoices")}
         </h4>
       </div>
 

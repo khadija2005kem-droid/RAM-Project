@@ -1,8 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { api } from "../../../services/api";
+import { clearAuthSession } from "../../../utils/auth";
+import { isUnauthorizedError } from "../../../utils/errorHandling";
 import "./GestionFactures.css";
 
 function GestionFactures() {
+  const navigate = useNavigate();
   const [paiements, setPaiements] = useState([]);
   const [loading, setLoading] = useState(true);
   const [successMessage, setSuccessMessage] = useState("");
@@ -57,6 +61,13 @@ function GestionFactures() {
         await loadPendingPaiements();
       } catch (error) {
         console.log("Admin payments fetch error:", error);
+
+        if (isUnauthorizedError(error)) {
+          clearAuthSession();
+          navigate("/login", { replace: true });
+          return;
+        }
+
         showErrorMessage("Erreur lors du chargement des demandes de paiement.");
       } finally {
         setLoading(false);
@@ -64,7 +75,7 @@ function GestionFactures() {
     };
 
     fetchPaiements();
-  }, [loadPendingPaiements, showErrorMessage]);
+  }, [loadPendingPaiements, navigate, showErrorMessage]);
 
   useEffect(() => {
     return () => {
@@ -90,6 +101,13 @@ function GestionFactures() {
       setPaiements((prev) => prev.filter((paiement) => paiement.id !== id));
     } catch (error) {
       console.log("Admin payment accept error:", error);
+
+      if (isUnauthorizedError(error)) {
+        clearAuthSession();
+        navigate("/login", { replace: true });
+        return;
+      }
+
       showErrorMessage("Erreur lors du traitement de la demande de paiement.");
     } finally {
       setProcessingIds((prev) => prev.filter((paiementId) => paiementId !== id));

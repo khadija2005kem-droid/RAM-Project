@@ -15,6 +15,7 @@ function NavbarAdmin() {
       await api.logout();
     } catch (error) {
       console.error("Logout error:", error);
+      sessionStorage.setItem("logout_warning", "1");
     } finally {
       clearAuthSession();
       navigate("/login", { replace: true });

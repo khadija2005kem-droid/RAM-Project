@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Form, Button, Card, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +17,15 @@ function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [fieldErrors, setFieldErrors] = useState({});
+
+  useEffect(() => {
+    const logoutWarning = sessionStorage.getItem("logout_warning");
+
+    if (logoutWarning) {
+      setError(t("login.logoutWarning"));
+      sessionStorage.removeItem("logout_warning");
+    }
+  }, [t]);
 
   const handleLogin = async (e) => {
     e.preventDefault();

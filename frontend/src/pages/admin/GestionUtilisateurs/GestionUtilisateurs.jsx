@@ -1,28 +1,21 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { api } from "../../../services/api";
+import { clearAuthSession } from "../../../utils/auth";
+import { getErrorMessage, isUnauthorizedError } from "../../../utils/errorHandling";
 import "./GestionUtilisateurs.css";
-import { getAuthToken } from "../../../utils/auth";
 
 function GestionUtilisateurs() {
+  const navigate = useNavigate();
   const [utilisateurs, setUtilisateurs] = useState([]);
   const [recherche, setRecherche] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const token = getAuthToken();
-        const response = await fetch("http://localhost:8000/api/admin/users?role=client", {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const result = await response.json();
-        if (!response.ok) {
-          throw new Error(result?.message || "Failed to load users");
-        }
+        setErrorMessage("");
+        const result = await api.adminUsersAll();
 
         const mappedUsers = (result?.data || [])
           .filter((user) => user.role === "client")
@@ -36,11 +29,25 @@ function GestionUtilisateurs() {
         setUtilisateurs(mappedUsers);
       } catch (error) {
         console.log("Admin users fetch error:", error);
+
+        if (isUnauthorizedError(error)) {
+          clearAuthSession();
+          navigate("/login", { replace: true });
+          return;
+        }
+
+        setErrorMessage(
+          getErrorMessage(error, {
+            networkMessage: "Impossible de charger la liste des utilisateurs.",
+            serverMessage: "Impossible de charger la liste des utilisateurs.",
+            fallbackMessage: "Impossible de charger la liste des utilisateurs.",
+          })
+        );
       }
     };
 
     fetchUsers();
-  }, []);
+  }, [navigate]);
 
   const utilisateursFiltres = utilisateurs.filter(
     (user) =>
@@ -53,10 +60,12 @@ function GestionUtilisateurs() {
     <div className="factures-container">
       <h1>Gestion des Utilisateurs</h1>
 
+      {errorMessage && <div className="error">{errorMessage}</div>}
+
       <div className="search-container">
         <input
           type="text"
-          placeholder="Rechercher par nom, prénom ou email..."
+          placeholder="Rechercher par nom, prenom ou email..."
           value={recherche}
           onChange={(e) => setRecherche(e.target.value)}
           className="search-input"
@@ -68,7 +77,7 @@ function GestionUtilisateurs() {
           <tr>
             <th>ID</th>
             <th>Nom</th>
-            <th>Prénom</th>
+            <th>Prenom</th>
             <th>Email</th>
           </tr>
         </thead>
@@ -86,7 +95,7 @@ function GestionUtilisateurs() {
           ) : (
             <tr>
               <td colSpan="4" className="aucune-facture">
-                Aucun utilisateur trouvé
+                {errorMessage || "Aucun utilisateur trouve"}
               </td>
             </tr>
           )}

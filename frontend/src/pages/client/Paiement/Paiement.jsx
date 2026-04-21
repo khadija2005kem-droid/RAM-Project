@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Container, Card, Form, Button } from "react-bootstrap";
 import { FaCcVisa, FaCcAmex } from "react-icons/fa";
 import { api } from "../../../services/api";
-import { getStoredUser } from "../../../utils/auth";
+import { clearAuthSession, getStoredUser } from "../../../utils/auth";
+import { getErrorMessage, isUnauthorizedError } from "../../../utils/errorHandling";
 import { normalizeInvoiceStatus } from "../../../utils/invoiceStatus";
 import "./Paiement.css";
 
@@ -67,6 +68,7 @@ function isEmailValid(value) {
 function Paiement() {
   const { t } = useTranslation();
   const location = useLocation();
+  const navigate = useNavigate();
   const storedUser = getStoredUser();
   const [formData, setFormData] = useState({
     numero_facture: location.state?.reference || "",
@@ -102,17 +104,26 @@ function Paiement() {
       setInvoiceCheck(result);
       return result;
     } catch (err) {
-      if (err.status === 404) {
-        setInvoiceCheck({ error: "Facture introuvable" });
+      if (isUnauthorizedError(err)) {
+        clearAuthSession();
+        navigate("/login", { replace: true });
+      } else if (err.status === 404) {
+        setInvoiceCheck({ error: t("paiement.invoiceNotFound") });
       } else {
-        setInvoiceCheck({ error: t("paiement.invoiceCheckError") });
+        setInvoiceCheck({
+          error: getErrorMessage(err, {
+            networkMessage: t("paiement.serverError"),
+            serverMessage: t("paiement.invoiceCheckError"),
+            fallbackMessage: t("paiement.invoiceCheckError"),
+          }),
+        });
       }
 
       return null;
     } finally {
       setCheckingInvoice(false);
     }
-  }, [t]);
+  }, [navigate, t]);
 
   useEffect(() => {
     if (reference) {
@@ -279,14 +290,23 @@ function Paiement() {
     } catch (err) {
       console.error("Payment error:", err);
 
-      if (err.status === 422 && err.errors) {
+      if (isUnauthorizedError(err)) {
+        clearAuthSession();
+        navigate("/login", { replace: true });
+      } else if (err.status === 422 && err.errors) {
         const formatted = {};
         Object.keys(err.errors).forEach((key) => {
           formatted[key] = err.errors[key][0];
         });
         setFieldErrors(formatted);
       } else {
-        setError(err.message || t("paiement.serverError"));
+        setError(
+          getErrorMessage(err, {
+            networkMessage: t("paiement.serverError"),
+            serverMessage: t("paiement.paymentError"),
+            fallbackMessage: t("paiement.paymentError"),
+          })
+        );
       }
     } finally {
       setLoading(false);

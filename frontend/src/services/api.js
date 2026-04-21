@@ -15,6 +15,22 @@ const getAuthHeaders = () => {
   };
 };
 
+const request = async (url, options) => {
+  try {
+    const response = await fetch(url, options);
+    return await parseResponse(response);
+  } catch (error) {
+    if (error?.status || error?.response || error?.isUnauthorized) {
+      throw error;
+    }
+
+    const networkError = new Error("Network request failed");
+    networkError.isNetworkError = true;
+    networkError.cause = error;
+    throw networkError;
+  }
+};
+
 const parseResponse = async (response) => {
   const body = await response.json().catch(() => ({}));
   if (!response.ok) {
@@ -40,227 +56,214 @@ const parseResponse = async (response) => {
 export const api = {
   // Authentication methods
   login: async (credentials) => {
-    const response = await fetch(`${API_BASE_URL}/login`, {
+    return request(`${API_BASE_URL}/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(credentials)
     });
-    return parseResponse(response);
   },
 
   register: async (userData) => {
-    const response = await fetch(`${API_BASE_URL}/register`, {
+    return request(`${API_BASE_URL}/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userData)
     });
-    return parseResponse(response);
   },
 
   logout: async () => {
-    const response = await fetch(`${API_BASE_URL}/logout`, {
+    return request(`${API_BASE_URL}/logout`, {
       method: "POST",
       headers: getAuthHeaders()
     });
-    return parseResponse(response);
   },
 
   getUser: async () => {
-    const response = await fetch(`${API_BASE_URL}/user`, {
+    return request(`${API_BASE_URL}/user`, {
       method: "GET",
       headers: getAuthHeaders()
     });
-    return parseResponse(response);
   },
 
   getProfile: async () => {
-    const response = await fetch(`${API_BASE_URL}/profile`, {
+    return request(`${API_BASE_URL}/profile`, {
       method: "GET",
       headers: getAuthHeaders()
     });
-    return parseResponse(response);
   },
 
   updateUser: async (userData) => {
-    const response = await fetch(`${API_BASE_URL}/user`, {
+    return request(`${API_BASE_URL}/user`, {
       method: "PUT",
       headers: getAuthHeaders(),
       body: JSON.stringify(userData)
     });
-    return parseResponse(response);
   },
 
   dashboard: async () => {
-    const response = await fetch(`${API_BASE_URL}/dashboard`, {
+    return request(`${API_BASE_URL}/dashboard`, {
       method: "GET",
       headers: getAuthHeaders()
     });
-    return parseResponse(response);
   },
 
   facturesAll: async () => {
-    const response = await fetch(`${API_BASE_URL}/factures`, {
+    return request(`${API_BASE_URL}/factures`, {
       method: "GET",
       headers: getAuthHeaders()
     });
-    return parseResponse(response);
   },
 
   getFactureById: async (id) => {
-    const response = await fetch(`${API_BASE_URL}/factures/${id}`, {
+    return request(`${API_BASE_URL}/factures/${id}`, {
       method: "GET",
       headers: getAuthHeaders()
     });
-    return parseResponse(response);
   },
 
   facturesRecent: async () => {
-    const response = await fetch(`${API_BASE_URL}/factures/recent`, {
+    return request(`${API_BASE_URL}/factures/recent`, {
       method: "GET",
       headers: getAuthHeaders()
     });
-    return parseResponse(response);
   },
 
   facturesUnseen: async () => {
-    const response = await fetch(`${API_BASE_URL}/factures/unseen`, {
+    return request(`${API_BASE_URL}/factures/unseen`, {
       method: "GET",
       headers: getAuthHeaders()
     });
-    return parseResponse(response);
   },
 
   activities: async () => {
-    const response = await fetch(`${API_BASE_URL}/activities`, {
+    return request(`${API_BASE_URL}/activities`, {
       method: "GET",
       headers: getAuthHeaders()
     });
-    return parseResponse(response);
   },
 
   checkFactureByReference: async (reference) => {
-    const response = await fetch(`${API_BASE_URL}/factures/check/${reference}`, {
+    return request(`${API_BASE_URL}/factures/check/${reference}`, {
       method: "GET",
       headers: getAuthHeaders()
     });
-    return parseResponse(response);
   },
 
   contactSubmit: async (data) => {
-    const response = await fetch(`${API_BASE_URL}/contact`, {
+    return request(`${API_BASE_URL}/contact`, {
       method: "POST",
       headers: getAuthHeaders(),
       body: JSON.stringify(data)
     });
-    return parseResponse(response);
   },
 
   paiementSubmit: async (data) => {
-    const response = await fetch(`${API_BASE_URL}/paiements`, {
+    return request(`${API_BASE_URL}/paiements`, {
       method: "POST",
       headers: getAuthHeaders(),
       body: JSON.stringify(data)
     });
-    return parseResponse(response);
   },
 
   paiementsAll: async () => {
-    const response = await fetch(`${API_BASE_URL}/paiements`, {
+    return request(`${API_BASE_URL}/paiements`, {
       method: "GET",
       headers: getAuthHeaders()
     });
-    return parseResponse(response);
   },
 
   adminPaiementsAll: async () => {
-    const response = await fetch(`${API_BASE_URL}/admin/paiements`, {
+    return request(`${API_BASE_URL}/admin/paiements`, {
       method: "GET",
       headers: getAuthHeaders()
     });
-    return parseResponse(response);
   },
 
   adminAcceptPaiement: async (id) => {
-    const response = await fetch(`${API_BASE_URL}/admin/paiements/${id}/accept`, {
+    return request(`${API_BASE_URL}/admin/paiements/${id}/accept`, {
       method: "PUT",
       headers: getAuthHeaders()
     });
-    return parseResponse(response);
   },
 
   adminRejectPaiement: async (id) => {
-    const response = await fetch(`${API_BASE_URL}/admin/paiements/${id}/reject`, {
+    return request(`${API_BASE_URL}/admin/paiements/${id}/reject`, {
       method: "PUT",
       headers: getAuthHeaders()
     });
-    return parseResponse(response);
   },
 
   updateProfile: async (profileData) => {
-    const response = await fetch(`${API_BASE_URL}/profile`, {
+    return request(`${API_BASE_URL}/profile`, {
       method: "PUT",
       headers: getAuthHeaders(),
       body: JSON.stringify(profileData)
     });
-    return parseResponse(response);
   },
 
   updatePassword: async (passwordData) => {
-    const response = await fetch(`${API_BASE_URL}/profile/password`, {
+    return request(`${API_BASE_URL}/profile/password`, {
       method: "PUT",
       headers: getAuthHeaders(),
       body: JSON.stringify(passwordData)
     });
-    return parseResponse(response);
   },
 
   adminFacturesAll: async () => {
-    const response = await fetch(`${API_BASE_URL}/admin/factures`, {
+    return request(`${API_BASE_URL}/admin/factures`, {
       method: "GET",
       headers: getAuthHeaders()
     });
-    return parseResponse(response);
   },
 
   adminCreateFacture: async (factureData) => {
-    const response = await fetch(`${API_BASE_URL}/admin/factures`, {
+    return request(`${API_BASE_URL}/admin/factures`, {
       method: "POST",
       headers: getAuthHeaders(),
       body: JSON.stringify(factureData)
     });
-    return parseResponse(response);
   },
 
   adminValidateFacture: async (id) => {
-    const response = await fetch(`${API_BASE_URL}/admin/factures/${id}/validate`, {
+    return request(`${API_BASE_URL}/admin/factures/${id}/validate`, {
       method: "PUT",
       headers: getAuthHeaders()
     });
-    return parseResponse(response);
   },
 
   adminGetClientById: async (id) => {
-    const response = await fetch(`${API_BASE_URL}/admin/users/${id}`, {
+    return request(`${API_BASE_URL}/admin/users/${id}`, {
       method: "GET",
       headers: getAuthHeaders()
     });
-    return parseResponse(response);
   },
 
   adminMessagesAll: async () => {
-    const response = await fetch(`${API_BASE_URL}/admin/messages`, {
+    return request(`${API_BASE_URL}/admin/messages`, {
       method: "GET",
       headers: getAuthHeaders()
     });
-    return parseResponse(response);
+  },
+
+  adminDashboard: async () => {
+    return request(`${API_BASE_URL}/admin/dashboard`, {
+      method: "GET",
+      headers: getAuthHeaders(),
+    });
+  },
+
+  adminUsersAll: async () => {
+    return request(`${API_BASE_URL}/admin/users?role=client`, {
+      method: "GET",
+      headers: getAuthHeaders(),
+    });
   },
 
   adminReplyToMessage: async (id, reply) => {
-    const response = await fetch(`${API_BASE_URL}/admin/messages/${id}/reply`, {
+    return request(`${API_BASE_URL}/admin/messages/${id}/reply`, {
       method: "POST",
       headers: getAuthHeaders(),
       body: JSON.stringify({ reply })
     });
-    return parseResponse(response);
   }
 };
