@@ -30,21 +30,40 @@ function Home() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [stats, setStats] = useState(EMPTY_STATS);
-  const [recentFactures, setRecentFactures] = useState([]);
+  const [recentActivities, setRecentActivities] = useState([]);
+  const [newInvoices, setNewInvoices] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [dashboardData, allFacturesData, recentData] = await Promise.all([
+        const [dashboardResult, allFacturesResult, activitiesResult, unseenFacturesResult] = await Promise.allSettled([
           api.dashboard(),
           api.facturesAll(),
-          api.facturesRecent(),
+          api.activities(),
+          api.facturesUnseen(),
         ]);
+
+        const dashboardData = dashboardResult.status === "fulfilled" ? dashboardResult.value : null;
+        const allFacturesData = allFacturesResult.status === "fulfilled" ? allFacturesResult.value : null;
+        const activitiesData = activitiesResult.status === "fulfilled" ? activitiesResult.value : null;
+        const unseenFacturesData = unseenFacturesResult.status === "fulfilled" ? unseenFacturesResult.value : null;
+
+        const authError = [dashboardResult, allFacturesResult, activitiesResult, unseenFacturesResult]
+          .filter((result) => result.status === "rejected")
+          .map((result) => result.reason)
+          .find((reason) => reason?.status === 401 || reason?.response?.status === 401 || reason?.isUnauthorized);
+
+        if (authError) {
+          clearAuthSession();
+          navigate("/login", { replace: true });
+          return;
+        }
 
         const dashboardPayload = dashboardData?.data || {};
         const allFactures = Array.isArray(allFacturesData?.data) ? allFacturesData.data : [];
-        const recentFacturesData = Array.isArray(recentData?.data) ? recentData.data : [];
+        const recentActivitiesData = Array.isArray(activitiesData?.data) ? activitiesData.data : [];
+        const unseenInvoicesData = Array.isArray(unseenFacturesData?.data) ? unseenFacturesData.data : [];
 
         if (dashboardPayload.user) {
           setUser(dashboardPayload.user);
@@ -52,21 +71,25 @@ function Home() {
 
         setStats(buildStatsFromFactures(allFactures));
 
-        const formattedRecentFactures = recentFacturesData.map((facture) => ({
+        const formattedRecentActivities = recentActivitiesData
+          .filter((activity) => activity?.invoice)
+          .map((activity) => ({
+            id: activity.id,
+            title: `Facture ${activity.invoice.reference}`,
+            status: formatStatus(activity.invoice.status),
+            amount: `${activity.invoice.prix} DH`,
+          }));
+
+        setRecentActivities(formattedRecentActivities);
+
+        const formattedNewInvoices = unseenInvoicesData.map((facture) => ({
           id: facture.id,
           title: `Facture ${facture.reference}`,
           status: formatStatus(facture.status),
           amount: `${facture.prix} DH`,
         }));
-        setRecentFactures(formattedRecentFactures);
-      } catch (error) {
-        console.error("Error fetching data:", error);
 
-        if (error?.status === 401 || error?.response?.status === 401 || error?.isUnauthorized) {
-          clearAuthSession();
-          navigate("/login", { replace: true });
-          return;
-        }
+        setNewInvoices(formattedNewInvoices);
       } finally {
         setLoading(false);
       }
@@ -96,7 +119,8 @@ function Home() {
   }
 
   const total = stats.payees + stats.non_payees + stats.en_attente;
-  const hasRecentFactures = recentFactures.length > 0;
+  const hasRecentActivities = recentActivities.length > 0;
+  const hasNewInvoices = newInvoices.length > 0;
 
   return (
     <Container className="home-container">
@@ -139,17 +163,17 @@ function Home() {
 
       <h4 className="recent-title mb-3">{t("home.recentInvoices")}</h4>
       <Row className="recent-row">
-        {hasRecentFactures ? (
-          recentFactures.map((facture) => (
-            <Col md={4} key={facture.id} className="mb-3">
+        {hasRecentActivities ? (
+          recentActivities.map((activity) => (
+            <Col md={4} key={activity.id} className="mb-3">
               <Card className="recent-card">
                 <Card.Body>
-                  <h6>{facture.title}</h6>
+                  <h6>{activity.title}</h6>
                   <p>
-                    {t("home.status")} {facture.status}
+                    {t("home.status")} {activity.status}
                   </p>
                   <p>
-                    {t("home.amount")} {facture.amount}
+                    {t("home.amount")} {activity.amount}
                   </p>
                 </Card.Body>
               </Card>
@@ -157,7 +181,32 @@ function Home() {
           ))
         ) : (
           <Col xs={12}>
-            <div className="empty-state-message">{t("home.noInvoices")}</div>
+            <div className="empty-state-message">{t("home.noActivities")}</div>
+          </Col>
+        )}
+      </Row>
+
+      <h4 className="recent-title mb-3">{t("home.newInvoices")}</h4>
+      <Row className="recent-row">
+        {hasNewInvoices ? (
+          newInvoices.map((invoice) => (
+            <Col md={4} key={invoice.id} className="mb-3">
+              <Card className="recent-card">
+                <Card.Body>
+                  <h6>{invoice.title}</h6>
+                  <p>
+                    {t("home.status")} {invoice.status}
+                  </p>
+                  <p>
+                    {t("home.amount")} {invoice.amount}
+                  </p>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))
+        ) : (
+          <Col xs={12}>
+            <div className="empty-state-message">{t("home.noNewInvoices")}</div>
           </Col>
         )}
       </Row>

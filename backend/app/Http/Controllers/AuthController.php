@@ -44,6 +44,7 @@ class AuthController extends Controller
             $user->nom = $data['nom'];
             $user->email = $data['email'];
             $user->password = Hash::make($data['password']);
+            $user->role = 'client';
 
             if (! $user->save() || ! $user->id) {
                 Log::error('Register failed: user was not persisted', [
@@ -61,7 +62,7 @@ class AuthController extends Controller
 
             return response()->json([
                 'status' => true,
-                'user' => $user,
+                'user' => $user->fresh(),
                 'token' => $token
             ]);
 

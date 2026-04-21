@@ -1,6 +1,6 @@
 /* Navbar fond rouge RAM */
 .navbar-ram {
-  background-color: #d9d6d6; /* rouge RAM */
+  background-color: #d9d6d6 !important; /* rouge RAM */
   padding: 0.5rem 1rem;
 }
 
@@ -27,13 +27,14 @@
 /* Bouton logout rouge RAM */
 .logout-btn {
   background-color: #c20831 !important;
-  color: white ;
+  color: white !important;
   font-weight: bold ;
   border: 1px solid #c20831 !important;
 }
 
 .logout-btn:hover {
   background-color:rgb(79, 78, 78)  !important;
+  color: white !important;
   border: 1px solid rgb(79, 78, 78) !important;
 }
 

@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\ContactMessage;
 use App\Models\Facture;
+use App\Models\Activity;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -47,6 +48,11 @@ class User extends Authenticatable
     public function factures(): HasMany
     {
         return $this->hasMany(Facture::class);
+    }
+
+    public function activities(): HasMany
+    {
+        return $this->hasMany(Activity::class);
     }
 
     public function contactMessages(): HasMany

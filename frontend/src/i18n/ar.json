@@ -116,9 +116,12 @@
   "home.unpaid": "غير مدفوعة",
   "home.pending": "قيد الانتظار",
   "home.recentInvoices": "الفواتير الأخيرة",
+  "home.newInvoices": "الفواتير الجديدة",
   "home.status": "الحالة:",
   "home.amount": "المبلغ:",
   "home.noInvoices": "ليس لديك فواتير حتى الآن.",
+  "home.noActivities": "ليس لديك أي نشاط حديث حتى الآن.",
+  "home.noNewInvoices": "ليس لديك أي فواتير جديدة حالياً.",
 
   "mesFactures.title": "فواتيري",
   "mesFactures.filterByStatus": "تصفية حسب الحالة:",
@@ -130,6 +133,7 @@
   "mesFactures.status": "الحالة",
   "mesFactures.action": "الإجراء",
   "mesFactures.view": "عرض",
+  "mesFactures.unseen": "غير مُشاهدة بعد",
   "mesFactures.noInvoices": "ليس لديك أي فواتير في الوقت الحالي.",
 
   "facturepdf.loading": "جاري التحميل...",
@@ -152,6 +156,7 @@
 
   "paiement.title": "الدفع",
   "paiement.paymentSuccess": "تم الدفع بنجاح 💳",
+  "paiement.paymentRequestSuccess": "تم إرسال طلب الدفع بنجاح. في انتظار التحقق.",
   "paiement.checkingInvoice": "جاري التحقق من الفاتورة...",
   "paiement.alreadyPaid": "هذه الفاتورة مدفوعة بالفعل",
   "paiement.pendingValidation": "هذه الفاتورة قيد الانتظار للتحقق",

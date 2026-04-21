@@ -21,9 +21,12 @@ class AdminFactureController extends Controller
     {
         $data = $request->validate([
             'date' => 'required|date',
-            'prix' => 'required|numeric|min:0',
+            'prix' => 'nullable|numeric|min:0',
             'user_id' => 'nullable|integer|exists:users,id',
             'client_email' => 'nullable|email|exists:users,email',
+            'descriptions' => 'nullable|array|min:1',
+            'descriptions.*.description' => 'required|string',
+            'descriptions.*.price' => 'required|numeric|min:0',
         ]);
 
         if (empty($data['user_id']) && empty($data['client_email'])) {
@@ -47,10 +50,36 @@ class AdminFactureController extends Controller
             ], 422);
         }
 
+        $lineItems = collect($data['descriptions'] ?? [])
+            ->map(fn (array $item) => [
+                'description' => trim((string) $item['description']),
+                'price' => round((float) $item['price'], 2),
+            ])
+            ->filter(fn (array $item) => $item['description'] !== '')
+            ->values();
+
+        if ($lineItems->isEmpty() && array_key_exists('prix', $data) && $data['prix'] !== null) {
+            $lineItems = collect([[
+                'description' => "Billet d'avion",
+                'price' => round((float) $data['prix'], 2),
+            ]]);
+        }
+
+        if ($lineItems->isEmpty()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'At least one invoice item is required.',
+            ], 422);
+        }
+
+        $total = round($lineItems->sum('price'), 2);
+
         $facture = Facture::create([
             'user_id' => $client->id,
+            'is_admin_created' => true,
             'date' => $data['date'],
-            'prix' => $data['prix'],
+            'prix' => $total,
+            'items' => $lineItems->all(),
             'status' => Facture::STATUS_UNPAID,
         ]);
 

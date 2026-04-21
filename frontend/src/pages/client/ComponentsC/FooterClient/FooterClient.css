@@ -1,6 +1,6 @@
 .footer {
-  background-color: #d9d6d6;
-  color: rgb(79, 78, 78);
+  background-color: #d9d6d6 !important;
+  color: rgb(79, 78, 78) !important;
   padding: 30px 60px;
   font-family: Arial, sans-serif;
 }
@@ -21,10 +21,10 @@
 }
 
 .footer-search input {
-  background: transparent;
+  background: transparent !important;
   border: 1px solid #555;
   padding: 10px 15px;
-  color: rgb(79, 78, 78);
+  color: rgb(79, 78, 78) !important;
   border-radius: 5px;
   width: 250px;
 }
@@ -42,7 +42,7 @@
 
 .payments img {
   width: 50px;
-  background: white;
+  background: white !important;
   padding: 5px;
   border-radius: 5px;
 }
@@ -61,7 +61,7 @@
 }
 
 .footer-left a {
-  color: rgb(79, 78, 78);
+  color: rgb(79, 78, 78) !important;
   text-decoration: none;
   font-size: 14px;
 }
@@ -92,6 +92,8 @@
   display: block;
   width: 1em;
   height: 1em;
+  color: currentColor !important;
+  fill: currentColor !important;
   cursor: pointer;
 }
 
@@ -113,5 +115,5 @@
 
 .copyright {
   font-size: 12px;
-  color: #aaa;
+  color: #aaa !important;
 }

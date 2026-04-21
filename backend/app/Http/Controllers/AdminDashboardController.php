@@ -21,7 +21,7 @@ class AdminDashboardController extends Controller
         $clientsCount = User::where('role', 'client')->count();
 
         // 2. Number of unread messages
-        $unreadMessagesCount = ContactMessage::where('status', 'unread')->count();
+        $unreadMessagesCount = ContactMessage::pendingResponse()->count();
 
         // 3. Number of pending factures
         $pendingFacturesCount = Facture::where('status', Facture::STATUS_PENDING)->count();

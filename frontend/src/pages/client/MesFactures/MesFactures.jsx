@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Container, Row, Col, Card, Table, Button, Dropdown, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../../services/api";
+import { clearAuthSession } from "../../../utils/auth";
 import { getTranslatedInvoiceStatus, normalizeInvoiceStatus } from "../../../utils/invoiceStatus";
 import "./MesFactures.css";
 
@@ -13,27 +14,52 @@ function MesFactures() {
   const [viewMode, setViewMode] = useState("table"); // table or cards
   const [filterStatus, setFilterStatus] = useState("Tout"); // Tout, Payée, Non payée, En attente
   const [loading, setLoading] = useState(true);
+  const [navigatingInvoiceId, setNavigatingInvoiceId] = useState(null);
 
   useEffect(() => {
     const fetchFactures = async () => {
       try {
-        const data = await api.facturesAll();
-        if (data.status && data.data) {
-          const formatted = data.data.map(f => ({
+        const [facturesResult, activitiesResult] = await Promise.allSettled([
+          api.facturesAll(),
+          api.facturesUnseen(),
+        ]);
+
+        const authError = [facturesResult, activitiesResult]
+          .filter((result) => result.status === "rejected")
+          .map((result) => result.reason)
+          .find((reason) => reason?.status === 401 || reason?.response?.status === 401 || reason?.isUnauthorized);
+
+        if (authError) {
+          clearAuthSession();
+          navigate("/login", { replace: true });
+          return;
+        }
+
+        const facturesResponse = facturesResult.status === "fulfilled" ? facturesResult.value : null;
+        const activitiesResponse = activitiesResult.status === "fulfilled" ? activitiesResult.value : null;
+
+        const unseenInvoiceIds = new Set(
+          Array.isArray(activitiesResponse?.data)
+            ? activitiesResponse.data
+                .map((facture) => facture.id)
+            : []
+        );
+
+        if (facturesResponse.status && facturesResponse.data) {
+          const formatted = facturesResponse.data.map(f => ({
             ...f,
-            prix: `${f.prix} DH`
+            prix: `${f.prix} DH`,
+            isUnseen: unseenInvoiceIds.has(f.id),
           }));
           setFacturesData(formatted);
         }
-      } catch (error) {
-        console.error("Error fetching factures:", error);
       } finally {
         setLoading(false);
       }
     };
 
     fetchFactures();
-  }, []); // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigate]);
 
   const getTranslatedStatus = (status) => getTranslatedInvoiceStatus(status, t);
 
@@ -42,6 +68,15 @@ function MesFactures() {
   );
 
   const hasFactures = filteredFactures.length > 0;
+
+  const handleViewInvoice = (invoiceId) => {
+    if (navigatingInvoiceId !== null) {
+      return;
+    }
+
+    setNavigatingInvoiceId(invoiceId);
+    navigate(`/invoice/${invoiceId}`);
+  };
 
   return (
     <Container className="mes-factures-container mt-4">
@@ -111,9 +146,17 @@ function MesFactures() {
                   <td>{f.prix}</td>
                   <td>{getTranslatedStatus(f.status)}</td>
                   <td>
-                    <Button size="sm" className="btn-voir" onClick={() => navigate(`/invoice/${f.id}`)}>
-                      {t("mesFactures.view")}
-                    </Button>
+                    <div className="facture-action">
+                      <Button
+                        size="sm"
+                        className="btn-voir"
+                        onClick={() => handleViewInvoice(f.id)}
+                        disabled={navigatingInvoiceId !== null}
+                      >
+                        {t("mesFactures.view")}
+                      </Button>
+                      {f.isUnseen && <span className="unseen-indicator-dot" aria-hidden="true" />}
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -142,9 +185,17 @@ function MesFactures() {
                     <Card.Text>{t("mesFactures.date")}: {f.date}</Card.Text>
                     <Card.Text>{t("mesFactures.price")}: {f.prix}</Card.Text>
                     <Card.Text>{t("mesFactures.status")}: {getTranslatedStatus(f.status)}</Card.Text>
-                    <Button size="sm" className="btn-voir" onClick={() => navigate(`/invoice/${f.id}`)}>
-                      {t("mesFactures.view")}
-                    </Button>
+                    <div className="facture-action">
+                      <Button
+                        size="sm"
+                        className="btn-voir"
+                        onClick={() => handleViewInvoice(f.id)}
+                        disabled={navigatingInvoiceId !== null}
+                      >
+                        {t("mesFactures.view")}
+                      </Button>
+                      {f.isUnseen && <span className="unseen-indicator-dot" aria-hidden="true" />}
+                    </div>
                   </Card.Body>
                 </Card>
               </Col>

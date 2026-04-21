@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   FaFacebookF,
   FaInstagram,
@@ -10,11 +11,13 @@ import { FaXTwitter } from "react-icons/fa6";
 import "./FooterClient.css";
 
 function Footer() {
+  const { t } = useTranslation();
+
   return (
     <footer className="footer">
       <div className="footer-middle">
         <h5>
-          <p>Payment methods</p>
+          <p>{t("footer.paymentMethods")}</p>
         </h5>
         <div className="payments">
           <img
@@ -40,7 +43,7 @@ function Footer() {
         <br />
         <div className="footer-right">
           <h5>
-            <p>Follow us on</p>
+            <p>{t("footer.followUs")}</p>
           </h5>
 
           <div className="socials">
@@ -105,7 +108,7 @@ function Footer() {
             </a>
           </div>
 
-          <p className="copyright">Ã‚Â© 2025 Royal Air Maroc. Tous les droits rÃƒÂ©servÃƒÂ©s</p>
+          <p className="copyright">{t("footer.copyright")}</p>
         </div>
       </div>
     </footer>

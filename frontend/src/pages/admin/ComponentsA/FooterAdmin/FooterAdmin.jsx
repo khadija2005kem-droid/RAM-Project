@@ -5,7 +5,7 @@ function Footer() {
   return (
     <footer className="footer-admin">
       <p className="footer-admin-text">
-        Â© 2025 Royal Air Maroc. Tous les droits rÃ©servÃ©s
+        © 2025 Royal Air Maroc. Tous les droits réservés
       </p>
     </footer>
   );

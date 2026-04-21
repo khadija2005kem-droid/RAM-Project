@@ -1,3 +1,9 @@
+:root {
+  --ram-red: #c20831;
+  --ram-red-dark: #a00629;
+  --ram-red-soft: rgba(194, 8, 49, 0.12);
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -10,4 +16,16 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.ram-red-text {
+  color: var(--ram-red) !important;
+}
+
+.ram-red-bg {
+  background-color: var(--ram-red) !important;
+}
+
+.ram-red-border {
+  border-color: var(--ram-red) !important;
 }

@@ -4,7 +4,7 @@ import { Form, Button, Card, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 import { api } from "../../../services/api";
-import { setAuthSession } from "../../../utils/auth";
+import { normalizeRole, setAuthSession } from "../../../utils/auth";
 import LanguageSwitcher from "../LanguageSwitcher/LanguageSwitcher";
 import "./Signup.css";
 
@@ -74,9 +74,11 @@ function Signup() {
       });
 
       if (data && data.token) {
+        const normalizedRole = normalizeRole(data?.user?.role || data?.role || "client");
+
         setAuthSession({
           token: data.token,
-          user: data.user || null,
+          user: data.user ? { ...data.user, role: normalizedRole || "client" } : { role: "client" },
         });
         navigate("/home", { replace: true });
         return;

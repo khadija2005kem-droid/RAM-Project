@@ -116,9 +116,12 @@
   "home.unpaid": "Unpaid",
   "home.pending": "Pending",
   "home.recentInvoices": "Recent Invoices",
+  "home.newInvoices": "New Invoices",
   "home.status": "Status:",
   "home.amount": "Amount:",
   "home.noInvoices": "You don't have any invoices yet.",
+  "home.noActivities": "You have no recent activity yet.",
+  "home.noNewInvoices": "You have no new invoices right now.",
 
   "mesFactures.title": "My Invoices",
   "mesFactures.filterByStatus": "Filter by status:",
@@ -130,6 +133,7 @@
   "mesFactures.status": "Status",
   "mesFactures.action": "Action",
   "mesFactures.view": "View",
+  "mesFactures.unseen": "Not seen yet",
   "mesFactures.noInvoices": "You have no invoices at the moment.",
 
   "facturepdf.loading": "Loading...",
@@ -152,6 +156,7 @@
 
   "paiement.title": "Payment",
   "paiement.paymentSuccess": "Payment completed successfully 💳",
+  "paiement.paymentRequestSuccess": "Payment request sent successfully. Awaiting validation.",
   "paiement.checkingInvoice": "Checking invoice...",
   "paiement.alreadyPaid": "This invoice is already paid",
   "paiement.pendingValidation": "This invoice is pending validation",

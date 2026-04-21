@@ -77,8 +77,8 @@
   padding: 24px;
   border-radius: 12px;
   border: 1px dashed #d7dee7;
-  background: #f8fafc;
-  color: #5f6b7a;
+  background: #f8fafc !important;
+  color: #5f6b7a !important;
   font-size: 1rem;
   margin-bottom: 40px;
 }

@@ -66,7 +66,7 @@
   "landing.login": "Se connecter",
   "landing.signUp": "S'inscrire",
 
-  "login.title": "Connexion Client",
+  "login.title": "Connectez-vous",
   "login.email": "Email",
   "login.placeholderEmail": "Entrez votre email",
   "login.password": "Mot de passe",
@@ -116,9 +116,12 @@
   "home.unpaid": "Non payées",
   "home.pending": "En attente",
   "home.recentInvoices": "Dernières factures",
+  "home.newInvoices": "Nouvelles factures",
   "home.status": "Statut:",
   "home.amount": "Montant:",
   "home.noInvoices": "Vous n'avez pas encore de factures.",
+  "home.noActivities": "Vous n'avez pas encore d'activité récente.",
+  "home.noNewInvoices": "Vous n'avez pas de nouvelles factures pour le moment.",
 
   "mesFactures.title": "Mes Factures",
   "mesFactures.filterByStatus": "Filtrer par status :",
@@ -130,6 +133,7 @@
   "mesFactures.status": "Statut",
   "mesFactures.action": "Action",
   "mesFactures.view": "Voir",
+  "mesFactures.unseen": "Pas encore vue",
   "mesFactures.noInvoices": "Vous n'avez aucune facture pour le moment.",
 
   "facturepdf.loading": "Chargement...",
@@ -152,6 +156,7 @@
 
   "paiement.title": "Paiement",
   "paiement.paymentSuccess": "Paiement effectué avec succès 💳",
+  "paiement.paymentRequestSuccess": "Demande de paiement envoyée avec succès. En attente de validation.",
   "paiement.checkingInvoice": "Vérification de la facture...",
   "paiement.alreadyPaid": "Cette facture est déjà payée",
   "paiement.pendingValidation": "Cette facture est en attente de validation",

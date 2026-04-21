@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\FactureController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminFactureController;
+use App\Http\Controllers\AdminPaiementController;
 
 // Public auth routes
 Route::post('/register', [AuthController::class, 'register']);
@@ -31,10 +33,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('/activities', [ActivityController::class, 'index']);
 
     // Factures (Invoices)
     Route::get('/factures', [FactureController::class, 'index']);
     Route::get('/factures/recent', [FactureController::class, 'recent']);
+    Route::get('/factures/unseen', [FactureController::class, 'unseen']);
     Route::get('/factures/{id}', [FactureController::class, 'show']);
     Route::get('/factures/check/{reference}', [FactureController::class, 'checkByReference']);
     Route::post('/factures', [FactureController::class, 'store']);
@@ -50,11 +54,15 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/users', [AdminController::class, 'users']);
         Route::get('/users/{id}', [AdminController::class, 'userById'])->whereNumber('id');
         Route::get('/messages', [AdminController::class, 'messages']);
+        Route::post('/messages/{id}/reply', [AdminController::class, 'replyToMessage'])->whereNumber('id');
         Route::get('/factures', [AdminFactureController::class, 'index']);
         Route::post('/factures', [AdminFactureController::class, 'store']);
         Route::put('/factures/{id}/validate', [AdminFactureController::class, 'validatePayment']);
         Route::put('/factures/{id}/accept', [AdminFactureController::class, 'accept']);
         Route::put('/factures/{id}/reject', [AdminFactureController::class, 'reject']);
         Route::put('/factures/{id}/pending', [AdminFactureController::class, 'pending']);
+        Route::get('/paiements', [AdminPaiementController::class, 'index']);
+        Route::put('/paiements/{id}/accept', [AdminPaiementController::class, 'accept'])->whereNumber('id');
+        Route::put('/paiements/{id}/reject', [AdminPaiementController::class, 'reject'])->whereNumber('id');
     });
 });

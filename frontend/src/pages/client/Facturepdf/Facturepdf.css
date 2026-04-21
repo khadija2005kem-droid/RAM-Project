@@ -42,7 +42,7 @@
 
 /* Invoice Separator */
 .invoice-separator {
-  border: 2px solid #d32f2f;
+  border: 2px solid var(--ram-red);
   opacity: 0.3;
 }
 
@@ -56,19 +56,35 @@
 .table-header {
   background-color: #f8f9fa;
   font-weight: bold;
-  color: #d32f2f;
+  color: var(--ram-red) !important;
 }
 
 /* Total Section */
 .total-section {
-  border: 2px solid #d32f2f;
-  background-color: #fff5f5;
+  border: 2px solid var(--ram-red);
+  background-color: var(--ram-red-soft);
+  width: fit-content;
+  max-width: 100%;
+  margin-left: auto;
+}
+
+.total-section .d-flex {
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.total-section .ram-red-text {
+  flex: 0 1 auto;
+  max-width: 100%;
+  word-break: break-word;
 }
 
 /* Download Button */
 .download-btn {
-  background-color: #d32f2f;
-  border-color: #d32f2f;
+  background-color: var(--ram-red) !important;
+  border-color: var(--ram-red) !important;
+  color: #ffffff !important;
   padding: 0.75rem 2rem;
   font-size: 1.1rem;
   font-weight: 600;
@@ -76,16 +92,18 @@
 }
 
 .download-btn:hover {
-  background-color: #b71c1c;
-  border-color: #b71c1c;
+  background-color: var(--ram-red-dark) !important;
+  border-color: var(--ram-red-dark) !important;
+  color: #ffffff !important;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.3);
+  box-shadow: 0 4px 12px rgba(194, 8, 49, 0.3);
 }
 
 /* Payment Button */
 .payment-btn {
-  background-color: #28a745;
-  border-color: #28a745;
+  background-color: #28a745 !important;
+  border-color: #28a745 !important;
+  color: #ffffff !important;
   padding: 0.75rem 2rem;
   font-size: 1.1rem;
   font-weight: 600;
@@ -93,8 +111,9 @@
 }
 
 .payment-btn:hover {
-  background-color: #218838;
-  border-color: #218838;
+  background-color: #218838 !important;
+  border-color: #218838 !important;
+  color: #ffffff !important;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
 }
@@ -110,7 +129,7 @@
 }
 
 .status-section h5 {
-  color: #d32f2f;
+  color: var(--ram-red) !important;
   font-weight: 600;
 }
 
@@ -146,6 +165,8 @@
 
   .total-section {
     text-align: center;
+    width: 100%;
+    margin-left: 0;
   }
 
   .total-section .d-flex {
@@ -164,23 +185,224 @@
 
 /* Print Styles */
 @media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .invoice-print-root,
+  .invoice-print-root * {
+    visibility: visible;
+  }
+
+  .invoice-print-root {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+
   .invoice-page {
     background-color: white !important;
+    padding: 0 !important;
+    min-height: auto !important;
   }
 
-  .invoice-paper {
-    box-shadow: none !important;
-    border: 1px solid #ddd !important;
+  .invoice-print-sheet {
+    width: 100%;
+    min-height: 100vh;
+    background: white;
+    color: #1f1f1f;
+    padding: 16mm 14mm;
+    font-family: Arial, sans-serif;
   }
 
-  .download-btn,
-  .payment-btn,
-  .status-section {
+  .print-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 18mm;
+    padding-bottom: 8mm;
+    border-bottom: 1px solid #d9d9d9;
+  }
+
+  .print-brand {
+    display: flex;
+    align-items: center;
+    gap: 5mm;
+  }
+
+  .print-logo {
+    width: 18mm;
+    height: 18mm;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .print-logo img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+  }
+
+  .print-brand-name {
+    font-size: 16pt;
+    font-weight: 700;
+    color: #c20831;
+    line-height: 1.1;
+  }
+
+  .print-brand-subtitle {
+    font-size: 10pt;
+    color: #555;
+    margin-top: 1mm;
+  }
+
+  .print-meta {
+    min-width: 60mm;
+    text-align: right;
+  }
+
+  .print-meta-title {
+    font-size: 14pt;
+    font-weight: 700;
+    color: #c20831;
+    margin-bottom: 4mm;
+  }
+
+  .print-meta-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 6mm;
+    font-size: 10pt;
+    margin-bottom: 2mm;
+  }
+
+  .print-section {
+    margin-top: 8mm;
+  }
+
+  .print-section-title {
+    font-size: 9pt;
+    font-weight: 700;
+    color: #c20831;
+    margin-bottom: 3mm;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .print-client-box {
+    border: 1px solid #dfdfdf;
+    padding: 4mm;
+  }
+
+  .print-client-box p {
+    margin: 0 0 1.5mm;
+    font-size: 10pt;
+  }
+
+  .print-client-box p:last-child {
+    margin-bottom: 0;
+  }
+
+  .print-items {
+    border: 1px solid #dfdfdf;
+  }
+
+  .print-items-head,
+  .print-item-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 34mm;
+    gap: 6mm;
+    padding: 3.5mm 4mm;
+  }
+
+  .print-items-head {
+    background: #f5f5f5;
+    font-size: 9pt;
+    font-weight: 700;
+    color: #c20831;
+    border-bottom: 1px solid #dfdfdf;
+  }
+
+  .print-item-row {
+    font-size: 10pt;
+    border-bottom: 1px solid #ececec;
+  }
+
+  .print-item-row:last-child {
+    border-bottom: none;
+  }
+
+  .print-item-description {
+    min-width: 0;
+    word-break: break-word;
+  }
+
+  .print-amount-cell {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .print-total-wrap {
+    margin-top: 8mm;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .print-total-box {
+    width: fit-content;
+    min-width: 58mm;
+    max-width: 100%;
+    border: 1px solid #c20831;
+    padding: 4mm 5mm;
+    display: flex;
+    justify-content: space-between;
+    gap: 6mm;
+    align-items: center;
+    background: #faf7f8;
+    flex-wrap: wrap;
+  }
+
+  .print-total-box span,
+  .print-total-box strong {
+    font-size: 10.5pt;
+  }
+
+  .print-total-box strong {
+    flex: 0 1 auto;
+    max-width: 100%;
+    text-align: right;
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  .print-note {
+    margin-top: 10mm;
+    padding-top: 5mm;
+    border-top: 1px solid #e5e5e5;
+    text-align: center;
+  }
+
+  .print-note p {
+    margin: 0;
+    font-size: 9pt;
+    color: #777;
+    font-weight: 400;
+  }
+
+  .invoice-container,
+  .navbar-ram,
+  .footer,
+  .footer-admin,
+  .navbar-admin {
     display: none !important;
   }
 }
 
-
+.invoice-print-root {
+  display: none;
+}
 
 /* Invoice table background fix */
 .invoice-table {
@@ -213,10 +435,6 @@
   border-color: #e0e0e0;
 }
 
-
-
-
-
 .invoice-table .table-header {
   background-color: #e9ecef;
   font-weight: 600;
@@ -234,7 +452,7 @@
 
 .invoice-table .table-row,
 .invoice-table .table-header {
-  color: #000000;
+  color: #000000 !important;
 }
 
 /* ==================== RTL ADJUSTMENTS ==================== */

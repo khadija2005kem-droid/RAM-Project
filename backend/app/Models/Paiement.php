@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Paiement extends Model
 {
+    public const STATUS_EN_ATTENTE = 'en_attente';
+    public const STATUS_ACCEPTED = 'accepted';
+    public const STATUS_REJECTED = 'rejected';
+
     protected $fillable = [
         'user_id',
         'facture_id',
@@ -32,5 +36,10 @@ class Paiement extends Model
     public function facture()
     {
         return $this->belongsTo(Facture::class);
+    }
+
+    public function scopePending($query)
+    {
+        return $query->where('status', self::STATUS_EN_ATTENTE);
     }
 }

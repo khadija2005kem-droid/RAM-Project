@@ -8,6 +8,8 @@ function GestionMessages() {
   const [searchTerm, setSearchTerm] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [replyError, setReplyError] = useState("");
+  const [sendingReply, setSendingReply] = useState(false);
+  const [replyDrafts, setReplyDrafts] = useState({});
 
   const fetchMessages = useCallback(async () => {
     try {
@@ -20,8 +22,7 @@ function GestionMessages() {
         email: msg.email || "",
         sujet: msg.sujet || "",
         message: msg.message || "",
-        reponse: "",
-        statut: msg.status === "unread" ? "Non répondu" : "Répondu",
+        status: msg.status || "non_repondu",
         date: msg.created_at ? new Date(msg.created_at).toLocaleDateString("fr-FR") : "",
       }));
 
@@ -40,13 +41,19 @@ function GestionMessages() {
 
   useEffect(() => {
     fetchMessages();
-
-    const intervalId = setInterval(() => {
-      fetchMessages();
-    }, 10000);
-
-    return () => clearInterval(intervalId);
   }, [fetchMessages]);
+
+  useEffect(() => {
+    if (!successMessage) {
+      return undefined;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setSuccessMessage("");
+    }, 3000);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [successMessage]);
 
   const filteredMessages = useMemo(() => {
     return messages.filter((msg) => {
@@ -74,21 +81,54 @@ function GestionMessages() {
     setReplyError("");
     setSuccessMessage("");
 
-    setMessages((prevMessages) =>
-      prevMessages.map((msg) => (msg.id === selectedMessageId ? { ...msg, reponse: value } : msg))
-    );
+    setReplyDrafts((prevDrafts) => ({
+      ...prevDrafts,
+      [selectedMessageId]: value,
+    }));
   };
 
-  const handleSendReply = () => {
-    if (!selectedMessage || selectedMessage.reponse.trim() === "") {
-      setReplyError("Veuillez écrire une réponse avant l’envoi.");
+  const handleSendReply = async () => {
+    const replyValue = (replyDrafts[selectedMessageId] || "").trim();
+
+    if (!selectedMessage || replyValue === "") {
+      setReplyError("Veuillez ecrire une reponse avant l'envoi.");
       setSuccessMessage("");
       return;
     }
 
-    setMessages((prevMessages) =>
-      prevMessages.map((msg) => (msg.id === selectedMessageId ? { ...msg, statut: "Répondu" } : msg))
-    );
+    setReplyError("");
+    setSuccessMessage("");
+    setSendingReply(true);
+
+    try {
+      const result = await api.adminReplyToMessage(selectedMessage.id, replyValue);
+
+      setSuccessMessage(result?.message || "Message sent successfully via email");
+
+      setMessages((prevMessages) =>
+        prevMessages.map((msg) =>
+          msg.id === selectedMessage.id ? { ...msg, status: "repondu" } : msg
+        )
+      );
+
+      setReplyDrafts((prevDrafts) => ({
+        ...prevDrafts,
+        [selectedMessageId]: "",
+      }));
+    } catch (error) {
+      console.log("Admin reply error:", error);
+      setReplyError(error?.message || "Une erreur est survenue lors de l'envoi.");
+    } finally {
+      setSendingReply(false);
+    }
+  };
+
+  const getStatusLabel = (status) => {
+    return status === "repondu" ? "Repondu" : "Non repondu";
+  };
+
+  const getStatusClassName = (status) => {
+    return status === "repondu" ? "mini-status replied" : "mini-status pending";
   };
 
   return (
@@ -98,7 +138,7 @@ function GestionMessages() {
 
         <div className="messages-layout">
           <div className="messages-list">
-            <h2 className="section-title">Boîte de réception</h2>
+            <h2 className="section-title">Boite de reception</h2>
 
             <div className="search-box">
               <input
@@ -122,8 +162,8 @@ function GestionMessages() {
                       {msg.nom} {msg.prenom}
                     </span>
 
-                    <span className={msg.statut === "Répondu" ? "mini-status replied" : "mini-status pending"}>
-                      {msg.statut}
+                    <span className={getStatusClassName(msg.status)}>
+                      {getStatusLabel(msg.status)}
                     </span>
                   </div>
 
@@ -132,12 +172,12 @@ function GestionMessages() {
                 </div>
               ))
             ) : (
-              <div className="empty-state">Aucun message trouvé.</div>
+              <div className="empty-state">Aucun message trouve.</div>
             )}
           </div>
 
           <div className="message-details">
-            <h2 className="section-title">Détails du message</h2>
+            <h2 className="section-title">Details du message</h2>
 
             {selectedMessage ? (
               <>
@@ -148,7 +188,7 @@ function GestionMessages() {
                   </div>
 
                   <div className="detail-row">
-                    <span className="detail-label">Prénom :</span>
+                    <span className="detail-label">Prenom :</span>
                     <span>{selectedMessage.prenom}</span>
                   </div>
 
@@ -174,12 +214,12 @@ function GestionMessages() {
                 </div>
 
                 <div className="reply-section">
-                  <label className="reply-label">Réponse de l’administrateur</label>
+                  <label className="reply-label">Reponse de l'administrateur</label>
 
                   <textarea
-                    value={selectedMessage.reponse}
+                    value={replyDrafts[selectedMessageId] || ""}
                     onChange={handleReplyChange}
-                    placeholder="Écrire une réponse..."
+                    placeholder="Ecrire une reponse..."
                     rows="6"
                     className="reply-textarea"
                   />
@@ -188,13 +228,13 @@ function GestionMessages() {
 
                   {successMessage && <div className="success-message">{successMessage}</div>}
 
-                  <button className="reply-btn" onClick={handleSendReply}>
-                    Envoyer la réponse
+                  <button className="reply-btn" onClick={handleSendReply} disabled={sendingReply}>
+                    {sendingReply ? "Envoi..." : "Envoyer la reponse"}
                   </button>
                 </div>
               </>
             ) : (
-              <div className="empty-state">Aucun message sélectionné.</div>
+              <div className="empty-state">Aucun message selectionne.</div>
             )}
           </div>
         </div>

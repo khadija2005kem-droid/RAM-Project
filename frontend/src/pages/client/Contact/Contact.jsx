@@ -100,7 +100,11 @@ function Contact() {
       // ✅ Success
       if (data.status || data.message) {
         setSubmitted(true);
-        setFormData({ nom: "", prenom: "", email: "", sujet: "", message: "" });
+        setFormData((prev) => ({
+          ...prev,
+          sujet: "",
+          message: ""
+        }));
         setFieldErrors({});
       }
 

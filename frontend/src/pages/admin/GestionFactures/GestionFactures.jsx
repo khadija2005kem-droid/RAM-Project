@@ -1,14 +1,13 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "../../../services/api";
-import { normalizeInvoiceStatus } from "../../../utils/invoiceStatus";
 import "./GestionFactures.css";
 
 function GestionFactures() {
-  const [factures, setFactures] = useState([]);
+  const [paiements, setPaiements] = useState([]);
   const [loading, setLoading] = useState(true);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [validatingIds, setValidatingIds] = useState([]);
+  const [processingIds, setProcessingIds] = useState([]);
   const messageTimeoutRef = useRef(null);
 
   const resetMessageTimer = useCallback((clearMessage) => {
@@ -22,62 +21,50 @@ function GestionFactures() {
     }, 4000);
   }, []);
 
-  const showSuccessMessage = useCallback(
-    (message) => {
-      setErrorMessage("");
-      setSuccessMessage(message);
-      resetMessageTimer(() => setSuccessMessage(""));
-    },
-    [resetMessageTimer]
-  );
+  const showSuccessMessage = useCallback((message) => {
+    setErrorMessage("");
+    setSuccessMessage(message);
+    resetMessageTimer(() => setSuccessMessage(""));
+  }, [resetMessageTimer]);
 
-  const showErrorMessage = useCallback(
-    (message) => {
-      setSuccessMessage("");
-      setErrorMessage(message);
-      resetMessageTimer(() => setErrorMessage(""));
-    },
-    [resetMessageTimer]
-  );
+  const showErrorMessage = useCallback((message) => {
+    setSuccessMessage("");
+    setErrorMessage(message);
+    resetMessageTimer(() => setErrorMessage(""));
+  }, [resetMessageTimer]);
 
-  const loadPendingFactures = useCallback(async () => {
-    const result = await api.adminFacturesAll();
+  const loadPendingPaiements = useCallback(async () => {
+    const result = await api.adminPaiementsAll();
 
-    const pendingFactures = (result?.data || [])
-      .map((facture) => {
-        const normalizedStatus = normalizeInvoiceStatus(facture.status);
+    const pendingPaiements = (result?.data || []).map((paiement) => ({
+      id: paiement.id,
+      factureId: paiement.facture_id,
+      nom: paiement.nom || paiement?.user?.nom || "",
+      prenom: paiement.prenom || paiement?.user?.prenom || "",
+      email: paiement.email || paiement?.user?.email || "",
+      reference: paiement.numero_facture || paiement?.facture?.reference || "",
+      montant: Number(paiement.montant) || 0,
+      statut: "En attente",
+    }));
 
-        return {
-          id: facture.id,
-          nom: facture?.user?.nom || "",
-          prenom: facture?.user?.prenom || "",
-          email: facture?.user?.email || "",
-          reference: facture.reference || "",
-          montant: Number(facture.prix) || 0,
-          normalizedStatus,
-          statut: "En attente",
-        };
-      })
-      .filter((facture) => facture.normalizedStatus === "pending");
-
-    setFactures(pendingFactures);
-    return pendingFactures;
+    setPaiements(pendingPaiements);
+    return pendingPaiements;
   }, []);
 
   useEffect(() => {
-    const fetchFactures = async () => {
+    const fetchPaiements = async () => {
       try {
-        await loadPendingFactures();
+        await loadPendingPaiements();
       } catch (error) {
-        console.log("Admin factures fetch error:", error);
-        showErrorMessage("Erreur lors du chargement des factures.");
+        console.log("Admin payments fetch error:", error);
+        showErrorMessage("Erreur lors du chargement des demandes de paiement.");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchFactures();
-  }, [loadPendingFactures, showErrorMessage]);
+    fetchPaiements();
+  }, [loadPendingPaiements, showErrorMessage]);
 
   useEffect(() => {
     return () => {
@@ -87,48 +74,31 @@ function GestionFactures() {
     };
   }, []);
 
-  const handleAccept = async (id) => {
-    if (validatingIds.includes(id)) return;
+  const handleAction = async (id) => {
+    if (processingIds.includes(id)) {
+      return;
+    }
 
     try {
       setSuccessMessage("");
       setErrorMessage("");
-      setValidatingIds((prev) => [...prev, id]);
+      setProcessingIds((prev) => [...prev, id]);
 
-      const latestPendingFactures = await loadPendingFactures();
-      const targetFacture = latestPendingFactures.find((facture) => facture.id === id);
+      await api.adminAcceptPaiement(id);
+      showSuccessMessage("Demande de paiement acceptee avec succes.");
 
-      if (!targetFacture || targetFacture.normalizedStatus !== "pending") {
-        showErrorMessage("Erreur lors de la validation du paiement.");
-        return;
-      }
-
-      const result = await api.adminValidateFacture(id);
-
-      if (result?.status) {
-        setFactures((prev) => prev.filter((facture) => facture.id !== id));
-        showSuccessMessage("Paiement validé avec succès.");
-      }
+      setPaiements((prev) => prev.filter((paiement) => paiement.id !== id));
     } catch (error) {
-      console.log("Admin facture validate error:", error);
-
-      if (error?.status === 422) {
-        try {
-          await loadPendingFactures();
-        } catch (refreshError) {
-          console.log("Admin factures refresh error:", refreshError);
-        }
-      }
-
-      showErrorMessage("Erreur lors de la validation du paiement.");
+      console.log("Admin payment accept error:", error);
+      showErrorMessage("Erreur lors du traitement de la demande de paiement.");
     } finally {
-      setValidatingIds((prev) => prev.filter((factureId) => factureId !== id));
+      setProcessingIds((prev) => prev.filter((paiementId) => paiementId !== id));
     }
   };
 
   return (
     <div className="factures-container">
-      <h1>Gestion des Factures</h1>
+      <h1>Demandes de paiement</h1>
 
       {successMessage && <div className="success-message">{successMessage}</div>}
       {errorMessage && <div className="error">{errorMessage}</div>}
@@ -138,9 +108,9 @@ function GestionFactures() {
           <tr>
             <th>ID</th>
             <th>Nom</th>
-            <th>Prénom</th>
+            <th>Prenom</th>
             <th>Email</th>
-            <th>Référence</th>
+            <th>Reference</th>
             <th>Montant (DH)</th>
             <th>Statut</th>
             <th>Action</th>
@@ -148,27 +118,27 @@ function GestionFactures() {
         </thead>
 
         <tbody>
-          {!loading && factures.length === 0 ? (
+          {!loading && paiements.length === 0 ? (
             <tr>
-              <td colSpan="8">Aucune facture à valider.</td>
+              <td colSpan="8">Aucune demande de paiement en attente.</td>
             </tr>
           ) : (
-            factures.map((facture) => (
-              <tr key={facture.id}>
-                <td>{facture.id}</td>
-                <td>{facture.nom}</td>
-                <td>{facture.prenom}</td>
-                <td>{facture.email}</td>
-                <td>{facture.reference}</td>
-                <td>{facture.montant}</td>
-                <td>{facture.statut}</td>
-                <td>
+            paiements.map((paiement) => (
+              <tr key={paiement.id}>
+                <td>{paiement.id}</td>
+                <td>{paiement.nom}</td>
+                <td>{paiement.prenom}</td>
+                <td>{paiement.email}</td>
+                <td>{paiement.reference}</td>
+                <td>{paiement.montant}</td>
+                <td>{paiement.statut}</td>
+                <td className="actions-cell">
                   <button
-                    className="btn-simple"
-                    onClick={() => handleAccept(facture.id)}
-                    disabled={validatingIds.includes(facture.id)}
+                    className="btn-simple btn-accept-action"
+                    onClick={() => handleAction(paiement.id)}
+                    disabled={processingIds.includes(paiement.id)}
                   >
-                    Valider le paiement
+                    Accepter
                   </button>
                 </td>
               </tr>

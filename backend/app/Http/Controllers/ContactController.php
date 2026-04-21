@@ -34,7 +34,7 @@ class ContactController extends Controller
             }
 
             $data['user_id'] = auth('sanctum')->id();
-            $data['status'] = 'unread';
+            $data['status'] = ContactMessage::STATUS_NON_REPONDU;
 
             ContactMessage::create($data);
 

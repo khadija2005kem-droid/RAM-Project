@@ -33,7 +33,7 @@
   border-radius: 16px;
   padding: 25px 20px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-  border-left: 5px solid #c8102e;
+  border-left: 5px solid var(--ram-red);
   transition: all 0.3s ease;
 }
 
@@ -52,7 +52,7 @@
 .card-value {
   font-size: 40px;
   font-weight: 700;
-  color: #c8102e;
+  color: var(--ram-red);
   margin: 0 0 15px 0;
 }
 

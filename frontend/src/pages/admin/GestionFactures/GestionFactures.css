@@ -37,15 +37,37 @@ h1 {
 
 .btn-simple {
   padding: 8px 12px;
-  border: rgb(79, 78, 78) !important;
+  border: none !important;
   background:rgb(79, 78, 78) !important;
   cursor: pointer;
-   color: white !important;
+  color: white !important;
+  margin: 0;
+  line-height: 1.2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
 }
 
 .btn-simple:hover {
   background-color: #c20831 !important ;
   border:#c20831 !important ;
+}
+
+.btn-accept-action {
+  background: var(--ram-red) !important;
+  border: var(--ram-red) !important;
+}
+
+.btn-accept-action:hover {
+  background: var(--ram-red-dark) !important;
+  border: var(--ram-red-dark) !important;
+}
+
+.actions-cell {
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
 }
 
 .filter-wrapper {

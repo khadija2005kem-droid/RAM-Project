@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Facture extends Model
 {
@@ -30,10 +31,16 @@ class Facture extends Model
 
     protected $fillable = [
         'user_id',
+        'is_admin_created',
         'reference',
         'date',
         'prix',
+        'items',
         'status',
+    ];
+
+    protected $casts = [
+        'items' => 'array',
     ];
 
     public static function generateReference()
@@ -70,6 +77,11 @@ class Facture extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function activities(): HasMany
+    {
+        return $this->hasMany(Activity::class, 'invoice_id');
     }
 
     public function markAsPending(): bool

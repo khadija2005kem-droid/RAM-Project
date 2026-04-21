@@ -15,7 +15,8 @@ function AjoutFacture() {
   const [successMessage, setSuccessMessage] = useState("");
   const [serverError, setServerError] = useState("");
   const [clientLookupError, setClientLookupError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const submissionLockRef = useRef(false);
   const messageTimeoutRef = useRef(null);
   const clientLookupTimeoutRef = useRef(null);
   const latestLookupIdRef = useRef(0);
@@ -107,11 +108,7 @@ function AjoutFacture() {
           return;
         }
 
-        if (error?.status === 404) {
-          setClientLookupError("Client introuvable");
-        } else {
-          setClientLookupError("Client introuvable");
-        }
+        setClientLookupError("Client introuvable");
       }
     }, 450);
 
@@ -175,27 +172,35 @@ function AjoutFacture() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (loading) return;
+    if (submissionLockRef.current) return;
 
     setSuccessMessage("");
     setServerError("");
 
     if (!validate()) return;
 
-    setLoading(true);
+    submissionLockRef.current = true;
+    setIsSubmitting(true);
 
     try {
       const today = new Date().toISOString().split("T")[0];
+      const descriptions = factures.map((facture) => ({
+        description: facture.description.trim(),
+        price: Number(facture.prix),
+      }));
 
-      await Promise.all(
-        factures.map((facture) =>
-          api.adminCreateFacture({
-            client_email: client.email.trim(),
-            date: today,
-            prix: Number(facture.prix),
-          })
-        )
-      );
+      const payload = {
+        date: today,
+        descriptions,
+      };
+
+      if (clientId.trim() && /^\d+$/.test(clientId.trim())) {
+        payload.user_id = Number(clientId.trim());
+      } else {
+        payload.client_email = client.email.trim();
+      }
+
+      await api.adminCreateFacture(payload);
 
       showSuccessMessage("Facture envoyée avec succès.");
       setClientId("");
@@ -207,7 +212,8 @@ function AjoutFacture() {
       console.error("Admin facture create error:", error);
       showErrorMessage(error?.body?.message || error?.message || "Erreur lors de la création de la facture.");
     } finally {
-      setLoading(false);
+      submissionLockRef.current = false;
+      setIsSubmitting(false);
     }
   };
 
@@ -279,8 +285,8 @@ function AjoutFacture() {
             <div className="section-top">
               <h2 className="section-heading">Détail de la facture</h2>
 
-              <button type="button" className="add-btn" onClick={ajouterFacture} disabled={loading}>
-                + Ajouter une facture
+              <button type="button" className="add-btn" onClick={ajouterFacture} disabled={isSubmitting}>
+                + Ajouter une autre description
               </button>
             </div>
 
@@ -307,6 +313,8 @@ function AjoutFacture() {
                   <div>
                     <input
                       type="number"
+                      step="0.01"
+                      min="0"
                       value={facture.prix}
                       onChange={(e) => handleFactureChange(facture.id, "prix", e.target.value)}
                     />
@@ -321,8 +329,13 @@ function AjoutFacture() {
                 {successMessage && <div className="success-message">{successMessage}</div>}
                 {serverError && <div className="error">{serverError}</div>}
 
-                <button type="submit" className="submit-btn" disabled={loading}>
-                  {loading ? "Envoi..." : "Envoyer"}
+                <button
+                  type="submit"
+                  className={`submit-btn${isSubmitting ? " is-submitting" : ""}`}
+                  disabled={isSubmitting}
+                  aria-disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Envoi..." : "Envoyer"}
                 </button>
               </div>
             </div>

@@ -122,6 +122,22 @@ export const api = {
     return parseResponse(response);
   },
 
+  facturesUnseen: async () => {
+    const response = await fetch(`${API_BASE_URL}/factures/unseen`, {
+      method: "GET",
+      headers: getAuthHeaders()
+    });
+    return parseResponse(response);
+  },
+
+  activities: async () => {
+    const response = await fetch(`${API_BASE_URL}/activities`, {
+      method: "GET",
+      headers: getAuthHeaders()
+    });
+    return parseResponse(response);
+  },
+
   checkFactureByReference: async (reference) => {
     const response = await fetch(`${API_BASE_URL}/factures/check/${reference}`, {
       method: "GET",
@@ -151,6 +167,30 @@ export const api = {
   paiementsAll: async () => {
     const response = await fetch(`${API_BASE_URL}/paiements`, {
       method: "GET",
+      headers: getAuthHeaders()
+    });
+    return parseResponse(response);
+  },
+
+  adminPaiementsAll: async () => {
+    const response = await fetch(`${API_BASE_URL}/admin/paiements`, {
+      method: "GET",
+      headers: getAuthHeaders()
+    });
+    return parseResponse(response);
+  },
+
+  adminAcceptPaiement: async (id) => {
+    const response = await fetch(`${API_BASE_URL}/admin/paiements/${id}/accept`, {
+      method: "PUT",
+      headers: getAuthHeaders()
+    });
+    return parseResponse(response);
+  },
+
+  adminRejectPaiement: async (id) => {
+    const response = await fetch(`${API_BASE_URL}/admin/paiements/${id}/reject`, {
+      method: "PUT",
       headers: getAuthHeaders()
     });
     return parseResponse(response);
@@ -211,6 +251,15 @@ export const api = {
     const response = await fetch(`${API_BASE_URL}/admin/messages`, {
       method: "GET",
       headers: getAuthHeaders()
+    });
+    return parseResponse(response);
+  },
+
+  adminReplyToMessage: async (id, reply) => {
+    const response = await fetch(`${API_BASE_URL}/admin/messages/${id}/reply`, {
+      method: "POST",
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ reply })
     });
     return parseResponse(response);
   }
