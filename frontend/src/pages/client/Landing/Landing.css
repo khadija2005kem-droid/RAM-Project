@@ -1,66 +1,181 @@
-/* couleur principale RAM */
-:root{
-  --ram-red: #c20831 !important;
+/* =========================
+   RAM COLORS
+========================= */
+:root {
+  --ram-red: #c20831;
+  --ram-dark-red: #940523;
 }
 
-/* background pages */
-.page-background{
-  min-height: 100vh;
-  background-color: #f5f5f5 !important;
-}
-
+/* =========================
+   BACKGROUND
+========================= */
 .landing-background {
   min-height: 100vh;
-  background-color: #f5f5f5 !important;
+  position: relative;
+  overflow: hidden;
+
+  background:
+    radial-gradient(circle at top left, rgba(194, 8, 49, 0.15), transparent 35%),
+    radial-gradient(circle at bottom right, rgba(194, 8, 49, 0.12), transparent 40%),
+    linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
 }
 
-/* card commune */
-.form-card{
+.landing-background::before,
+.landing-background::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.landing-background::before {
+  width: 350px;
+  height: 350px;
+  background: rgba(194, 8, 49, 0.08);
+
+  top: -100px;
+  left: -100px;
+}
+
+.landing-background::after {
+  width: 250px;
+  height: 250px;
+  background: rgba(194, 8, 49, 0.06);
+
+  bottom: -50px;
+  right: -50px;
+}
+
+/* =========================
+   LANGUAGE SWITCHER
+========================= */
+.page-language-switcher {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  z-index: 20;
+}
+
+/* =========================
+   CONTAINER
+========================= */
+.landing-container {
+  position: relative;
+  z-index: 2;
+  padding: 20px;
+}
+
+/* =========================
+   CARD
+========================= */
+.landing-card {
   width: 100%;
-  max-width: 500px;
-  border-radius: 10px;
-  box-shadow: 0px 5px 20px rgba(0,0,0,0.1) !important;
-}
+  max-width: 650px;
 
-/* bouton RAM */
-.ram-button{
-  background-color: #c20831 !important;
-  color: white !important;
   border: none !important;
-  font-weight: bold;
+  border-radius: 24px !important;
+
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(15px);
+
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.08),
+    0 0 30px rgba(194, 8, 49, 0.08);
+
+  transition: all 0.3s ease;
 }
 
-.ram-button:hover{
-  background-color: #a00629 !important;
+.landing-card:hover {
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 15px 50px rgba(0, 0, 0, 0.12),
+    0 0 40px rgba(194, 8, 49, 0.12);
 }
 
-/* messages erreur */
-.error-text{
-  color: red;
-  font-size: 14px;
+/* =========================
+   TITLE
+========================= */
+.landing-card h1 {
+  color: var(--ram-red);
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin-bottom: 20px;
 }
 
-/* Landing specific button styles */
+/* =========================
+   DESCRIPTION
+========================= */
+.landing-card p {
+  color: #555;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 35px;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+.landing-button,
+.landing-button-light {
+  height: 54px;
+
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+
+  transition: all 0.3s ease !important;
+}
+
+/* LOGIN */
 .landing-button {
-  background-color: #c20831 !important;
-  color: white !important;
+  background: linear-gradient(
+    135deg,
+    var(--ram-red),
+    var(--ram-dark-red)
+  ) !important;
+
   border: none !important;
-  font-weight: bold;
 }
 
 .landing-button:hover {
-  background-color: #a00629 !important;
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 20px rgba(194, 8, 49, 0.35);
 }
 
+/* SIGNUP */
 .landing-button-light {
-  background-color: white !important;
-  color: #333 !important;
-  border: 2px solid #c20831 !important;
-  font-weight: bold;
+  background: white !important;
+  color: var(--ram-red) !important;
+
+  border: 2px solid var(--ram-red) !important;
 }
 
 .landing-button-light:hover {
-  background-color: #c20831 !important;
+  background: var(--ram-red) !important;
   color: white !important;
-  border-color: #c20831 !important;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 20px rgba(194, 8, 49, 0.25);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+  .landing-card {
+    margin: 10px;
+    padding: 20px !important;
+  }
+
+  .landing-card h1 {
+    font-size: 2rem;
+  }
+
+  .landing-card p {
+    font-size: 1rem;
+  }
 }

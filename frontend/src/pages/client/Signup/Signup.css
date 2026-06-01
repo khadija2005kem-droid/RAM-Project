@@ -1,152 +1,221 @@
-/* couleur principale RAM */
-:root{
-  --ram-red: #c20831 !important;
+/* =========================
+   RAM COLORS
+========================= */
+:root {
+  --ram-red: #c20831;
+  --ram-dark-red: #940523;
 }
 
-/* background pages */
-.page-background{
+/* =========================
+   BACKGROUND
+========================= */
+.signup-background {
   min-height: 100vh;
-  background-color: #f5f5f5;
+  position: relative;
+  overflow: hidden;
+
+  background:
+    radial-gradient(circle at top left, rgba(194, 8, 49, 0.15), transparent 35%),
+    radial-gradient(circle at bottom right, rgba(194, 8, 49, 0.12), transparent 40%),
+    linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
 }
 
-/* card commune */
-/* .form-card{
-  width: 400px;
-  border-radius: 10px;
-  box-shadow: 0px 5px 20px rgba(0,0,0,0.1);
-} */
+.signup-background::before,
+.signup-background::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  z-index: 0;
+}
 
-/* Fix the width and make it responsive */
+.signup-background::before {
+  width: 350px;
+  height: 350px;
+  background: rgba(194, 8, 49, 0.08);
+
+  top: -100px;
+  left: -100px;
+}
+
+.signup-background::after {
+  width: 250px;
+  height: 250px;
+  background: rgba(194, 8, 49, 0.06);
+
+  bottom: -50px;
+  right: -50px;
+}
+
+/* =========================
+   LANGUAGE SWITCHER
+========================= */
+.page-language-switcher {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  z-index: 20;
+}
+
+/* =========================
+   CONTAINER
+========================= */
+.signup-container {
+  position: relative;
+  z-index: 2;
+  padding: 30px 15px;
+}
+
+/* =========================
+   CARD
+========================= */
 .signup-card {
   width: 100%;
-  max-width: 500px; /* Increased from 400px for a better look */
-  border-radius: 10px;
-  box-shadow: 0px 5px 20px rgba(0,0,0,0.1);
-  margin: 2rem auto; /* Adds space so it doesn't hit the footer */
-}
+  max-width: 650px;
 
-/* Ensure the background allows scrolling if the form is tall */
-.signup-container {
-  min-height: calc(100vh - 100px); /* Adjusts for footer space */
-  display: flex;
-  padding: 40px 15px; /* Adds breathing room on mobile and top/bottom */
-}
-
-/* bouton RAM */
-.ram-button{
-  background-color: #c20831 !important;
-  color: white !important;
   border: none !important;
-  font-weight: bold;
+  border-radius: 24px !important;
+
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(15px);
+
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.08),
+    0 0 30px rgba(194, 8, 49, 0.08);
+
+  transition: all 0.3s ease;
 }
 
-.ram-button:hover{
-  background-color: #a00629 !important;
+.signup-card:hover {
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 15px 50px rgba(0, 0, 0, 0.12),
+    0 0 40px rgba(194, 8, 49, 0.12);
 }
 
-/* messages erreur */
-.error-text{
-  color: red;
-  font-size: 14px;
+/* =========================
+   TITLE
+========================= */
+.signup-card h3 {
+  color: var(--ram-red);
+  font-weight: 800;
+  font-size: 2rem;
+  margin-bottom: 25px;
 }
 
+/* =========================
+   LABELS
+========================= */
+.form-label {
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 8px;
+}
+
+/* =========================
+   INPUTS
+========================= */
+.form-control {
+  border-radius: 12px !important;
+  border: 1px solid #e5e5e5 !important;
+
+  padding: 12px 15px !important;
+
+  transition: all 0.25s ease !important;
+}
+
+.form-control:focus {
+  border-color: var(--ram-red) !important;
+
+  box-shadow:
+    0 0 0 4px rgba(194, 8, 49, 0.12) !important;
+
+  transform: translateY(-1px);
+}
+
+/* =========================
+   VALIDATION ERRORS
+========================= */
+.invalid-feedback {
+  font-size: 0.85rem;
+  margin-top: 5px;
+}
+
+/* =========================
+   ERROR BOX
+========================= */
 .form-summary-error {
-  background-color: #fde2e5 !important;
-  color: #842029 !important;
-  border: 1px solid #f5c2c7 !important;
-  border-radius: 4px;
-  padding: 10px 12px;
-  margin-bottom: 1rem;
-}
+  background: #fff5f7;
+  border-left: 4px solid var(--ram-red);
 
-.form-summary-error ul {
-  padding-left: 18px;
-  margin-bottom: 0;
-}
+  padding: 15px;
+  border-radius: 12px;
 
-.form-summary-success {
-  background-color: #d1e7dd;
-  color: #0f5132;
-  border: 1px solid #badbcc;
-  border-radius: 4px;
-  padding: 10px 12px;
-  margin-bottom: 1rem;
+  margin-bottom: 20px;
 }
 
 .form-summary-title {
-  font-weight: 600;
+  font-weight: 700;
+  color: var(--ram-red);
 }
 
-.signup-button{
-  background-color: #c20831 !important;
-  color: white !important;
+/* =========================
+   SIGNUP BUTTON
+========================= */
+.signup-button {
+  height: 52px;
+
   border: none !important;
-  font-weight: bold;
+  border-radius: 12px !important;
+
+  background: linear-gradient(
+    135deg,
+    var(--ram-red),
+    var(--ram-dark-red)
+  ) !important;
+
+  font-weight: 600 !important;
+
+  transition: all 0.3s ease !important;
 }
 
-.signup-button:hover{
-  background-color: #a00629 !important;
+.signup-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 20px rgba(194, 8, 49, 0.35);
 }
 
+.signup-button:disabled {
+  opacity: 0.8;
+}
+
+/* =========================
+   LOGIN LINK
+========================= */
 .login-link {
-  color: rgb(79, 78, 78) ;
-  text-decoration:  underline; 
-  font-size: 14px;
+  text-decoration: none;
+  color: var(--ram-red);
+  font-weight: 600;
+
+  transition: all 0.25s ease;
 }
 
 .login-link:hover {
-  color: #c20831 !important;
+  color: var(--ram-dark-red);
+  text-decoration: underline;
 }
 
-/* ==================== RTL ADJUSTMENTS ==================== */
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+  .signup-card {
+    margin: 10px;
+    padding: 20px !important;
+  }
 
-[dir="rtl"] .page-background {
-  text-align: right;
-}
-
-[dir="rtl"] .signup-container {
-  text-align: right;
-}
-
-[dir="rtl"] .signup-card {
-  text-align: right;
-}
-
-[dir="rtl"] .form-control,
-[dir="rtl"] .form-select {
-  text-align: right;
-  direction: rtl;
-}
-
-[dir="rtl"] .form-label {
-  text-align: right;
-}
-
-[dir="rtl"] .error-text {
-  text-align: right;
-}
-
-[dir="rtl"] .form-summary-error,
-[dir="rtl"] .form-summary-success {
-  text-align: right;
-  direction: rtl;
-}
-
-[dir="rtl"] .form-summary-error ul,
-[dir="rtl"] .form-summary-success ul {
-  padding-right: 18px;
-  padding-left: 0;
-  text-align: right;
-}
-
-[dir="rtl"] .login-link {
-  text-align: right;
-}
-
-.form-summary-error {
-  font-size: 14px;
-}
-
-.is-invalid {
-  border-color: #c20831 !important;
+  .signup-card h3 {
+    font-size: 1.7rem;
+  }
 }
