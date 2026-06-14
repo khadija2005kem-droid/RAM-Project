@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../../services/api";
 import { clearAuthSession } from "../../../utils/auth";
@@ -7,7 +6,6 @@ import { getErrorMessage, isUnauthorizedError } from "../../../utils/errorHandli
 import "./AdminDashboard.css";
 
 function AdminDashboard() {
-  const { t } = useTranslation();
   const navigate = useNavigate();
   const [statsData, setStatsData] = useState({
     unread_messages: 0,
@@ -38,44 +36,44 @@ function AdminDashboard() {
 
         setErrorMessage(
           getErrorMessage(error, {
-            networkMessage: t("admin.dashboard.loadError"),
-            serverMessage: t("admin.dashboard.loadError"),
-            fallbackMessage: t("admin.dashboard.loadError"),
+            networkMessage: "Impossible de charger les statistiques du tableau de bord.",
+            serverMessage: "Impossible de charger les statistiques du tableau de bord.",
+            fallbackMessage: "Impossible de charger les statistiques du tableau de bord.",
           })
         );
       }
     };
 
     fetchStats();
-  }, [navigate, t]);
+  }, [navigate]);
 
   const stats = [
     {
       id: 1,
-      title: t("admin.dashboard.unansweredMessages"),
+      title: "Messages non répondus",
       value: statsData.unread_messages,
-      description: t("admin.dashboard.receivedMessages"),
+      description: "Messages reçus",
     },
     {
       id: 2,
-      title: t("admin.dashboard.pendingInvoices"),
+      title: "Factures en attente",
       value: statsData.pending_factures,
-      description: t("admin.dashboard.processingInvoices"),
+      description: "Factures en cours de traitement",
     },
     {
       id: 3,
-      title: t("admin.dashboard.totalClients"),
+      title: "Clients total",
       value: statsData.clients,
-      description: t("admin.dashboard.registeredUsers"),
+      description: "Utilisateurs enregistrés",
     },
   ];
 
   return (
     <div className="admin-dashboard">
       <div className="dashboard-header">
-        <h1 className="dashboard-title">{t("admin.dashboard.title")}</h1>
+        <h1 className="dashboard-title">Tableau de bord administrateur</h1>
         <p className="dashboard-subtitle">
-          {t("admin.dashboard.subtitle")}
+          Suivi rapide des messages, factures et clients
         </p>
       </div>
 

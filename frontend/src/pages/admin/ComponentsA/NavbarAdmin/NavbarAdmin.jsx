@@ -1,13 +1,11 @@
 import React from "react";
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 import { api } from "../../../../services/api";
 import { clearAuthSession } from "../../../../utils/auth";
 import "./NavbarAdmin.css";
 
 function NavbarAdmin() {
-  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -56,7 +54,7 @@ function NavbarAdmin() {
           </Nav>
 
           <Button className="logout-btn" onClick={handleLogout}>
-            {t("navbar.logout")}
+            Déconnexion
           </Button>
         </Navbar.Collapse>
       </Container>
