@@ -24,7 +24,6 @@ function Contact() {
   const [prefillError, setPrefillError] = useState("");
   const [loading, setLoading] = useState(false);
   
-  // Validation errors
   const [fieldErrors, setFieldErrors] = useState({
     nom: "",
     prenom: "",
@@ -77,7 +76,6 @@ function Contact() {
     const { name, value } = e.target;
     setFormData({...formData, [name]: value });
     
-    // Clear field error when user starts typing
     if (fieldErrors[name]) {
       setFieldErrors({...fieldErrors, [name]: ""});
     }
@@ -88,12 +86,10 @@ function Contact() {
 
     let errors = {};
 
-    // Reset
     setError("");
     setFieldErrors({});
     setSubmitted(false);
 
-    // ✅ Validation propre
     if (!formData.nom.trim()) errors.nom = t("contact.lastNameRequired");
     if (!formData.prenom.trim()) errors.prenom = t("contact.firstNameRequired");
 
@@ -106,7 +102,6 @@ function Contact() {
     if (!formData.sujet.trim()) errors.sujet = t("contact.subjectRequired");
     if (!formData.message.trim()) errors.message = t("contact.messageRequired");
 
-    // ❌ Stop if errors
     if (Object.keys(errors).length > 0) {
       setFieldErrors(errors);
       return;
@@ -117,7 +112,6 @@ function Contact() {
     try {
       const data = await api.contactSubmit(formData);
 
-      // ✅ Success
       if (data.status || data.message) {
         setSubmitted(true);
         setFormData((prev) => ({
@@ -136,7 +130,6 @@ function Contact() {
         return;
       }
 
-      // ✅ Laravel validation
       if (err.status === 422 && Object.keys(err.errors || {}).length > 0) {
         const formattedErrors = {};
 
@@ -146,13 +139,9 @@ function Contact() {
 
         setFieldErrors(formattedErrors);
         setError("");
-      } 
-      // ❌ Server unreachable
-      else if (!err.status) {
+      } else if (!err.status) {
         setError(t("contact.serverUnreachable"));
-      } 
-      // ❌ Other errors
-      else {
+      } else {
         setError(err.message || t("contact.genericError"));
       }
 
@@ -162,149 +151,151 @@ function Contact() {
   };
 
   return (
-    <Container className="contact-container mt-4">
-      <Card className="custom-card mx-auto">
-        <Card.Header className="custom-card-header">
-          <h4>{t("contact.title")}</h4>
-        </Card.Header>
+    <div className="contact-page">
+      <Container className="contact-container">
+        <Card className="custom-card mx-auto">
+          <Card.Header className="custom-card-header">
+            <h4>{t("contact.title")}</h4>
+          </Card.Header>
 
-        <Card.Body>
-          {prefillError && (
-            <div className="form-summary-error">
-              {prefillError}
-            </div>
-          )}
+          <Card.Body>
+            {prefillError && (
+              <div className="form-summary-error">
+                {prefillError}
+              </div>
+            )}
 
-          {error && (
-            <div className="form-summary-error">
-              <div className="form-summary-title">{t("contact.pleaseFix")}</div>
-              <ul className="mb-0 mt-2">            {error && <li>{error}</li>}
-                {Object.entries(fieldErrors)
-                  .filter(([, msg]) => msg)
-                  .map(([key, msg]) => (
-                    <li key={key}>{msg}</li>
-                  ))}
-              </ul>
-            </div>
-          )}
+            {error && (
+              <div className="form-summary-error">
+                <div className="form-summary-title">{t("contact.pleaseFix")}</div>
+                <ul className="mb-0 mt-2">            {error && <li>{error}</li>}
+                  {Object.entries(fieldErrors)
+                    .filter(([, msg]) => msg)
+                    .map(([key, msg]) => (
+                      <li key={key}>{msg}</li>
+                    ))}
+                </ul>
+              </div>
+            )}
 
-          {submitted && (
-            <div className="form-summary-success">
-              {t("contact.successMessage")}
-            </div>
-          )}
+            {submitted && (
+              <div className="form-summary-success">
+                {t("contact.successMessage")}
+              </div>
+            )}
 
-          <Row>
-            <Col md={12} sm={12}>
-              <Form onSubmit={handleSubmit} noValidate>
-                <Row>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>{t("contact.lastName")}</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="nom"
-                    value={formData.nom}
-                    onChange={handleChange}
-                    placeholder={t("contact.placeholderLastName")}
-                    isInvalid={!!fieldErrors.nom}
-                  />
-                  <Form.Control.Feedback type="invalid" className="d-block">
-                    {fieldErrors.nom}
-                  </Form.Control.Feedback>
-                </Form.Group>
-              </Col>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>{t("contact.firstName")}</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="prenom"
-                    value={formData.prenom}
-                    onChange={handleChange}
-                    placeholder={t("contact.placeholderFirstName")}
-                    isInvalid={!!fieldErrors.prenom}
-                  />
-                  <Form.Control.Feedback type="invalid" className="d-block">
-                    {fieldErrors.prenom}
-                  </Form.Control.Feedback>
-                </Form.Group>
+            <Row>
+              <Col md={12} sm={12}>
+                <Form onSubmit={handleSubmit} noValidate>
+                  <Row>
+                <Col md={6}>
+                  <Form.Group className="mb-3">
+                    <Form.Label>{t("contact.lastName")}</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="nom"
+                      value={formData.nom}
+                      onChange={handleChange}
+                      placeholder={t("contact.placeholderLastName")}
+                      isInvalid={!!fieldErrors.nom}
+                    />
+                    <Form.Control.Feedback type="invalid" className="d-block">
+                      {fieldErrors.nom}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group className="mb-3">
+                    <Form.Label>{t("contact.firstName")}</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="prenom"
+                      value={formData.prenom}
+                      onChange={handleChange}
+                      placeholder={t("contact.placeholderFirstName")}
+                      isInvalid={!!fieldErrors.prenom}
+                    />
+                    <Form.Control.Feedback type="invalid" className="d-block">
+                      {fieldErrors.prenom}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              <Form.Group className="mb-3">
+                <Form.Label>{t("contact.email")}</Form.Label>
+                <Form.Control
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder={t("contact.placeholderEmail")}
+                  isInvalid={!!fieldErrors.email}
+                />
+                <Form.Control.Feedback type="invalid" className="d-block">
+                  {fieldErrors.email}
+                </Form.Control.Feedback>
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>{t("contact.subject")}</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="sujet"
+                  value={formData.sujet}
+                  onChange={handleChange}
+                  placeholder={t("contact.placeholderSubject")}
+                  isInvalid={!!fieldErrors.sujet}
+                />
+                <Form.Control.Feedback type="invalid" className="d-block">
+                  {fieldErrors.sujet}
+                </Form.Control.Feedback>
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>{t("contact.message")}</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows={5}
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  placeholder={t("contact.placeholderMessage")}
+                  isInvalid={!!fieldErrors.message}
+                />
+                <Form.Control.Feedback type="invalid" className="d-block">
+                  {fieldErrors.message}
+                </Form.Control.Feedback>
+              </Form.Group>
+
+              <Button 
+                type="submit" 
+                className="btn-send"
+                disabled={loading}
+              >
+                {loading ? (
+                  <>
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                      className="me-2"
+                    />
+                    {t("contact.sending")}
+                  </>
+                ) : (
+                  t("contact.send")
+                )}
+              </Button>
+                </Form>
               </Col>
             </Row>
-
-            <Form.Group className="mb-3">
-              <Form.Label>{t("contact.email")}</Form.Label>
-              <Form.Control
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder={t("contact.placeholderEmail")}
-                isInvalid={!!fieldErrors.email}
-              />
-              <Form.Control.Feedback type="invalid" className="d-block">
-                {fieldErrors.email}
-              </Form.Control.Feedback>
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>{t("contact.subject")}</Form.Label>
-              <Form.Control
-                type="text"
-                name="sujet"
-                value={formData.sujet}
-                onChange={handleChange}
-                placeholder={t("contact.placeholderSubject")}
-                isInvalid={!!fieldErrors.sujet}
-              />
-              <Form.Control.Feedback type="invalid" className="d-block">
-                {fieldErrors.sujet}
-              </Form.Control.Feedback>
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>{t("contact.message")}</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={5}
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                placeholder={t("contact.placeholderMessage")}
-                isInvalid={!!fieldErrors.message}
-              />
-              <Form.Control.Feedback type="invalid" className="d-block">
-                {fieldErrors.message}
-              </Form.Control.Feedback>
-            </Form.Group>
-
-            <Button 
-              type="submit" 
-              className="btn-send"
-              disabled={loading}
-            >
-              {loading ? (
-                <>
-                  <Spinner
-                    as="span"
-                    animation="border"
-                    size="sm"
-                    role="status"
-                    aria-hidden="true"
-                    className="me-2"
-                  />
-                  {t("contact.sending")}
-                </>
-              ) : (
-                t("contact.send")
-              )}
-            </Button>
-              </Form>
-            </Col>
-          </Row>
-        </Card.Body>
-      </Card>
-    </Container>
+          </Card.Body>
+        </Card>
+      </Container>
+    </div>
   );
 }
 

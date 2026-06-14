@@ -1,7 +1,8 @@
-/* Invoice Page Layout */
+/* ==================== BASE ==================== */
+
 .invoice-page {
   min-height: 100vh;
-  background-color: #f5f5f5;
+  background: #f5f6fa;
   padding: 2rem 0;
   display: flex;
   flex-direction: column;
@@ -9,20 +10,58 @@
 
 .invoice-container {
   flex: 1;
-  padding-bottom: 2rem; /* Ensure space for footer */
+  padding-bottom: 2rem;
 }
 
-/* Invoice Paper Design */
-.invoice-paper {
-  background-color: white;
-  border: none;
-  border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+/* ==================== CARDS ==================== */
+
+.invoice-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  border-left: 5px solid #6c757d;
+  transition: all 0.3s ease;
   max-width: 800px;
   margin: 0 auto;
 }
 
-/* RAM Logo Placeholder */
+.invoice-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+}
+
+.status-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  border-left: 5px solid var(--ram-red, #c20831);
+  transition: all 0.3s ease;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.status-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+}
+
+.actions-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  border-left: 5px solid #28a745;
+  transition: all 0.3s ease;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.actions-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+}
+
+/* ==================== RAM LOGO & TEXT ==================== */
+
 .ram-logo {
   width: 60px;
   height: 60px;
@@ -35,34 +74,66 @@
   font-size: 18px;
 }
 
+.ram-red-text {
+  color: var(--ram-red, #c20831) !important;
+}
+
 .logo-placeholder {
   font-size: 20px;
   font-weight: bold;
 }
 
-/* Invoice Separator */
-.invoice-separator {
-  border: 2px solid var(--ram-red);
-  opacity: 0.3;
-}
+/* ==================== INVOICE TABLE ==================== */
 
-/* Invoice Table */
 .invoice-table {
   border: 1px solid #e9ecef;
-  border-radius: 4px;
+  border-radius: 8px;
   overflow: hidden;
+  background-color: #f8f9fa;
 }
 
 .table-header {
-  background-color: #f8f9fa;
-  font-weight: bold;
-  color: var(--ram-red) !important;
+  background-color: #e9ecef;
+  font-weight: 600;
+  color: var(--ram-red, #c20831) !important;
+  border-bottom: 1px solid #dee2e6;
 }
 
-/* Total Section */
+.table-body .table-row:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+.table-body .table-row:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.table-row,
+.table-header {
+  color: #000000 !important;
+}
+
+.invoice-table .row {
+  margin: 0;
+}
+
+.invoice-table .col-md-8,
+.invoice-table .col-md-4 {
+  padding: 8px 12px;
+}
+
+/* ==================== SEPARATOR ==================== */
+
+.invoice-separator {
+  border: 2px solid var(--ram-red, #c20831);
+  opacity: 0.3;
+  margin: 1rem 0;
+}
+
+/* ==================== TOTAL SECTION ==================== */
+
 .total-section {
-  border: 2px solid var(--ram-red);
-  background-color: var(--ram-red-soft);
+  border: 2px solid var(--ram-red, #c20831);
+  background-color: var(--ram-red-soft, #faf7f8);
   width: fit-content;
   max-width: 100%;
   margin-left: auto;
@@ -80,10 +151,11 @@
   word-break: break-word;
 }
 
-/* Download Button */
+/* ==================== BUTTONS ==================== */
+
 .download-btn {
-  background-color: var(--ram-red) !important;
-  border-color: var(--ram-red) !important;
+  background-color: var(--ram-red, #c20831) !important;
+  border-color: var(--ram-red, #c20831) !important;
   color: #ffffff !important;
   padding: 0.75rem 2rem;
   font-size: 1.1rem;
@@ -92,14 +164,13 @@
 }
 
 .download-btn:hover {
-  background-color: var(--ram-red-dark) !important;
-  border-color: var(--ram-red-dark) !important;
+  background-color: var(--ram-red-dark, #a00628) !important;
+  border-color: var(--ram-red-dark, #a00628) !important;
   color: #ffffff !important;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(194, 8, 49, 0.3);
 }
 
-/* Payment Button */
 .payment-btn {
   background-color: #28a745 !important;
   border-color: #28a745 !important;
@@ -118,33 +189,26 @@
   box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
 }
 
-/* Status Section */
-.status-section {
-  background-color: white;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  max-width: 500px;
-  margin: 0 auto;
-}
+/* ==================== STATUS BADGE ==================== */
 
-.status-section h5 {
-  color: var(--ram-red) !important;
+.status-card h5 {
+  color: var(--ram-red, #c20831) !important;
   font-weight: 600;
 }
 
-.status-section .badge {
+.status-card .badge {
   font-size: 1rem;
   padding: 0.5rem 1rem;
 }
 
-/* Responsive Design */
+/* ==================== RESPONSIVE ==================== */
+
 @media (max-width: 768px) {
   .invoice-page {
     padding: 1rem 0;
   }
 
-  .invoice-paper .card-body {
+  .invoice-card .card-body {
     padding: 1.5rem !important;
   }
 
@@ -183,7 +247,8 @@
   }
 }
 
-/* Print Styles */
+/* ==================== PRINT STYLES ==================== */
+
 @media print {
   body * {
     visibility: hidden;
@@ -404,81 +469,42 @@
   display: none;
 }
 
-/* Invoice table background fix */
-.invoice-table {
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-/* Make rows look consistent */
-.invoice-table .row {
-  margin: 0;
-  background-color: #f8f9fa;
-}
-
-/* Ensure header and rows fully fill background */
-.table-header,
-.invoice-table .row {
-  background-color: #f8f9fa;
-}
-
-/* Optional: improve spacing */
-.invoice-table .col-md-8,
-.invoice-table .col-md-4 {
-  padding: 8px 12px;
-}
-
-/* Clean separator line */
-.invoice-table hr {
-  margin: 0;
-  border-color: #e0e0e0;
-}
-
-.invoice-table .table-header {
-  background-color: #e9ecef;
-  font-weight: 600;
-  border-bottom: 1px solid #dee2e6;
-}
-
-/* zebra like Bootstrap table-striped */
-.invoice-table .table-body .table-row:nth-child(odd) {
-  background-color: #ffffff;
-}
-
-.invoice-table .table-body .table-row:nth-child(even) {
-  background-color: #f8f9fa;
-}
-
-.invoice-table .table-row,
-.invoice-table .table-header {
-  color: #000000 !important;
-}
-
 /* ==================== RTL ADJUSTMENTS ==================== */
 
 [dir="rtl"] .invoice-page {
   text-align: right;
 }
 
-[dir="rtl"] .invoice-paper {
+[dir="rtl"] .invoice-card {
   text-align: right;
   direction: rtl;
+  border-left: none;
+  border-right: 5px solid #6c757d;
 }
 
-[dir="rtl"] .invoice-paper .row {
+[dir="rtl"] .status-card {
+  border-left: none;
+  border-right: 5px solid var(--ram-red, #c20831);
+}
+
+[dir="rtl"] .actions-card {
+  border-left: none;
+  border-right: 5px solid #28a745;
+}
+
+[dir="rtl"] .invoice-card .row {
   flex-direction: row-reverse;
 }
 
-[dir="rtl"] .invoice-paper .col-md-6 {
+[dir="rtl"] .invoice-card .col-md-6 {
   text-align: right;
 }
 
-[dir="rtl"] .invoice-paper .text-end {
+[dir="rtl"] .invoice-card .text-end {
   text-align: left !important;
 }
 
-[dir="rtl"] .invoice-paper .text-start {
+[dir="rtl"] .invoice-card .text-start {
   text-align: right !important;
 }
 
@@ -493,20 +519,27 @@
 
 [dir="rtl"] .total-section {
   text-align: left;
+  margin-left: 0;
+  margin-right: auto;
 }
 
-[dir="rtl"] .status-section {
+[dir="rtl"] .status-card {
   text-align: right;
   direction: rtl;
 }
 
-[dir="rtl"] .status-section h5 {
+[dir="rtl"] .status-card h5 {
   text-align: right;
 }
 
-[dir="rtl"] .status-section .badge {
+[dir="rtl"] .status-card .badge {
   text-align: center;
   display: inline-block;
+}
+
+[dir="rtl"] .actions-card {
+  text-align: right;
+  direction: rtl;
 }
 
 [dir="rtl"] .invoice-table {

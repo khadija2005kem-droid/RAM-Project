@@ -123,7 +123,7 @@ function Login() {
 
           {error && <div className="form-summary-error">{error}</div>}
 
-          <Form onSubmit={handleLogin}>
+          <Form onSubmit={handleLogin} noValidate>
             <Form.Group className="mb-3">
               <Form.Label>{t("login.email")}</Form.Label>
               <Form.Control
@@ -136,9 +136,9 @@ function Login() {
                 }}
                 isInvalid={!!fieldErrors.email}
               />
-              <Form.Control.Feedback type="invalid" className="error-text">
-                {fieldErrors.email}
-              </Form.Control.Feedback>
+              {fieldErrors.email && (
+                <div className="login-field-error">{fieldErrors.email}</div>
+              )}
             </Form.Group>
 
             <Form.Group className="mb-1">
@@ -153,9 +153,9 @@ function Login() {
                 }}
                 isInvalid={!!fieldErrors.password}
               />
-              <Form.Control.Feedback type="invalid" className="error-text">
-                {fieldErrors.password}
-              </Form.Control.Feedback>
+              {fieldErrors.password && (
+                <div className="login-field-error">{fieldErrors.password}</div>
+              )}
             </Form.Group>
 
             <div className="text-end mb-3">

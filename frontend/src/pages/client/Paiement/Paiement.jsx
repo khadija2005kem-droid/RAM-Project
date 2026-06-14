@@ -313,170 +313,172 @@ function Paiement() {
     }
   };
 
-  return (
-    <Container className="paiement-container mt-4">
-      <Card className="paiement-card custom-card">
-        <Card.Header className="custom-card-header text-center">
-          <h4>{t("paiement.title")}</h4>
-        </Card.Header>
+    return (
+    <div className="paiement-page">
+      <Container className="paiement-container mt-4">
+        <Card className="paiement-card custom-card">
+          <Card.Header className="custom-card-header text-center">
+            <h4>{t("paiement.title")}</h4>
+          </Card.Header>
 
-        <Card.Body>
-          {submitted && <div className="form-summary-success">{t("paiement.paymentRequestSuccess")}</div>}
+          <Card.Body>
+            {submitted && <div className="form-summary-success">{t("paiement.paymentRequestSuccess")}</div>}
 
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3">
-              <Form.Label>{t("paiement.invoiceNumber")}</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder={t("paiement.invoiceNumberPlaceholder")}
-                name="numero_facture"
-                value={formData.numero_facture}
-                onChange={handleChange}
-                isInvalid={!!fieldErrors.numero_facture}
-              />
-              <Form.Control.Feedback type="invalid" className="d-block">
-                {fieldErrors.numero_facture}
-              </Form.Control.Feedback>
-              {getInvoiceMessage()}
-            </Form.Group>
-
-            <div className="row">
-              <div className="col">
-                <Form.Group className="mb-3">
-                  <Form.Label>{t("contact.firstName")}</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="prenom"
-                    value={formData.prenom}
-                    onChange={handleChange}
-                    placeholder={t("contact.placeholderFirstName")}
-                    isInvalid={!!fieldErrors.prenom}
-                  />
-                  <Form.Control.Feedback type="invalid" className="d-block">
-                    {fieldErrors.prenom}
-                  </Form.Control.Feedback>
-                </Form.Group>
-              </div>
-
-              <div className="col">
-                <Form.Group className="mb-3">
-                  <Form.Label>{t("contact.lastName")}</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="nom"
-                    value={formData.nom}
-                    onChange={handleChange}
-                    placeholder={t("contact.placeholderLastName")}
-                    isInvalid={!!fieldErrors.nom}
-                  />
-                  <Form.Control.Feedback type="invalid" className="d-block">
-                    {fieldErrors.nom}
-                  </Form.Control.Feedback>
-                </Form.Group>
-              </div>
-            </div>
-
-            <Form.Group className="mb-3">
-              <Form.Label>{t("contact.email")}</Form.Label>
-              <Form.Control
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder={t("contact.placeholderEmail")}
-                isInvalid={!!fieldErrors.email}
-              />
-              <Form.Control.Feedback type="invalid" className="d-block">
-                {fieldErrors.email}
-              </Form.Control.Feedback>
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>{t("paiement.cardholderName")}</Form.Label>
-              <Form.Control
-                type="text"
-                name="nom_titulaire"
-                placeholder={t("paiement.cardholderNamePlaceholder")}
-                autoComplete="cc-name"
-                value={formData.nom_titulaire}
-                onChange={handleChange}
-                isInvalid={!!fieldErrors.nom_titulaire}
-              />
-              <Form.Control.Feedback type="invalid" className="d-block">
-                {fieldErrors.nom_titulaire}
-              </Form.Control.Feedback>
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>{t("paiement.cardNumber")}</Form.Label>
-              <div className={`card-number-field ${detectedCardMeta ? "has-card-icon" : ""}`}>
+            <Form onSubmit={handleSubmit}>
+              <Form.Group className="mb-3">
+                <Form.Label>{t("paiement.invoiceNumber")}</Form.Label>
                 <Form.Control
                   type="text"
-                  name="numero_carte"
-                  value={formData.numero_carte}
+                  placeholder={t("paiement.invoiceNumberPlaceholder")}
+                  name="numero_facture"
+                  value={formData.numero_facture}
                   onChange={handleChange}
-                  placeholder={t("paiement.cardNumberPlaceholder")}
-                  isInvalid={!!fieldErrors.numero_carte}
+                  isInvalid={!!fieldErrors.numero_facture}
                 />
-                {detectedCardMeta && (
-                  <span
-                    className={`card-type-indicator card-type-${detectedCardType}`}
-                    aria-label={detectedCardMeta.label}
-                    title={detectedCardMeta.label}
-                  >
-                    <detectedCardMeta.Icon />
-                  </span>
-                )}
-              </div>
-              <Form.Control.Feedback type="invalid" className="d-block">
-                {fieldErrors.numero_carte}
-              </Form.Control.Feedback>
-            </Form.Group>
+                <Form.Control.Feedback type="invalid" className="d-block">
+                  {fieldErrors.numero_facture}
+                </Form.Control.Feedback>
+                {getInvoiceMessage()}
+              </Form.Group>
 
-            <div className="row">
-              <div className="col">
-                <Form.Group className="mb-3">
-                  <Form.Label>{t("paiement.expiryDate")}</Form.Label>
+              <div className="row">
+                <div className="col">
+                  <Form.Group className="mb-3">
+                    <Form.Label>{t("contact.firstName")}</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="prenom"
+                      value={formData.prenom}
+                      onChange={handleChange}
+                      placeholder={t("contact.placeholderFirstName")}
+                      isInvalid={!!fieldErrors.prenom}
+                    />
+                    <Form.Control.Feedback type="invalid" className="d-block">
+                      {fieldErrors.prenom}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </div>
+
+                <div className="col">
+                  <Form.Group className="mb-3">
+                    <Form.Label>{t("contact.lastName")}</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="nom"
+                      value={formData.nom}
+                      onChange={handleChange}
+                      placeholder={t("contact.placeholderLastName")}
+                      isInvalid={!!fieldErrors.nom}
+                    />
+                    <Form.Control.Feedback type="invalid" className="d-block">
+                      {fieldErrors.nom}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </div>
+              </div>
+
+              <Form.Group className="mb-3">
+                <Form.Label>{t("contact.email")}</Form.Label>
+                <Form.Control
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder={t("contact.placeholderEmail")}
+                  isInvalid={!!fieldErrors.email}
+                />
+                <Form.Control.Feedback type="invalid" className="d-block">
+                  {fieldErrors.email}
+                </Form.Control.Feedback>
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>{t("paiement.cardholderName")}</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="nom_titulaire"
+                  placeholder={t("paiement.cardholderNamePlaceholder")}
+                  autoComplete="cc-name"
+                  value={formData.nom_titulaire}
+                  onChange={handleChange}
+                  isInvalid={!!fieldErrors.nom_titulaire}
+                />
+                <Form.Control.Feedback type="invalid" className="d-block">
+                  {fieldErrors.nom_titulaire}
+                </Form.Control.Feedback>
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>{t("paiement.cardNumber")}</Form.Label>
+                <div className={`card-number-field ${detectedCardMeta ? "has-card-icon" : ""}`}>
                   <Form.Control
                     type="text"
-                    name="date_expiration"
-                    placeholder={t("paiement.expiryDatePlaceholder")}
-                    value={formData.date_expiration}
+                    name="numero_carte"
+                    value={formData.numero_carte}
                     onChange={handleChange}
-                    isInvalid={!!fieldErrors.date_expiration}
+                    placeholder={t("paiement.cardNumberPlaceholder")}
+                    isInvalid={!!fieldErrors.numero_carte}
                   />
-                  <Form.Control.Feedback type="invalid" className="d-block">
-                    {fieldErrors.date_expiration}
-                  </Form.Control.Feedback>
-                </Form.Group>
+                  {detectedCardMeta && (
+                    <span
+                      className={`card-type-indicator card-type-${detectedCardType}`}
+                      aria-label={detectedCardMeta.label}
+                      title={detectedCardMeta.label}
+                    >
+                      <detectedCardMeta.Icon />
+                    </span>
+                  )}
+                </div>
+                <Form.Control.Feedback type="invalid" className="d-block">
+                  {fieldErrors.numero_carte}
+                </Form.Control.Feedback>
+              </Form.Group>
+
+              <div className="row">
+                <div className="col">
+                  <Form.Group className="mb-3">
+                    <Form.Label>{t("paiement.expiryDate")}</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="date_expiration"
+                      placeholder={t("paiement.expiryDatePlaceholder")}
+                      value={formData.date_expiration}
+                      onChange={handleChange}
+                      isInvalid={!!fieldErrors.date_expiration}
+                    />
+                    <Form.Control.Feedback type="invalid" className="d-block">
+                      {fieldErrors.date_expiration}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </div>
+
+                <div className="col">
+                  <Form.Group className="mb-3">
+                    <Form.Label>{t("paiement.cvc")}</Form.Label>
+                    <Form.Control
+                      type="password"
+                      name="cvc"
+                      value={formData.cvc}
+                      onChange={handleChange}
+                      isInvalid={!!fieldErrors.cvc}
+                    />
+                    <Form.Control.Feedback type="invalid" className="d-block">
+                      {fieldErrors.cvc}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </div>
               </div>
 
-              <div className="col">
-                <Form.Group className="mb-3">
-                  <Form.Label>{t("paiement.cvc")}</Form.Label>
-                  <Form.Control
-                    type="password"
-                    name="cvc"
-                    value={formData.cvc}
-                    onChange={handleChange}
-                    isInvalid={!!fieldErrors.cvc}
-                  />
-                  <Form.Control.Feedback type="invalid" className="d-block">
-                    {fieldErrors.cvc}
-                  </Form.Control.Feedback>
-                </Form.Group>
-              </div>
-            </div>
+              {error && <div className="error-text text-center mb-3">{error}</div>}
 
-            {error && <div className="error-text text-center mb-3">{error}</div>}
-
-            <Button type="submit" className="paiement-btn w-100" disabled={isPaymentDisabled}>
-              {loading ? t("paiement.processing") : t("paiement.pay")}
-            </Button>
-          </Form>
-        </Card.Body>
-      </Card>
-    </Container>
+              <Button type="submit" className="paiement-btn w-100" disabled={isPaymentDisabled}>
+                {loading ? t("paiement.processing") : t("paiement.pay")}
+              </Button>
+            </Form>
+          </Card.Body>
+        </Card>
+      </Container>
+    </div>
   );
 }
 

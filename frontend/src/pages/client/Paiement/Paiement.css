@@ -1,12 +1,31 @@
+.paiement-page {
+  min-height: 100vh;
+  background: #f5f6fa;
+  display: flex;
+  flex-direction: column;
+}
+
 .paiement-container {
-  margin-top: 80px;
-  margin-bottom: 80px; /* ✅ ADD THIS */
+  padding-top: 80px;
+  padding-bottom: 80px;
   display: flex;
   justify-content: center;
+  flex: 1;
 }
 
 .paiement-card {
   width: 600px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  border-left: 5px solid var(--ram-red, #c20831);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.paiement-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
 }
 
 .card-number-field {
@@ -109,4 +128,61 @@
 .form-control:focus.is-invalid {
   border-color: #c20831 !important;
   box-shadow: 0 0 0 0.2rem rgba(194, 8, 49, 0.25) !important;
+}
+
+/* ==================== RTL ADJUSTMENTS ==================== */
+
+[dir="rtl"] .mes-factures-container {
+  text-align: right;
+}
+
+[dir="rtl"] .facture-card {
+  text-align: right;
+  direction: rtl;
+}
+
+[dir="rtl"] .btn-voir,
+[dir="rtl"] .btn-toggle-carte {
+  text-align: center;
+}
+
+[dir="rtl"] .facture-action {
+  justify-content: flex-end;
+}
+
+[dir="rtl"] .dropdown-item {
+  text-align: right;
+  padding-right: 1.5rem;
+  padding-left: 0.5rem;
+}
+
+[dir="rtl"] .dropdown-menu {
+  text-align: right;
+  right: 0;
+  left: auto;
+}
+
+[dir="rtl"] .table {
+  text-align: right;
+}
+
+[dir="rtl"] .table thead th,
+[dir="rtl"] .table tbody td {
+  text-align: right;
+  border-right: 1px solid #dee2e6;
+  border-left: none;
+}
+
+[dir="rtl"] .table tbody tr {
+  text-align: right;
+}
+
+[dir="rtl"] .empty-state-message {
+  text-align: center;
+  direction: rtl;
+}
+
+[dir="rtl"] .paiement-card {
+  border-left: none;
+  border-right: 5px solid var(--ram-red, #c20831);
 }

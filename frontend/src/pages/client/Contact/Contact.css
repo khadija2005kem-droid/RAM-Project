@@ -1,11 +1,19 @@
+.contact-page {
+  min-height: 100vh;
+  background: #f5f6fa;
+  display: flex;
+  flex-direction: column;
+}
+
 .contact-container {
   max-width: 800px;
   margin: 0 auto;
-  padding-bottom: 50px;
+  padding-top: 80px;
+  padding-bottom: 80px;
 }
 
 .btn-send {
-  background-color: #c20831 !important; /* rouge */
+  background-color: #c20831 !important;
   color: white;
   border: #c20831 !important;
   font-weight: bold;
@@ -14,18 +22,17 @@
 }
 
 .btn-send:hover {
-  background-color: #c20831 !important;/* rouge foncé au survol */
+  background-color: #c20831 !important;
 }
 
 .btn-send:active {
-  background-color: #c20831!important; /* encore plus foncé au clic */
+  background-color: #c20831 !important;
 }
 
 .contact-container h2 {
   text-align: center;
   font-weight: bold;
   margin-bottom: 30px;
-  
 }
 
 .form-summary-error {
@@ -63,13 +70,40 @@
   border-color: #c20831 !important;
 }
 
+.custom-card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: none;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  border-left: 5px solid var(--ram-red, #c20831);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.custom-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+}
+
 .custom-card-header {
   background-color: #c20831 !important;
   color: white !important;
   font-weight: bold;
+  padding: 25px 20px;
+  text-align: center;
+}
+
+.custom-card-header h4 {
+  margin: 0;
+  font-weight: 700;
+  font-size: 22px;
 }
 
 /* ==================== RTL ADJUSTMENTS ==================== */
+
+[dir="rtl"] .contact-page {
+  text-align: right;
+}
 
 [dir="rtl"] .contact-container {
   text-align: right;
@@ -106,4 +140,9 @@
 [dir="rtl"] .alert {
   text-align: right;
   direction: rtl;
+}
+
+[dir="rtl"] .custom-card {
+  border-left: none;
+  border-right: 5px solid var(--ram-red, #c20831);
 }

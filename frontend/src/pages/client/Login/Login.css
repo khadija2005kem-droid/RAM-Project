@@ -141,8 +141,12 @@
   color: #842029;
 }
 
-.error-text {
+.login-field-error {
+  color: #dc3545;
   font-size: 0.85rem;
+  margin-top: 0;
+  line-height: 1.2;
+  text-align: left;
 }
 
 /* =========================
@@ -222,3 +226,4 @@
     font-size: 1.7rem;
   }
 }
+

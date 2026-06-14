@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Container, Row, Col, Card } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 import { api } from "../../../services/api";
@@ -89,6 +89,10 @@ function Home() {
 
         setStats(buildStatsFromFactures(allFactures));
 
+        const formatStatus = (status) => {
+          return getTranslatedInvoiceStatus(status, t);
+        };
+
         const formattedRecentActivities = recentActivitiesData
           .filter((activity) => activity?.invoice)
           .map((activity) => ({
@@ -113,26 +117,26 @@ function Home() {
       }
     };
 
-    const formatStatus = (status) => {
-      return getTranslatedInvoiceStatus(status, t);
-    };
-
     fetchData();
   }, [navigate, t]);
 
   if (loading) {
     return (
-      <Container className="home-container">
-        <p>{t("home.loading")}</p>
-      </Container>
+      <div className="home-page">
+        <Container className="home-container">
+          <p className="loading-text">{t("home.loading")}</p>
+        </Container>
+      </div>
     );
   }
 
   if (!user) {
     return (
-      <Container className="home-container">
-        <p>{errorMessage || t("home.loadingError")}</p>
-      </Container>
+      <div className="home-page">
+        <Container className="home-container">
+          <p className="error-text">{errorMessage || t("home.loadingError")}</p>
+        </Container>
+      </div>
     );
   }
 
@@ -140,97 +144,107 @@ function Home() {
   const hasRecentActivities = recentActivities.length > 0;
   const hasNewInvoices = newInvoices.length > 0;
 
+  const statCards = [
+    {
+      id: "paid",
+      title: t("home.paid"),
+      value: stats.payees,
+      description: t("home.paidDescription"),
+      colorClass: "border-green",
+    },
+    {
+      id: "unpaid",
+      title: t("home.unpaid"),
+      value: stats.non_payees,
+      description: t("home.unpaidDescription"),
+      colorClass: "border-red",
+    },
+    {
+      id: "pending",
+      title: t("home.pending"),
+      value: stats.en_attente,
+      description: t("home.pendingDescription"),
+      colorClass: "border-yellow",
+    },
+  ];
+
   return (
-    <Container className="home-container">
-      {errorMessage && <div className="empty-state-message mb-4">{errorMessage}</div>}
+    <div className="home-page">
+      <Container className="home-container">
+        <div className="dashboard-header">
+          <h1 className="dashboard-title">
+            {t("home.welcome", { firstName: user.prenom, lastName: user.nom })}
+          </h1>
+          <p className="dashboard-subtitle">
+            {t("home.totalLabel", { total })} — {t("home.myInvoices")}
+          </p>
+        </div>
 
-      <h2 className="welcome-text">{t("home.welcome", { firstName: user.prenom, lastName: user.nom })}</h2>
+        {errorMessage && <div className="error-banner">{errorMessage}</div>}
 
-      <div className="mes-factures-bar">
-        <h4>
-          {t("home.totalLabel", { total })} - {t("home.myInvoices")}
-        </h4>
-      </div>
-
-      <Row className="stats-row justify-content-center mb-5">
-        <Col md={3}>
-          <Card className="stat-card accepte">
-            <Card.Body>
-              <h5>{t("home.paid")}</h5>
-              <h3>{stats.payees}</h3>
-            </Card.Body>
-          </Card>
-        </Col>
-
-        <Col md={3}>
-          <Card className="stat-card refuse">
-            <Card.Body>
-              <h5>{t("home.unpaid")}</h5>
-              <h3>{stats.non_payees}</h3>
-            </Card.Body>
-          </Card>
-        </Col>
-
-        <Col md={3}>
-          <Card className="stat-card attente">
-            <Card.Body>
-              <h5>{t("home.pending")}</h5>
-              <h3>{stats.en_attente}</h3>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-
-      <h4 className="recent-title mb-3">{t("home.recentInvoices")}</h4>
-      <Row className="recent-row">
-        {hasRecentActivities ? (
-          recentActivities.map((activity) => (
-            <Col md={4} key={activity.id} className="mb-3">
-              <Card className="recent-card">
-                <Card.Body>
-                  <h6>{activity.title}</h6>
-                  <p>
-                    {t("home.status")} {activity.status}
-                  </p>
-                  <p>
-                    {t("home.amount")} {activity.amount}
-                  </p>
-                </Card.Body>
-              </Card>
+        <Row className="stats-row mb-5">
+          {statCards.map((item) => (
+            <Col md={4} key={item.id} className="mb-4">
+              <div className={`dashboard-card ${item.colorClass}`}>
+                <h3 className="card-title">{item.title}</h3>
+                <p className="card-value">{item.value}</p>
+                <span className="card-description">{item.description}</span>
+              </div>
             </Col>
-          ))
-        ) : (
-          <Col xs={12}>
-            <div className="empty-state-message">{t("home.noActivities")}</div>
-          </Col>
-        )}
-      </Row>
+          ))}
+        </Row>
 
-      <h4 className="recent-title mb-3">{t("home.newInvoices")}</h4>
-      <Row className="recent-row">
-        {hasNewInvoices ? (
-          newInvoices.map((invoice) => (
-            <Col md={4} key={invoice.id} className="mb-3">
-              <Card className="recent-card">
-                <Card.Body>
-                  <h6>{invoice.title}</h6>
-                  <p>
-                    {t("home.status")} {invoice.status}
-                  </p>
-                  <p>
-                    {t("home.amount")} {invoice.amount}
-                  </p>
-                </Card.Body>
-              </Card>
+        <h2 className="section-title">{t("home.recentInvoices")}</h2>
+        <Row className="recent-row">
+          {hasRecentActivities ? (
+            recentActivities.map((activity) => (
+              <Col md={4} key={activity.id} className="mb-4">
+                <div className="invoice-card">
+                  <h4 className="invoice-card-title">{activity.title}</h4>
+                  <div className="invoice-card-details">
+                    <span className="invoice-label">{t("home.status")}</span>
+                    <span className="invoice-value">{activity.status}</span>
+                  </div>
+                  <div className="invoice-card-details">
+                    <span className="invoice-label">{t("home.amount")}</span>
+                    <span className="invoice-value">{activity.amount}</span>
+                  </div>
+                </div>
+              </Col>
+            ))
+          ) : (
+            <Col xs={12}>
+              <div className="empty-state-message">{t("home.noActivities")}</div>
             </Col>
-          ))
-        ) : (
-          <Col xs={12}>
-            <div className="empty-state-message">{t("home.noNewInvoices")}</div>
-          </Col>
-        )}
-      </Row>
-    </Container>
+          )}
+        </Row>
+
+        <h2 className="section-title">{t("home.newInvoices")}</h2>
+        <Row className="recent-row">
+          {hasNewInvoices ? (
+            newInvoices.map((invoice) => (
+              <Col md={4} key={invoice.id} className="mb-4">
+                <div className="invoice-card">
+                  <h4 className="invoice-card-title">{invoice.title}</h4>
+                  <div className="invoice-card-details">
+                    <span className="invoice-label">{t("home.status")}</span>
+                    <span className="invoice-value">{invoice.status}</span>
+                  </div>
+                  <div className="invoice-card-details">
+                    <span className="invoice-label">{t("home.amount")}</span>
+                    <span className="invoice-value">{invoice.amount}</span>
+                  </div>
+                </div>
+              </Col>
+            ))
+          ) : (
+            <Col xs={12}>
+              <div className="empty-state-message">{t("home.noNewInvoices")}</div>
+            </Col>
+          )}
+        </Row>
+      </Container>
+    </div>
   );
 }
 

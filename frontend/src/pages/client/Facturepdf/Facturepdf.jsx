@@ -96,7 +96,7 @@ const Facturepdf = () => {
     };
   }, [id, navigate, t]);
 
-  const downloadPDF = async () => {
+    const downloadPDF = async () => {
     if (!invoice || isDownloading) return;
 
     setIsDownloading(true);
@@ -111,121 +111,121 @@ const Facturepdf = () => {
 
       const pageWidth = pdf.internal.pageSize.getWidth();
       const pageHeight = pdf.internal.pageSize.getHeight();
-      const margin = 16;
+      const margin = 20;
       const rightEdge = pageWidth - margin;
       const contentWidth = pageWidth - margin * 2;
-      let cursorY = 18;
+      let cursorY = 24;
 
       const logoImage = await loadImage(logo).catch(() => null);
 
       if (logoImage) {
-        pdf.addImage(logoImage, "JPEG", margin, cursorY, 18, 18);
+        pdf.addImage(logoImage, "JPEG", margin, cursorY, 22, 22);
       }
+
+      pdf.setFont("helvetica", "bold");
+      pdf.setFontSize(21);
+      pdf.setTextColor(194, 8, 49);
+      pdf.text("RAM", margin + 28, cursorY + 8);
+
+      pdf.setFont("helvetica", "normal");
+      pdf.setFontSize(12);
+      pdf.setTextColor(90, 90, 90);
+      pdf.text(t("facturepdf.companyName"), margin + 28, cursorY + 15);
 
       pdf.setFont("helvetica", "bold");
       pdf.setFontSize(19);
       pdf.setTextColor(194, 8, 49);
-      pdf.text("RAM", margin + 24, cursorY + 7);
+      pdf.text(t("facturepdf.invoice"), rightEdge, cursorY + 5, { align: "right" });
 
       pdf.setFont("helvetica", "normal");
-      pdf.setFontSize(11);
-      pdf.setTextColor(90, 90, 90);
-      pdf.text(t("facturepdf.companyName"), margin + 24, cursorY + 13);
-
-      pdf.setFont("helvetica", "bold");
-      pdf.setFontSize(17);
-      pdf.setTextColor(194, 8, 49);
-      pdf.text(t("facturepdf.invoice"), rightEdge, cursorY + 4, { align: "right" });
-
-      pdf.setFont("helvetica", "normal");
-      pdf.setFontSize(11);
+      pdf.setFontSize(12);
       pdf.setTextColor(60, 60, 60);
-      pdf.text(`${t("facturepdf.reference")} ${invoice.reference}`, rightEdge, cursorY + 11, { align: "right" });
-      pdf.text(`${t("facturepdf.date")} ${invoice.date}`, rightEdge, cursorY + 17, { align: "right" });
+      pdf.text(`${t("facturepdf.reference")} ${invoice.reference}`, rightEdge, cursorY + 13, { align: "right" });
+      pdf.text(`${t("facturepdf.date")} ${invoice.date}`, rightEdge, cursorY + 20, { align: "right" });
 
-      cursorY += 28;
+      cursorY += 34;
       pdf.setDrawColor(225, 225, 225);
       pdf.line(margin, cursorY, rightEdge, cursorY);
 
-      cursorY += 9;
+      cursorY += 12;
       pdf.setFont("helvetica", "bold");
-      pdf.setFontSize(11);
+      pdf.setFontSize(12);
       pdf.setTextColor(194, 8, 49);
       pdf.text(t("facturepdf.clientInfo"), margin, cursorY);
 
-      cursorY += 6;
+      cursorY += 8;
       pdf.setFont("helvetica", "normal");
-      pdf.setFontSize(11.5);
+      pdf.setFontSize(12);
       pdf.setTextColor(33, 33, 33);
       pdf.text(invoice?.user?.name || t("facturepdf.clientNameFallback"), margin, cursorY);
-      cursorY += 6;
+      cursorY += 8;
       pdf.text(invoice?.user?.email || t("facturepdf.clientEmailFallback"), margin, cursorY);
 
-      cursorY += 10;
+      cursorY += 14;
       pdf.setFillColor(248, 249, 250);
-      pdf.rect(margin, cursorY, contentWidth, 10, "F");
+      pdf.rect(margin, cursorY, contentWidth, 12, "F");
       pdf.setFont("helvetica", "bold");
-      pdf.setFontSize(11);
+      pdf.setFontSize(12);
       pdf.setTextColor(194, 8, 49);
-      pdf.text(t("facturepdf.description"), margin + 4, cursorY + 6.5);
-      pdf.text(t("facturepdf.price"), rightEdge - 4, cursorY + 6.5, { align: "right" });
+      pdf.text(t("facturepdf.description"), margin + 6, cursorY + 7.5);
+      pdf.text(t("facturepdf.price"), rightEdge - 6, cursorY + 7.5, { align: "right" });
 
-      cursorY += 10;
+      cursorY += 14;
       pdf.setFont("helvetica", "normal");
-      pdf.setFontSize(11);
+      pdf.setFontSize(12);
       pdf.setTextColor(33, 33, 33);
 
       for (const item of invoiceItems) {
-        const descriptionLines = pdf.splitTextToSize(item.description || "", contentWidth - 42);
-        const rowHeight = Math.max(8, descriptionLines.length * 5 + 3);
+        const descriptionLines = pdf.splitTextToSize(item.description || "", contentWidth - 48);
+        const rowHeight = Math.max(10, descriptionLines.length * 5.5 + 4);
 
-        if (cursorY + rowHeight + 24 > pageHeight) {
+        if (cursorY + rowHeight + 30 > pageHeight) {
           pdf.addPage();
-          cursorY = 20;
+          cursorY = 24;
         }
 
         pdf.setDrawColor(234, 234, 234);
         pdf.rect(margin, cursorY, contentWidth, rowHeight);
-        pdf.text(descriptionLines, margin + 4, cursorY + 5);
-        pdf.text(`${formatAmount(item.price)} MAD`, rightEdge - 4, cursorY + 5, { align: "right" });
+        pdf.text(descriptionLines, margin + 6, cursorY + 6);
+        pdf.text(`${formatAmount(item.price)} MAD`, rightEdge - 6, cursorY + 6, { align: "right" });
         cursorY += rowHeight;
       }
 
-      cursorY += 10;
+      cursorY += 14;
 
       const totalText = `${formatAmount(totalAmount)} MAD`;
       const totalTextWidth = pdf.getTextWidth(totalText);
       const totalLabelWidth = pdf.getTextWidth(t("facturepdf.total"));
-      const totalBoxWidth = Math.min(Math.max(totalTextWidth + totalLabelWidth + 24, 58), contentWidth);
+      const totalBoxWidth = Math.min(Math.max(totalTextWidth + totalLabelWidth + 28, 64), contentWidth);
       const totalBoxX = rightEdge - totalBoxWidth;
 
-      if (cursorY + 24 > pageHeight) {
+      if (cursorY + 28 > pageHeight) {
         pdf.addPage();
-        cursorY = 20;
+        cursorY = 24;
       }
 
       pdf.setDrawColor(194, 8, 49);
       pdf.setFillColor(250, 247, 248);
-      pdf.roundedRect(totalBoxX, cursorY, totalBoxWidth, 14, 2, 2, "FD");
+      pdf.roundedRect(totalBoxX, cursorY, totalBoxWidth, 16, 3, 3, "FD");
       pdf.setFont("helvetica", "bold");
-      pdf.setFontSize(11.5);
+      pdf.setFontSize(12.5);
       pdf.setTextColor(194, 8, 49);
-      pdf.text(t("facturepdf.total"), totalBoxX + 5, cursorY + 8.5);
+      pdf.text(t("facturepdf.total"), totalBoxX + 7, cursorY + 9.5);
       pdf.setTextColor(33, 33, 33);
-      pdf.text(totalText, totalBoxX + totalBoxWidth - 5, cursorY + 8.5, { align: "right" });
+      pdf.text(totalText, totalBoxX + totalBoxWidth - 7, cursorY + 9.5, { align: "right" });
 
-      cursorY += 24;
+      cursorY += 30;
 
-      if (cursorY + 12 > pageHeight) {
+      if (cursorY + 16 > pageHeight) {
         pdf.addPage();
-        cursorY = 20;
+        cursorY = 24;
       }
 
       pdf.setDrawColor(229, 229, 229);
       pdf.line(margin, cursorY, rightEdge, cursorY);
-      cursorY += 8;
+      cursorY += 10;
       pdf.setFont("helvetica", "normal");
-      pdf.setFontSize(10);
+      pdf.setFontSize(11);
       pdf.setTextColor(120, 120, 120);
       pdf.text(t("facturepdf.thankYou"), pageWidth / 2, cursorY, { align: "center" });
 
@@ -276,11 +276,13 @@ const Facturepdf = () => {
     return (
       <>
         <Navbar />
-        <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
-          <Spinner animation="border" role="status" className="ram-red-text">
-            <span className="visually-hidden">{t("facturepdf.loading")}</span>
-          </Spinner>
-        </Container>
+        <div className="invoice-page">
+          <Container className="invoice-container d-flex justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
+            <Spinner animation="border" role="status" className="ram-red-text">
+              <span className="visually-hidden">{t("facturepdf.loading")}</span>
+            </Spinner>
+          </Container>
+        </div>
       </>
     );
   }
@@ -289,12 +291,14 @@ const Facturepdf = () => {
     return (
       <>
         <Navbar />
-        <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
-          <div className="text-center">
-            <h4>{loadError ? t("home.loadingError") : t("facturepdf.invoiceNotFound")}</h4>
-            <p>{loadError || t("facturepdf.invoiceNotFoundMessage")}</p>
-          </div>
-        </Container>
+        <div className="invoice-page">
+          <Container className="invoice-container d-flex justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
+            <div className="text-center">
+              <h4>{loadError ? t("home.loadingError") : t("facturepdf.invoiceNotFound")}</h4>
+              <p>{loadError || t("facturepdf.invoiceNotFoundMessage")}</p>
+            </div>
+          </Container>
+        </div>
       </>
     );
   }
@@ -317,7 +321,7 @@ const Facturepdf = () => {
         <Container className="invoice-container">
           <Row className="justify-content-center">
             <Col xs={12} lg={10} xl={8}>
-              <Card className="invoice-paper">
+              <Card className="invoice-card border-gray">
                 <Card.Body className="p-4">
                   <Row className="mb-4">
                     <Col md={6}>
@@ -376,7 +380,7 @@ const Facturepdf = () => {
 
                   <Row className="justify-content-end">
                     <Col md={4}>
-                      <div className="total-section p-3 bg-light rounded">
+                      <div className="total-section p-3 rounded">
                         <div className="d-flex justify-content-between">
                           <strong>{t("facturepdf.total")}</strong>
                           <span className="ram-red-text fw-bold fs-5" style={{ whiteSpace: "nowrap" }}>
@@ -397,37 +401,43 @@ const Facturepdf = () => {
             </Col>
           </Row>
 
-          <Row className="mt-4">
-            <Col className="text-center">
-              <div className="status-section">
-                <h5 className="mb-2">{t("facturepdf.invoiceStatus")}</h5>
-                <span className={`badge ${statusInfo.badge} fs-6 px-3 py-2`}>{statusInfo.text}</span>
-                <p className="mt-2 text-muted">{statusInfo.message}</p>
-              </div>
+          <Row className="mt-4 justify-content-center">
+            <Col xs={12} lg={10} xl={8}>
+              <Card className="status-card">
+                <Card.Body className="text-center p-4">
+                  <h5 className="mb-3">{t("facturepdf.invoiceStatus")}</h5>
+                  <span className={`badge ${statusInfo.badge} fs-6 px-3 py-2`}>{statusInfo.text}</span>
+                  <p className="mt-2 text-muted mb-0">{statusInfo.message}</p>
+                </Card.Body>
+              </Card>
             </Col>
           </Row>
 
-          <Row className="mt-5">
-            <Col className="text-center">
-              <div className="d-flex gap-2 gap-md-3 justify-content-center flex-wrap">
-                <Button
-                  variant="danger"
-                  size="lg"
-                  onClick={downloadPDF}
-                  className="download-btn"
-                  disabled={isDownloading}
-                >
-                  {t("facturepdf.downloadPDF")}
-                </Button>
+          <Row className="mt-4 justify-content-center">
+            <Col xs={12} lg={10} xl={8}>
+              <Card className="actions-card">
+                <Card.Body className="text-center p-4">
+                  <div className="d-flex gap-2 gap-md-3 justify-content-center flex-wrap">
+                    <Button
+                      variant="danger"
+                      size="lg"
+                      onClick={downloadPDF}
+                      className="download-btn"
+                      disabled={isDownloading}
+                    >
+                      {t("facturepdf.downloadPDF")}
+                    </Button>
 
-                {normalizeInvoiceStatus(invoice?.status) === "unpaid" && (
-                  <Button variant="success" size="lg" onClick={handlePayment} className="payment-btn">
-                    {t("facturepdf.payNow")}
-                  </Button>
-                )}
-              </div>
+                    {normalizeInvoiceStatus(invoice?.status) === "unpaid" && (
+                      <Button variant="success" size="lg" onClick={handlePayment} className="payment-btn">
+                        {t("facturepdf.payNow")}
+                      </Button>
+                    )}
+                  </div>
 
-              {downloadError && <div className="text-danger mt-3">{downloadError}</div>}
+                  {downloadError && <div className="text-danger mt-3">{downloadError}</div>}
+                </Card.Body>
+              </Card>
             </Col>
           </Row>
         </Container>

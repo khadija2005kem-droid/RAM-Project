@@ -24,7 +24,6 @@ function Profile() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
-  // ✅ FIX: stable function reference (prevents ESLint warning)
   const fetchUserData = useCallback(async () => {
     try {
       setLoading(true);
@@ -169,117 +168,121 @@ function Profile() {
 
   if (loading) {
     return (
-      <Container className="profile-container">
-        <div className="profile-loading">
-          <Spinner animation="border" role="status" variant="danger">
-            <span className="visually-hidden">{t("profile.loading")}</span>
-          </Spinner>
-        </div>
-      </Container>
+      <div className="profile-page">
+        <Container className="profile-container">
+          <div className="profile-loading">
+            <Spinner animation="border" role="status" variant="danger">
+              <span className="visually-hidden">{t("profile.loading")}</span>
+            </Spinner>
+          </div>
+        </Container>
+      </div>
     );
   }
 
   return (
-    <Container className="profile-container">
+    <div className="profile-page">
+      <Container className="profile-container">
 
-      {successMessage && (
-        <Alert variant="success" dismissible onClose={() => setSuccessMessage("")}>
-          {successMessage}
-        </Alert>
-      )}
+        {successMessage && (
+          <Alert variant="success" dismissible onClose={() => setSuccessMessage("")}>
+            {successMessage}
+          </Alert>
+        )}
 
-      {errorMessage && (
-        <Alert variant="danger" dismissible onClose={() => setErrorMessage("")}>
-          {errorMessage}
-        </Alert>
-      )}
+        {errorMessage && (
+          <Alert variant="danger" dismissible onClose={() => setErrorMessage("")}>
+            {errorMessage}
+          </Alert>
+        )}
 
-      <Card className="profile-card custom-card">
-        <Card.Header className="profile-card-header custom-card-header">
-          <h4>{t("profile.title")}</h4>
-        </Card.Header>
+        <Card className="profile-card custom-card">
+          <Card.Header className="profile-card-header custom-card-header">
+            <h4>{t("profile.title")}</h4>
+          </Card.Header>
 
-        <Card.Body>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3">
-              <Form.Label>{t("profile.firstName")}</Form.Label>
-              <Form.Control
-                type="text"
-                name="prenom"
-                value={formData.prenom}
-                onChange={handleChange}
-                isInvalid={!!fieldErrors.prenom}
-              />
-              <Form.Control.Feedback type="invalid">
-                {fieldErrors.prenom}
-              </Form.Control.Feedback>
-            </Form.Group>
+          <Card.Body>
+            <Form onSubmit={handleSubmit}>
+              <Form.Group className="mb-3">
+                <Form.Label>{t("profile.firstName")}</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="prenom"
+                  value={formData.prenom}
+                  onChange={handleChange}
+                  isInvalid={!!fieldErrors.prenom}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {fieldErrors.prenom}
+                </Form.Control.Feedback>
+              </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>{t("profile.lastName")}</Form.Label>
-              <Form.Control
-                type="text"
-                name="nom"
-                value={formData.nom}
-                onChange={handleChange}
-                isInvalid={!!fieldErrors.nom}
-              />
-              <Form.Control.Feedback type="invalid">
-                {fieldErrors.nom}
-              </Form.Control.Feedback>
-            </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>{t("profile.lastName")}</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="nom"
+                  value={formData.nom}
+                  onChange={handleChange}
+                  isInvalid={!!fieldErrors.nom}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {fieldErrors.nom}
+                </Form.Control.Feedback>
+              </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>{t("profile.email")}</Form.Label>
-              <Form.Control
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                isInvalid={!!fieldErrors.email}
-              />
-              <Form.Control.Feedback type="invalid">
-                {fieldErrors.email}
-              </Form.Control.Feedback>
-            </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>{t("profile.email")}</Form.Label>
+                <Form.Control
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  isInvalid={!!fieldErrors.email}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {fieldErrors.email}
+                </Form.Control.Feedback>
+              </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>{t("profile.newPassword")}</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder={t("profile.placeholderNewPassword")}
-                name="new_password"
-                value={formData.new_password}
-                onChange={handleChange}
-                isInvalid={!!fieldErrors.new_password}
-              />
-              <Form.Control.Feedback type="invalid">
-                {fieldErrors.new_password}
-              </Form.Control.Feedback>
-            </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>{t("profile.newPassword")}</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder={t("profile.placeholderNewPassword")}
+                  name="new_password"
+                  value={formData.new_password}
+                  onChange={handleChange}
+                  isInvalid={!!fieldErrors.new_password}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {fieldErrors.new_password}
+                </Form.Control.Feedback>
+              </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>{t("profile.confirmNewPassword")}</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder={t("profile.placeholderConfirmPassword")}
-                name="confirm_password"
-                value={formData.confirm_password}
-                onChange={handleChange}
-                isInvalid={!!fieldErrors.confirm_password}
-              />
-              <Form.Control.Feedback type="invalid">
-                {fieldErrors.confirm_password}
-              </Form.Control.Feedback>
-            </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>{t("profile.confirmNewPassword")}</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder={t("profile.placeholderConfirmPassword")}
+                  name="confirm_password"
+                  value={formData.confirm_password}
+                  onChange={handleChange}
+                  isInvalid={!!fieldErrors.confirm_password}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {fieldErrors.confirm_password}
+                </Form.Control.Feedback>
+              </Form.Group>
 
-            <Button className="btn-send" type="submit" disabled={submitting}>
-              {submitting ? t("profile.saving") : t("profile.saveChanges")}
-            </Button>
-          </Form>
-        </Card.Body>
-      </Card>
-    </Container>
+              <Button className="btn-send" type="submit" disabled={submitting}>
+                {submitting ? t("profile.saving") : t("profile.saveChanges")}
+              </Button>
+            </Form>
+          </Card.Body>
+        </Card>
+      </Container>
+    </div>
   );
 }
 

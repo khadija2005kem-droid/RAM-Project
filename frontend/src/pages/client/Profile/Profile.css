@@ -1,10 +1,19 @@
+/* ==================== BASE ==================== */
+
+.profile-page {
+  min-height: 100vh;
+  background: #f5f6fa;
+  display: flex;
+  flex-direction: column;
+}
+
 .profile-container {
-  margin-top: 80px;
-  margin-bottom: 80px;
+  padding-top: 80px;
+  padding-bottom: 80px;
   display: flex;
   flex-direction: column;
   gap: 30px;
-  max-width: 800px;
+  max-width: 700px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -26,24 +35,34 @@
 
 /* CARD STYLES */
 .profile-card {
-  border-radius: 15px;
+  background: #ffffff;
+  border-radius: 16px;
   border: none;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  border-left: 5px solid var(--ram-red, #c20831);
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+.profile-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
 }
 
 .profile-card-header {
-  background: linear-gradient(135deg, #c20831 0%, #a00628 100%);
-  color: white !important;
+  background: #ffffff;
+  color: #1a1a2e !important;
   border: none;
-  padding: 20px;
+  border-bottom: 1px solid #eee;
+  padding: 25px 20px;
+  text-align: center;
 }
 
 .profile-card-header h4 {
   margin: 0;
-  font-weight: bold;
-  font-size: 1.4rem;
+  font-weight: 700;
+  font-size: 22px;
+  color: #ffffff !important;
 }
 
 .profile-card .card-body {
@@ -134,8 +153,8 @@
 /* RESPONSIVE DESIGN */
 @media (max-width: 768px) {
   .profile-container {
-    margin-top: 70px;
-    margin-bottom: 60px;
+    padding-top: 70px;
+    padding-bottom: 60px;
     gap: 20px;
   }
 
@@ -145,7 +164,12 @@
   }
 
   .profile-card {
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  }
+
+  .profile-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
   }
 
   .profile-card .card-body {
@@ -153,7 +177,7 @@
   }
 
   .profile-card-header {
-    padding: 15px;
+    padding: 20px;
   }
 
   .profile-card-header h4 {
@@ -168,8 +192,8 @@
 
 @media (max-width: 480px) {
   .profile-container {
-    margin-top: 60px;
-    margin-bottom: 50px;
+    padding-top: 60px;
+    padding-bottom: 50px;
   }
 
   .profile-title {
@@ -181,7 +205,7 @@
   }
 
   .profile-card-header {
-    padding: 12px;
+    padding: 15px;
   }
 
   .profile-card-header h4 {
@@ -201,4 +225,35 @@
     padding: 10px 15px;
     font-size: 0.9rem;
   }
+}
+
+/* ==================== RTL ADJUSTMENTS ==================== */
+
+[dir="rtl"] .profile-page {
+  text-align: right;
+}
+
+[dir="rtl"] .profile-container {
+  text-align: right;
+}
+
+[dir="rtl"] .profile-title {
+  text-align: center;
+}
+
+[dir="rtl"] .profile-card {
+  border-left: none;
+  border-right: 5px solid var(--ram-red, #c20831);
+}
+
+[dir="rtl"] .profile-card-header {
+  text-align: center;
+}
+
+[dir="rtl"] .profile-card .form-control {
+  text-align: right;
+}
+
+[dir="rtl"] .profile-btn {
+  text-align: center;
 }

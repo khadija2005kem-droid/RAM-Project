@@ -124,7 +124,8 @@
   margin-right: 0;
 }
 
-[dir="rtl"] .error-text {
+[dir="rtl"] .error-text,
+[dir="rtl"] .login-field-error {
   text-align: right;
 }
 

@@ -19,5 +19,5 @@ export function getTranslatedInvoiceStatus(status, t) {
     pending: t("status.en_attente"),
   };
 
-  return statusMap[normalizedStatus] || status;
+  return statusMap[normalizedStatus] || t("status.unknown");
 }

@@ -1,45 +1,126 @@
+/* ==================== BASE ==================== */
+
+.mes-factures-page {
+  min-height: 100vh;
+  background: #f5f6fa;
+  font-family: Arial, sans-serif;
+}
+
 .mes-factures-container {
-  padding-bottom: 50px;
+  padding: 40px 20px 50px 20px;
 }
 
-.facture-card {
-  padding: 15px;
-  border-radius: 10px;
-  color: white;
+.page-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 30px;
 }
 
-/* Couleurs par status */
-.facture-card.payee {
-    background: #d4edda !important;
-    color: #155724 !important;
-}
-.facture-card.non-payee {
-    background: #f8d7da !important;
-    color: #721c24 !important; 
-}
-.facture-card.en-attente {
-    background: #fff3cd !important;
-    color: #856404 !important;
+/* ==================== TABLE (unchanged) ==================== */
+
+.mes-factures-container .table {
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
 }
 
+/* ==================== NEW INVOICE CARDS ==================== */
 
-/* Ajustement responsive */
-@media (max-width: 768px) {
-  .facture-card { margin-bottom: 15px; }
+.invoice-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  border-left: 5px solid #6c757d;
+  transition: all 0.3s ease;
+  height: 100%;
 }
 
-/* Boutons "Voir" gris */
+.invoice-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+}
+
+/* Status border colors */
+.border-green {
+  border-left-color: #28a745 !important;
+}
+
+.border-red {
+  border-left-color: #dc3545 !important;
+}
+
+.border-yellow {
+  border-left-color: #ffc107 !important;
+}
+
+.border-gray {
+  border-left-color: #6c757d !important;
+}
+
+/* Status value colors */
+.value-green {
+  color: #28a745 !important;
+}
+
+.value-red {
+  color: #dc3545 !important;
+}
+
+.value-yellow {
+  color: #d39e00 !important;
+}
+
+.value-gray {
+  color: #6c757d !important;
+}
+
+.invoice-card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.invoice-card-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.invoice-card-details:last-child {
+  margin-bottom: 0;
+}
+
+.invoice-label {
+  font-size: 13px;
+  color: #888;
+  font-weight: 500;
+}
+
+.invoice-value {
+  font-size: 14px;
+  color: #333;
+  font-weight: 600;
+}
+
+/* ==================== BUTTONS (unchanged) ==================== */
+
 .btn-voir {
-  background-color: rgb(79, 78, 78) !important ; /* gris Bootstrap */
+  background-color: rgb(79, 78, 78) !important;
   color: white !important;
-  border: rgb(79, 78, 78) !important ;
+  border: rgb(79, 78, 78) !important;
 }
 
-/* Bouton bascule Table/Carte rouge */
 .btn-toggle-carte {
-  background-color: #c20831 !important; /* rouge Bootstrap */
+  background-color: #c20831 !important;
   color: white !important;
-  border: #c20831 !important ;
+  border: #c20831 !important;
 }
 
 .btn-voir:hover {
@@ -47,8 +128,9 @@
   color: white !important;
   border: 1px solid #c20831 !important;
 }
+
 .btn-toggle-carte:hover {
-  background-color:rgb(79, 78, 78) !important ; 
+  background-color: rgb(79, 78, 78) !important;
   color: white !important;
   border: none;
 }
@@ -58,11 +140,14 @@
   color: white !important;
   border: 1px solid #c20831 !important;
 }
+
 .btn-toggle-carte:active {
-  background-color:rgb(79, 78, 78) !important;
+  background-color: rgb(79, 78, 78) !important;
   color: white !important;
   border: rgb(79, 78, 78) !important;
-} 
+}
+
+/* ==================== FACTURE ACTION & DOT ==================== */
 
 .facture-action {
   display: inline-flex;
@@ -79,40 +164,39 @@
   flex: 0 0 auto;
 }
 
+/* ==================== DROPDOWN (unchanged) ==================== */
 
-/* Dropdown items (filtrage) */
 .dropdown-item {
   color: #333 !important;
 }
 
-/* Hover */
 .dropdown-item:hover {
-  background-color: #e0e0e0 !important; /* gris clair */
+  background-color: #e0e0e0 !important;
   color: #000 !important;
 }
 
-/* Quand tu cliques (active) */
 .dropdown-item:active {
-  background-color: rgb(79, 78, 78) !important; /* gris foncé */
+  background-color: rgb(79, 78, 78) !important;
   color: white !important;
 }
 
-/* Quand l'élément est sélectionné (focus Bootstrap) */
 .dropdown-item:focus {
   background-color: rgb(79, 78, 78) !important;
   color: white !important;
 }
 
-/* Supprimer l'effet bleu Bootstrap */
 .dropdown-item.active,
 .dropdown-item:active {
   background-color: rgb(79, 78, 78) !important;
   border: none !important;
 }
+
 .active-item {
   background-color: rgb(79, 78, 78) !important;
   color: white !important;
 }
+
+/* ==================== EMPTY STATE ==================== */
 
 .empty-state-message {
   min-height: 120px;
@@ -121,11 +205,12 @@
   justify-content: center;
   text-align: center;
   padding: 24px;
-  border-radius: 12px;
-  border: 1px dashed #d7dee7;
-  background: #f8fafc !important;
-  color: #5f6b7a !important;
-  font-size: 1rem;
+  border-radius: 16px;
+  border: 2px dashed #d7dee7;
+  background: #ffffff;
+  color: #5f6b7a;
+  font-size: 15px;
+  font-weight: 500;
 }
 
 /* ==================== RTL ADJUSTMENTS ==================== */
@@ -134,9 +219,39 @@
   text-align: right;
 }
 
-[dir="rtl"] .facture-card {
+[dir="rtl"] .page-title {
+  text-align: right;
+}
+
+[dir="rtl"] .invoice-card {
   text-align: right;
   direction: rtl;
+  border-left: none;
+  border-right: 5px solid #6c757d;
+}
+
+[dir="rtl"] .invoice-card.border-green {
+  border-right-color: #28a745 !important;
+  border-left: none;
+}
+
+[dir="rtl"] .invoice-card.border-red {
+  border-right-color: #dc3545 !important;
+  border-left: none;
+}
+
+[dir="rtl"] .invoice-card.border-yellow {
+  border-right-color: #ffc107 !important;
+  border-left: none;
+}
+
+[dir="rtl"] .invoice-card.border-gray {
+  border-right-color: #6c757d !important;
+  border-left: none;
+}
+
+[dir="rtl"] .invoice-card-details {
+  flex-direction: row-reverse;
 }
 
 [dir="rtl"] .btn-voir,
@@ -179,4 +294,3 @@
   text-align: center;
   direction: rtl;
 }
-
